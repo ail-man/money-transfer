@@ -40,4 +40,9 @@ public class AccountServiceImpl implements AccountService {
 		logger.debug("Create new account");
 		return result;
 	}
+
+	@Override
+	public Account getAccount(Long id) {
+		return null;
+	}
 }

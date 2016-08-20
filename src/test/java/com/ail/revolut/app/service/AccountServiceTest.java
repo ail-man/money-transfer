@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -19,6 +20,8 @@ public class AccountServiceTest {
 	private static Logger logger = LoggerFactory.getLogger(AccountServiceTest.class);
 
 	private AccountService accountService = new AccountServiceImpl();
+
+	Account account = accountService.createAccount();
 
 	@Test
 	public void testSavingAccount() {
@@ -57,6 +60,17 @@ public class AccountServiceTest {
 		assertThat(newAccount, notNullValue());
 		assertThat(newAccount.getId(), notNullValue());
 		assertThat(newAccount.getBalance(), equalTo(0L));
+	}
+
+	@Test
+	public void testFindAccount() {
+		Account found = accountService.getAccount(account.getId());
+
+		assertThat(found, is(notNullValue()));
+		assertThat(found.getId(), is(account.getId()));
+		assertThat(found.getBalance(), is(account.getBalance()));
+		assertThat(found.getOwner().getId(), is(account.getOwner().getId()));
+		assertThat(found.getOwner().getName(), is(account.getOwner().getName()));
 	}
 
 }

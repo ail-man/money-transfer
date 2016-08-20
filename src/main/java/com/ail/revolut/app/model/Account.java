@@ -22,6 +22,7 @@ public class Account implements IAccount {
 
 	@Getter
 	@Setter
+	@Column(nullable = false)
 	private long balance;
 
 	@Getter
