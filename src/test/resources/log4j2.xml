@@ -3,15 +3,20 @@
 	<properties>
 		<property name="pattern">%d{iso8601} %-5level %c %F:%L - %m%n</property>
 	</properties>
+
 	<appenders>
 		<console name="console" target="SYSTEM_OUT">
 			<patternlayout pattern="${pattern}"/>
 		</console>
+		<file name="file" fileName="log/app.log">
+			<patternlayout pattern="${pattern}"/>
+		</file>
 	</appenders>
 
 	<loggers>
-		<root level="trace">
+		<root level="info">
 			<appenderref ref="console"/>
+			<appenderref ref="file"/>
 		</root>
 	</loggers>
 </configuration>

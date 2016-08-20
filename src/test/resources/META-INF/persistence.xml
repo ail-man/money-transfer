@@ -10,15 +10,15 @@
 		<properties>
 			<!-- Configuring JDBC properties -->
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:./db/test"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:standalone"/>
 			<property name="javax.persistence.jdbc.user" value="sa"/>
-			<property name="javax.persistence.jdbc.password" value="secret"/>
+			<property name="javax.persistence.jdbc.password" value=""/>
 			<!-- Hibernate properties -->
 			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.format_sql" value="true"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="create"/>
-			<!--<property name="hibernate.hbm2ddl.import_files" value="sql/import-users.sql"/>-->
+			<property name="hibernate.hbm2ddl.import_files" value="sql/import-users.sql"/>
 			<!-- Configuring Connection Pool -->
 			<property name="hibernate.c3p0.min_size" value="5"/>
 			<property name="hibernate.c3p0.max_size" value="20"/>
