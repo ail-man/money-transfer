@@ -1,11 +1,43 @@
 package com.ail.revolut.app.service;
 
+import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.logic.IAccount;
+import com.ail.revolut.app.utils.HibernateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 public class TransferServiceImpl implements TransferService {
+	private static Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
 	@Override
 	public void transfer(IAccount from, IAccount to, long amount) {
-//		from
+		EntityManager em = HibernateUtil.createEntityManager();
+
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			logger.info("Transfer from account={} to account={} with amount={} started", from.getId(), to.getId(), amount);
+			tx.begin();
+
+			from.withdraw(amount);
+			to.deposit(amount);
+
+			em.flush();
+			tx.commit();
+
+			logger.info("Transfered completed");
+		} catch (NotEnoughFundsException e) {
+			logger.error("Not enought funds! Available funds = {}", from.getBallance());
+		} catch (RuntimeException e) {
+			if (tx != null && tx.isActive()) tx.rollback();
+			logger.error(e.getMessage(), e);
+			throw e;
+		} finally {
+			em.close();
+		}
+		logger.debug("Create new account");
 	}
 }
