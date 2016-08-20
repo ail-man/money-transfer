@@ -1,4 +1,4 @@
-package com.ail.revolut.app.logic;
+package com.ail.revolut.app.api;
 
 import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.service.AccountService;

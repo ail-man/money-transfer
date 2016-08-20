@@ -1,15 +1,9 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.logic.IAccount;
-import com.ail.revolut.app.model.Account;
+import com.ail.revolut.app.api.IAccount;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

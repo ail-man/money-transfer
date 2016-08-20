@@ -1,6 +1,6 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.logic.IAccount;
+import com.ail.revolut.app.api.IAccount;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;

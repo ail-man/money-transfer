@@ -1,7 +1,7 @@
 package com.ail.revolut.app.service;
 
 import com.ail.revolut.app.NotEnoughFundsException;
-import com.ail.revolut.app.logic.IAccount;
+import com.ail.revolut.app.api.IAccount;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

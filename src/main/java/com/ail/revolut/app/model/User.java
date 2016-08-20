@@ -1,7 +1,7 @@
 package com.ail.revolut.app.model;
 
 
-import com.ail.revolut.app.logic.IUser;
+import com.ail.revolut.app.api.IUser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
