@@ -25,6 +25,8 @@ public class TransferServiceImpl implements TransferService {
 			from.withdraw(amount);
 			to.deposit(amount);
 
+			// TODO persist values from and to
+
 			em.flush();
 			tx.commit();
 

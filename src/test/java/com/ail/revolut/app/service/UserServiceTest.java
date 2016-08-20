@@ -10,4 +10,9 @@ public class UserServiceTest {
 	public void testCreateUser() {
 		// TODO
 	}
+
+	@Test
+	public void testGetUser() {
+		// TODO
+	}
 }

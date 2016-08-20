@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.fail;
 
+// TODO move all logic from account to account service
 public class IAccountTest {
 	private static final Logger logger = LoggerFactory.getLogger(IAccountTest.class);
 
