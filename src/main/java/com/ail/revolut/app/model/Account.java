@@ -1,19 +1,15 @@
 package com.ail.revolut.app.model;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 
-@Table(name = "users")
+@Table(name = "accounts")
 @Entity
 @ToString
-public class User implements Serializable {
-
+public class Account {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -22,13 +18,9 @@ public class User implements Serializable {
 	@Setter
 	private long id;
 
-	@Column(name = "name", nullable = false, unique = true, length = 50)
+	@ManyToOne
 	@Getter
 	@Setter
-	private String name;
+	private User user;
 
-	@OneToMany
-	@Getter
-	@Setter
-	private List<Account> account;
 }
