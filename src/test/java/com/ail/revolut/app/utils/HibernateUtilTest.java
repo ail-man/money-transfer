@@ -1,4 +1,4 @@
-package com.ail.revolut.app;
+package com.ail.revolut.app.utils;
 
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.hibernate.Session;
