@@ -9,9 +9,7 @@
 			<patternlayout pattern="${pattern}"/>
 		</console>
 		<file name="file" fileName="log/app.log">
-			<patternLayout>
-				<patternlayout pattern="${pattern}"/>
-			</patternLayout>
+			<patternlayout pattern="${pattern}"/>
 		</file>
 	</appenders>
 

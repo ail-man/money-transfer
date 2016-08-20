@@ -15,14 +15,6 @@ import static com.example.jersey.Main.BASE_URI;
 public class MoneyTransferApp {
 	private static final Logger logger = LoggerFactory.getLogger(MoneyTransferApp.class);
 
-	static {
-		try {
-			Class.forName("org.h2.Driver");
-		} catch (ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-
 	public static void main(String[] args) {
 		try {
 			initDb();
@@ -37,7 +29,7 @@ public class MoneyTransferApp {
 		Connection con = DriverManager.getConnection("jdbc:h2:./db/test", "sa", "");
 		Statement stmt = con.createStatement();
 //		stmt.executeUpdate("DROP TABLE table1");
-		stmt.executeUpdate("CREATE TABLE table1 (user VARCHAR(50))");
+//		stmt.executeUpdate("CREATE TABLE table1 (user VARCHAR(50))");
 		stmt.executeUpdate("INSERT INTO table1 (user) VALUES ('User1')");
 		stmt.executeUpdate("INSERT INTO table1 (user) VALUES ('User2')");
 
