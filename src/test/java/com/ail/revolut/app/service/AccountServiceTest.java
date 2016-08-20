@@ -18,6 +18,8 @@ public class AccountServiceTest {
 
 	private static Logger logger = LoggerFactory.getLogger(AccountServiceTest.class);
 
+	private AccountService accountService = new AccountServiceImpl();
+
 	@Test
 	public void testSavingAccount() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2unit");
@@ -50,12 +52,11 @@ public class AccountServiceTest {
 
 	@Test
 	public void testCreateAccount() {
-		AccountService accountService = new AccountServiceImpl();
-
 		Account newAccount = accountService.createAccount();
 
 		assertThat(newAccount, notNullValue());
 		assertThat(newAccount.getId(), notNullValue());
 		assertThat(newAccount.getBalance(), equalTo(0L));
 	}
+
 }
