@@ -37,12 +37,12 @@ public class AccountServiceImpl implements AccountService {
 		} finally {
 			em.close();
 		}
-		logger.debug("Create new account");
 		return result;
 	}
 
 	@Override
-	public Account getAccount(Long id) {
-		return null;
+	public Account findAccount(Long id) {
+		EntityManager em = HibernateUtil.createEntityManager();
+		return em.find(Account.class, id);
 	}
 }

@@ -28,9 +28,9 @@ public class TransferServiceImpl implements TransferService {
 			em.flush();
 			tx.commit();
 
-			logger.info("Transfered completed");
+			logger.info("Transfer completed");
 		} catch (NotEnoughFundsException e) {
-			logger.error("Not enought funds! Available funds = {}", from.getBalance());
+			logger.error("Not enought funds for transfer! Available funds = {}", from.getBalance());
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);
@@ -38,6 +38,5 @@ public class TransferServiceImpl implements TransferService {
 		} finally {
 			em.close();
 		}
-		logger.debug("Create new account");
 	}
 }

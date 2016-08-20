@@ -6,5 +6,5 @@ public interface AccountService {
 
 	Account createAccount();
 
-	Account getAccount(Long id);
+	Account findAccount(Long id);
 }

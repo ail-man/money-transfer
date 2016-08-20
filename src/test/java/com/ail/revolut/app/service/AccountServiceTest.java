@@ -21,8 +21,6 @@ public class AccountServiceTest {
 
 	private AccountService accountService = new AccountServiceImpl();
 
-	Account account = accountService.createAccount();
-
 	@Test
 	public void testSavingAccount() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2unit");
@@ -64,7 +62,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void testFindAccount() {
-		Account found = accountService.getAccount(account.getId());
+		Account account = accountService.createAccount();
+		Account found = accountService.findAccount(account.getId());
 
 		assertThat(found, is(notNullValue()));
 		assertThat(found.getId(), is(account.getId()));
