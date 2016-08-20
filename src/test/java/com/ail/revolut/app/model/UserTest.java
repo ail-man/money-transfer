@@ -13,7 +13,7 @@ public class UserTest {
 	@Test
 	public void testToString() {
 		User user = new User();
-		user.setId(123);
+		user.setId(123L);
 		user.setName("SomeName");
 
 		Account account = new Account();

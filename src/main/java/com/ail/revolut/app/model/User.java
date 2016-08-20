@@ -1,6 +1,7 @@
 package com.ail.revolut.app.model;
 
 
+import com.ail.revolut.app.logic.IUser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +13,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @ToString(exclude = "accounts")
-public class User implements Serializable {
+public class User implements Serializable, IUser {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +21,7 @@ public class User implements Serializable {
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Getter
 	@Setter

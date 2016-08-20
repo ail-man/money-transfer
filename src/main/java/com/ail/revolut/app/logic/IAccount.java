@@ -8,9 +8,9 @@ public interface IAccount {
 
 	long getBalance();
 
+	IUser getOwner();
+
 	void deposit(long amount);
 
 	void withdraw(long amount) throws NotEnoughFundsException;
-
-
 }

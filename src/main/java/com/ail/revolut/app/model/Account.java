@@ -7,11 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "accounts")
 @Entity
 @ToString
-public class Account implements IAccount {
+public class Account implements Serializable, IAccount {
 	private static final long serialVersionUID = 1L;
 
 	@Getter

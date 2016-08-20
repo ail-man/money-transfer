@@ -1,10 +1,10 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.model.Account;
+import com.ail.revolut.app.logic.IAccount;
 
 public interface AccountService {
 
-	Account createAccount();
+	IAccount createAccount();
 
-	Account findAccount(Long id);
+	IAccount findAccount(Long id);
 }
