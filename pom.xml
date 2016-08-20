@@ -37,6 +37,13 @@
 			<artifactId>jersey-media-moxy</artifactId>
 		</dependency>
 
+		<!-- H2 embedded DB-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.192</version>
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
