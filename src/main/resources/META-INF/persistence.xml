@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+	<persistence-unit name="h2" transaction-type="RESOURCE_LOCAL">
+		<class>com.ail.revolut.app.entity.Person</class>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.archive.autodetection" value="class"/>
+			<property name="hibernate.connection.url" value="jdbc:h2:./db/test"/>
+			<property name="hibernate.connection.user" value="sa"/>
+			<property name="hibernate.connection.password" value="secret"/>
+			<property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+		</properties>
+	</persistence-unit>
+</persistence>
