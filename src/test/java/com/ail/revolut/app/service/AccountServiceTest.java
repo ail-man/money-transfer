@@ -56,6 +56,6 @@ public class AccountServiceTest {
 
 		assertThat(newAccount, notNullValue());
 		assertThat(newAccount.getId(), notNullValue());
-		assertThat(newAccount.getBallance(), equalTo(0L));
+		assertThat(newAccount.getBalance(), equalTo(0L));
 	}
 }

@@ -22,7 +22,7 @@ public class Account implements IAccount {
 
 	@Getter
 	@Setter
-	private long ballance;
+	private long balance;
 
 	@Getter
 	@Setter
@@ -31,19 +31,19 @@ public class Account implements IAccount {
 	private User owner;
 
 	public void deposit(long amount) {
-		long result = ballance + amount;
+		long result = balance + amount;
 		if (result < 0) {
 			throw new RuntimeException("Overflow");
 		}
-		ballance = result;
+		balance = result;
 	}
 
 	public void withdraw(long amount) throws NotEnoughFundsException {
-		long result = ballance - amount;
+		long result = balance - amount;
 		if (result < 0) {
 			throw new NotEnoughFundsException();
 		}
-		ballance = result;
+		balance = result;
 	}
 
 }

@@ -17,10 +17,10 @@ public class TransferServiceTest {
 		AccountService accountService = new AccountServiceImpl();
 		from = accountService.createAccount();
 		from.deposit(100L);
-		assertThat(from.getBallance(), equalTo(100L));
+		assertThat(from.getBalance(), equalTo(100L));
 
 		to = accountService.createAccount();
-		assertThat(to.getBallance(), equalTo(0L));
+		assertThat(to.getBalance(), equalTo(0L));
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class TransferServiceTest {
 
 		transferService.transfer(from, to, amount);
 
-		assertThat(from.getBallance(), equalTo(89L));
-		assertThat(to.getBallance(), equalTo(11L));
+		assertThat(from.getBalance(), equalTo(89L));
+		assertThat(to.getBalance(), equalTo(11L));
 	}
 }

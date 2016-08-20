@@ -6,7 +6,7 @@ public interface IAccount {
 
 	Long getId();
 
-	long getBallance();
+	long getBalance();
 
 	void deposit(long amount);
 

@@ -25,51 +25,51 @@ public class IAccountTest {
 	}
 
 	@Test
-	public void testNewAccountHasZeroBallance() {
-		assertThat(account.getBallance(), equalTo(0L));
+	public void testNewAccountHasZeroBalance() {
+		assertThat(account.getBalance(), equalTo(0L));
 	}
 
 	@Test
 	public void testDesposit() {
 		account.deposit(100L);
-		assertThat(account.getBallance(), equalTo(100L));
+		assertThat(account.getBalance(), equalTo(100L));
 
 		account.deposit(23L);
-		assertThat(account.getBallance(), equalTo(123L));
+		assertThat(account.getBalance(), equalTo(123L));
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
 		account.deposit(1000L);
 
-		assertThat(account.getBallance(), equalTo(1000L));
+		assertThat(account.getBalance(), equalTo(1000L));
 
 		account.withdraw(10L);
-		assertThat(account.getBallance(), equalTo(990L));
+		assertThat(account.getBalance(), equalTo(990L));
 
 		account.withdraw(123L);
-		assertThat(account.getBallance(), equalTo(867L));
+		assertThat(account.getBalance(), equalTo(867L));
 	}
 
 	@Test
-	public void testWithdrawAmountCantBeGreaterThanBallance() throws Exception {
-		assertThat(account.getBallance(), equalTo(0L));
+	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
+		assertThat(account.getBalance(), equalTo(0L));
 		assertWithdrawFails(account, 5L);
 
 		account.deposit(30L);
-		assertThat(account.getBallance(), equalTo(30L));
+		assertThat(account.getBalance(), equalTo(30L));
 		assertWithdrawFails(account, 100L);
-		assertThat(account.getBallance(), equalTo(30L));
+		assertThat(account.getBalance(), equalTo(30L));
 
 		account.withdraw(10L);
-		assertThat(account.getBallance(), equalTo(20L));
+		assertThat(account.getBalance(), equalTo(20L));
 		assertWithdrawFails(account, 30L);
-		assertThat(account.getBallance(), equalTo(20L));
+		assertThat(account.getBalance(), equalTo(20L));
 
 		account.withdraw(20L);
-		assertThat(account.getBallance(), equalTo(0L));
+		assertThat(account.getBalance(), equalTo(0L));
 		assertWithdrawFails(account, 1L);
-		assertThat(account.getBallance(), equalTo(0L));
+		assertThat(account.getBalance(), equalTo(0L));
 	}
 
 	private void assertWithdrawFails(IAccount account, long amount) {
@@ -85,7 +85,7 @@ public class IAccountTest {
 	public void testAccountDepositOverflow() {
 		account.deposit(Long.MAX_VALUE);
 
-		assertThat(account.getBallance(), equalTo(Long.MAX_VALUE));
+		assertThat(account.getBalance(), equalTo(Long.MAX_VALUE));
 		account.deposit(1L);
 	}
 

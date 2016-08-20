@@ -30,7 +30,7 @@ public class TransferServiceImpl implements TransferService {
 
 			logger.info("Transfered completed");
 		} catch (NotEnoughFundsException e) {
-			logger.error("Not enought funds! Available funds = {}", from.getBallance());
+			logger.error("Not enought funds! Available funds = {}", from.getBalance());
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);
