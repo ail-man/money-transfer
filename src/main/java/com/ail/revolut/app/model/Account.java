@@ -16,7 +16,7 @@ public class Account {
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Getter
 	@Setter

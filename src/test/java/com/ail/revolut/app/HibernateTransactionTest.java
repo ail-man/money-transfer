@@ -1,6 +1,6 @@
 package com.ail.revolut.app;
 
-import com.ail.revolut.app.db.HibernateUtil;
+import com.ail.revolut.app.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
