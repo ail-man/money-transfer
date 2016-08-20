@@ -1,8 +1,8 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.logic.Account;
+import com.ail.revolut.app.logic.IAccount;
 
 public interface TransferService {
 
-	void transfer(Account from, Account to, long amount);
+	void transfer(IAccount from, IAccount to, long amount);
 }
