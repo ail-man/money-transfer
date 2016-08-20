@@ -1,4 +1,4 @@
-package com.ail.revolut;
+package com.ail.revolut.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

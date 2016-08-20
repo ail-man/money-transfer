@@ -1,4 +1,4 @@
-package com.ail.revolut;
+package com.ail.revolut.app;
 
 public class Account {
 	private final long id;

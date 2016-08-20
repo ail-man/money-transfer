@@ -1,4 +1,4 @@
-package com.ail.revolut.entity;
+package com.ail.revolut.app.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
