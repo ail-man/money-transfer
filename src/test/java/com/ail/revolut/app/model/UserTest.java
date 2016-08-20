@@ -17,8 +17,8 @@ public class UserTest {
 		user.setName("SomeName");
 
 		Account account = new Account();
-		account.setId(555);
-		account.setBallance(10000);
+		account.setId(555L);
+		account.setBallance(10000L);
 
 		account.setOwner(user);
 
