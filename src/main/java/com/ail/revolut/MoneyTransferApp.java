@@ -1,6 +1,5 @@
 package com.ail.revolut;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,12 +8,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class TestH2Database {
+public class MoneyTransferApp {
+	private static final Logger logger = LoggerFactory.getLogger(MoneyTransferApp.class);
 
-	private static final Logger logger = LoggerFactory.getLogger(TestH2Database.class);
+	public static void main(String[] args) {
+		startDatabase();
+//		startJersey();
+	}
 
-	@Test
-	public void testH2Db() {
+	private static void startDatabase() {
 		try {
 			Class.forName("org.h2.Driver");
 //			Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
