@@ -13,11 +13,18 @@ public class HibernateTest {
 	private static Logger logger = LoggerFactory.getLogger(HibernateTest.class);
 
 	@Test
-	public void main() {
+	public void testPersistenceLayer() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("h2unit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		User found = entityManager.find(User.class, 1L);
-		logger.info("found=" + found);
+		User foundUser = entityManager.find(User.class, 1L);
+		logger.info("user found = " + foundUser);
+
+		foundUser.getAccounts().forEach(account -> logger.info(account.toString()));
+
+		foundUser = entityManager.find(User.class, 2L);
+		logger.info("user found = " + foundUser);
+
+		foundUser.getAccounts().forEach(account -> logger.info(account.toString()));
 	}
 }

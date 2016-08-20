@@ -12,15 +12,20 @@ import javax.persistence.*;
 public class Account {
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
-	@Setter
 	private long id;
 
-	@ManyToOne
 	@Getter
 	@Setter
-	private User user;
+	private long ballance;
+
+	@Getter
+	@Setter
+	@ManyToOne(fetch = FetchType. LAZY)
+	@JoinColumn(name = "user_id")
+	private User owner;
 
 }

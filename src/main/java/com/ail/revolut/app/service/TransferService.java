@@ -1,6 +1,6 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.Account;
+import com.ail.revolut.app.logic.Account;
 
 public interface TransferService {
 

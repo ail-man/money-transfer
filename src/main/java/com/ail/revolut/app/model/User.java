@@ -11,24 +11,24 @@ import java.util.List;
 
 @Table(name = "users")
 @Entity
-@ToString
+@ToString(exclude = "accounts")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
-	@Setter
 	private long id;
 
-	@Column(name = "name", nullable = false, unique = true, length = 50)
 	@Getter
 	@Setter
+	@Column(name = "name", nullable = false, unique = true, length = 50)
 	private String name;
 
-	@OneToMany
 	@Getter
 	@Setter
-	private List<Account> account;
+	@OneToMany(mappedBy = "owner")
+	private List<Account> accounts;
 }

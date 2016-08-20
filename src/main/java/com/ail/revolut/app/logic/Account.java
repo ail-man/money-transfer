@@ -1,4 +1,6 @@
-package com.ail.revolut.app;
+package com.ail.revolut.app.logic;
+
+import com.ail.revolut.app.NotEnoughFundsException;
 
 public class Account {
 	private final long id;

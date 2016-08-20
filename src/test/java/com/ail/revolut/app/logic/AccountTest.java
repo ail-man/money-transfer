@@ -1,5 +1,6 @@
-package com.ail.revolut.app;
+package com.ail.revolut.app.logic;
 
+import com.ail.revolut.app.NotEnoughFundsException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
