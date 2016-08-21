@@ -1,6 +1,5 @@
 package com.ail.revolut.app.model;
 
-import com.ail.revolut.app.exception.NotEnoughFundsException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,7 +21,6 @@ public class Account implements Serializable {
 
 	@Getter
 	@Setter
-	@Column
 	private Long balance;
 
 	@Getter
@@ -30,21 +28,5 @@ public class Account implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User owner;
-
-	public void deposit(long amount) {
-		long result = balance + amount;
-		if (result < 0) {
-			throw new RuntimeException("Overflow");
-		}
-		balance = result;
-	}
-
-	public void withdraw(long amount) throws NotEnoughFundsException {
-		long result = balance - amount;
-		if (result < 0) {
-			throw new NotEnoughFundsException();
-		}
-		balance = result;
-	}
 
 }
