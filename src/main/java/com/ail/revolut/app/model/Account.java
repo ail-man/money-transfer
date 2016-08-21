@@ -1,6 +1,6 @@
 package com.ail.revolut.app.model;
 
-import com.ail.revolut.app.NotEnoughFundsException;
+import com.ail.revolut.app.exception.NotEnoughFundsException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
