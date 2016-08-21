@@ -109,11 +109,18 @@ public class AccountServiceTest {
 		}
 	}
 
-//	@Test(expected = RuntimeException.class)
-//	public void testAccountDepositOverflow() {
-//		accountService.deposit(account.getId(), Long.MAX_VALUE);
-//		accountService.deposit(account.getId(), 1L);
-//		account.deposit(1L);
-//	}
+	@Test(expected = RuntimeException.class)
+	public void testAccountDepositOverflow() {
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
+
+		assertThat(accountService.getBalance(id), equalTo(0L));
+
+		accountService.deposit(id, Long.MAX_VALUE);
+		assertThat(accountService.getBalance(id), equalTo(Long.MAX_VALUE));
+
+		accountService.deposit(id, 1L);
+	}
 
 }
