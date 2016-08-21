@@ -18,7 +18,7 @@ public class Remittance implements Serializable, Cloneable {
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long number;
+	private Long id;
 
 	@Getter
 	@Setter

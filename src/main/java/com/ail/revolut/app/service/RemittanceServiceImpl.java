@@ -26,7 +26,7 @@ public class RemittanceServiceImpl implements RemittanceService {
 
 			tx.commit();
 
-			number = remittance.getNumber();
+			number = remittance.getId();
 
 			logger.info("Remittance saved with id = " + number);
 		} catch (RuntimeException e) {
