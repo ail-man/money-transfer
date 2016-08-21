@@ -27,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
 			account.setBalance(0L);
 
 			em.persist(account);
+
 			tx.commit();
 
 			accountId = account.getId();
@@ -78,6 +79,8 @@ public class AccountServiceImpl implements AccountService {
 			}
 			account.setBalance(balance);
 
+			em.merge(account);
+
 			tx.commit();
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
@@ -104,6 +107,8 @@ public class AccountServiceImpl implements AccountService {
 			}
 			balance = balance - amount;
 			account.setBalance(balance);
+
+			em.merge(account);
 
 			tx.commit();
 		} catch (RuntimeException e) {
