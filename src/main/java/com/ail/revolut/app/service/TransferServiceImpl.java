@@ -1,8 +1,8 @@
 package com.ail.revolut.app.service;
 
+import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
-import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ public class TransferServiceImpl implements TransferService {
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {
@@ -48,7 +48,7 @@ public class TransferServiceImpl implements TransferService {
 			logger.info("Transfer completed");
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.error(e.getMessage(), e);
+			logger.debug(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();

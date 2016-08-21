@@ -2,7 +2,7 @@ package com.ail.revolut.app.service;
 
 import com.ail.revolut.app.json.RemittanceData;
 import com.ail.revolut.app.model.Remittance;
-import com.ail.revolut.app.utils.HibernateUtil;
+import com.ail.revolut.app.db.HibernateContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ public class RemittanceServiceImpl implements RemittanceService {
 	public Long save(RemittanceData remittanceData) {
 		Long number = null;
 
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {

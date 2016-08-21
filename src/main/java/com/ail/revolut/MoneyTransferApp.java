@@ -1,5 +1,8 @@
 package com.ail.revolut;
 
+import com.ail.revolut.app.db.HibernateContextHolder;
+import com.ail.revolut.app.db.HibernateContextFactory;
+import com.ail.revolut.app.db.HibernateContext;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -17,11 +20,14 @@ public class MoneyTransferApp {
 	public static void main(String[] args) {
 		try {
 			final HttpServer server = startServer();
+			final HibernateContext pppHibernateContext = HibernateContextFactory.createContext();
+			HibernateContextHolder.createEntityManager();
 			logger.info(String.format(
 					"Jersey app started with WADL available at %sapplication.wadl Hit enter to stop it...",
 					BASE_URI)
 			);
 			System.in.read();
+			pppHibernateContext.destroy();
 			server.shutdown();
 		} catch (Throwable e) {
 			logger.error(e.getMessage(), e);

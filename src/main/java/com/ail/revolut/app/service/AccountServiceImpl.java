@@ -2,7 +2,7 @@ package com.ail.revolut.app.service;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
-import com.ail.revolut.app.utils.HibernateUtil;
+import com.ail.revolut.app.db.HibernateContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class AccountServiceImpl implements AccountService {
 	public Long createAccount() {
 		Long accountId = null;
 
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {
@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
 	public Long getBalance(Long id) {
 		Long balance = null;
 
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		logger.info("Find account with id = " + id);
 
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
 
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {
@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
 			tx.commit();
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.error(e.getMessage(), e);
+			logger.debug(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();
@@ -101,7 +101,7 @@ public class AccountServiceImpl implements AccountService {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
 
-		EntityManager em = HibernateUtil.createEntityManager();
+		EntityManager em = HibernateContextHolder.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {
