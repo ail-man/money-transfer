@@ -1,7 +1,5 @@
 package com.ail.revolut.app;
 
-import com.ail.revolut.app.db.HibernateContext;
-import com.ail.revolut.app.db.HibernateContextFactory;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -19,13 +17,11 @@ public class Main {
 	public static void main(String[] args) {
 		try {
 			final HttpServer server = startServer();
-			final HibernateContext hibernateContext = HibernateContextFactory.createContext();
 			logger.info(String.format(
 					"Revolut app started with WADL available at %sapplication.wadl Hit enter to stop it...",
 					BASE_URI)
 			);
 			System.in.read();
-			hibernateContext.destroy();
 			server.shutdown();
 		} catch (Throwable e) {
 			logger.error(e.getMessage(), e);
