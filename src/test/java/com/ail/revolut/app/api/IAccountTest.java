@@ -5,6 +5,7 @@ import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.service.AccountService;
 import com.ail.revolut.app.service.AccountServiceImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,13 @@ public class IAccountTest {
 	}
 
 	@Test
+	@Ignore
 	public void testNewAccountHasZeroBalance() {
 		assertThat(account.getBalance(), equalTo(0L));
 	}
 
 	@Test
+	@Ignore
 	public void testDesposit() {
 		account.deposit(100L);
 		assertThat(account.getBalance(), equalTo(100L));
@@ -41,6 +44,7 @@ public class IAccountTest {
 	}
 
 	@Test
+	@Ignore
 	public void testWithdraw() throws Exception {
 		account.deposit(1000L);
 
@@ -54,6 +58,7 @@ public class IAccountTest {
 	}
 
 	@Test
+	@Ignore
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
 		assertThat(account.getBalance(), equalTo(0L));
 		assertWithdrawFails(account, 5L);
@@ -84,6 +89,7 @@ public class IAccountTest {
 	}
 
 	@Test(expected = RuntimeException.class)
+	@Ignore
 	public void testAccountDepositOverflow() {
 		account.deposit(Long.MAX_VALUE);
 
