@@ -37,8 +37,8 @@ public class AccountRestServiceTest {
 		WebTarget webTarget = target.path("/account/create");
 		javax.ws.rs.core.Response response = webTarget.request().get();
 		logger.info(response.toString());
-
-//		Response responseMsg = target.path("transfer").request().get(Response.class);
+//
+//		Response responseMsg = target.path("/account/create").request().get(Response.class);
 //		logger.info(responseMsg.toString());
 	}
 }
