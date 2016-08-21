@@ -1,6 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.model.Response;
+import com.ail.revolut.app.json.ResponseData;
 import com.ail.revolut.app.service.AccountService;
 import com.ail.revolut.app.service.AccountServiceImpl;
 import org.slf4j.Logger;
@@ -31,18 +31,18 @@ public class AccountRestService {
 	@GET
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createAccount() {
+	public ResponseData createAccount() {
 		logger.debug("Create account requested");
 
-		Response response = new Response();
+		ResponseData responseData = new ResponseData();
 		try {
-			response.setId(accountService.createAccount());
+			responseData.setId(accountService.createAccount());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
 			logger.debug(msg, e);
-			response.setMessage(msg);
+			responseData.setMessage(msg);
 		}
 
-		return response;
+		return responseData;
 	}
 }

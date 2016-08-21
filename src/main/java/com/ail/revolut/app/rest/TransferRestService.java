@@ -1,7 +1,7 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.model.Remittance;
-import com.ail.revolut.app.model.Response;
+import com.ail.revolut.app.json.RemittanceData;
+import com.ail.revolut.app.json.ResponseData;
 import com.ail.revolut.app.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,19 +31,19 @@ public class TransferRestService {
 	@Path("/perform")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response transfer(Remittance remittance) {
-		logger.debug(remittance.toString());
+	public ResponseData transfer(RemittanceData remittanceData) {
+		logger.debug(remittanceData.toString());
 
-		Response response = new Response();
+		ResponseData responseData = new ResponseData();
 		try {
-			transferService.transfer(remittance.getFrom(), remittance.getTo(), remittance.getAmount());
-			response.setId(remittanceService.save(remittance));
+			transferService.transfer(remittanceData.getFrom(), remittanceData.getTo(), remittanceData.getAmount());
+			responseData.setId(remittanceService.save(remittanceData));
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
 			logger.debug(msg, e);
-			response.setMessage(msg);
+			responseData.setMessage(msg);
 		}
 
-		return response;
+		return responseData;
 	}
 }

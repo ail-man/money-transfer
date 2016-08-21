@@ -1,9 +1,7 @@
 package com.ail.revolut.app.rest;
 
 import com.ail.revolut.MoneyTransferApp;
-import com.ail.revolut.app.model.Response;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.Request;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +36,7 @@ public class AccountRestServiceTest {
 		javax.ws.rs.core.Response response = webTarget.request().get();
 		logger.info(response.toString());
 //
-//		Response responseMsg = target.path("/account/create").request().get(Response.class);
+//		ResponseData responseMsg = target.path("/account/create").request().get(ResponseData.class);
 //		logger.info(responseMsg.toString());
 	}
 }
