@@ -8,30 +8,41 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class TransferServiceTest {
 
+	private TransferService transferService = new TransferServiceImpl();
+	private AccountService accountService = new AccountServiceImpl();
+
 	private Long fromAccountId;
 	private Long toAccountId;
 
 	@Before
 	public void init() {
-		AccountService accountService = new AccountServiceImpl();
 		fromAccountId = accountService.createAccount();
-//
-//		fromAccountId.deposit(100L);
-//		assertThat(fromAccountId.getBalance(), equalTo(100L));
-//
-//		toAccountId = accountService.createAccount();
-//		assertThat(toAccountId.getBalance(), equalTo(0L));
+		toAccountId = accountService.createAccount();
 	}
 
 	@Test
-	public void test() {
-		TransferService transferService = new TransferServiceImpl();
+	public void testTransfer() {
+		transferService.transfer(fromAccountId, toAccountId, 100L);
+	}
 
-//		long amount = 11L;
-//
-//		transferService.transfer(fromAccountId, toAccountId, amount);
-//
-//		assertThat(fromAccountId.getBalance(), equalTo(89L));
-//		assertThat(toAccountId.getBalance(), equalTo(11L));
+	@Test
+	public void testTransferShouldIncrementToAccountBalance() {
+		assertThat(accountService.getBalance(toAccountId), equalTo(0L));
+
+		Long amount = 100L;
+		transferService.transfer(fromAccountId, toAccountId, amount);
+		assertThat(accountService.getBalance(toAccountId), equalTo(amount));
+	}
+
+	@Test
+	public void testTransferShouldDecrementFromAccountBalance() {
+		assertThat(accountService.getBalance(fromAccountId), equalTo(0L));
+		accountService.deposit(fromAccountId, 100L);
+		assertThat(accountService.getBalance(fromAccountId), equalTo(100L));
+
+		Long amount = 20L;
+
+		transferService.transfer(fromAccountId, toAccountId, amount);
+		assertThat(accountService.getBalance(fromAccountId), equalTo(80L));
 	}
 }

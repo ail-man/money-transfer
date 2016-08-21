@@ -1,6 +1,5 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
@@ -12,27 +11,38 @@ import javax.persistence.EntityTransaction;
 public class TransferServiceImpl implements TransferService {
 	private static Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
+	private AccountService accountService;
+
+	public TransferServiceImpl() {
+		accountService = new AccountServiceImpl();
+	}
+
 	@Override
-	public void transfer(Account from, Account to, long amount) {
+	public void transfer(Long fromAccountId, Long toAccountId, Long amount) {
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		EntityTransaction tx = null;
 		try {
 			tx = em.getTransaction();
-			logger.info("Transfer from account={} to account={} with amount={} started", from.getId(), to.getId(), amount);
+			logger.info("Transfer from accountId={} to accountId={} with amount={} started", fromAccountId, toAccountId, amount);
 			tx.begin();
 
-			from.withdraw(amount);
-			to.deposit(amount);
+			Account fromAccount = em.find(Account.class, fromAccountId);
+			Long fromBallance = fromAccount.getBalance();
+			fromAccount.setBalance(fromBallance - amount);
 
-			// TODO persist values from and to
+			Account toAccount = em.find(Account.class, toAccountId);
+			Long toBallance = toAccount.getBalance();
+			toAccount.setBalance(toBallance + amount);
 
-			em.flush();
+			em.merge(fromAccount);
+			em.merge(toAccount);
+
 			tx.commit();
 
 			logger.info("Transfer completed");
-		} catch (NotEnoughFundsException e) {
-			logger.error("Not enought funds for transfer! Available funds = {}", from.getBalance());
+//		} catch (NotEnoughFundsException e) {
+//			logger.error("Not enought funds for transfer! Available funds = {}", fromAccountId);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);
