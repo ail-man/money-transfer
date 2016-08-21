@@ -22,8 +22,8 @@ public class Account implements Serializable {
 
 	@Getter
 	@Setter
-	@Column(nullable = false)
-	private long balance;
+	@Column
+	private Long balance;
 
 	@Getter
 	@Setter

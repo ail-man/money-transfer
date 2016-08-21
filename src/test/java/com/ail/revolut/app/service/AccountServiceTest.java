@@ -25,7 +25,6 @@ public class AccountServiceTest {
 
 	@Test
 	public void testCreateAccount() {
-		assertThat(account, notNullValue());
 		assertThat(account.getId(), notNullValue());
 		assertThat(account.getBalance(), equalTo(0L));
 	}
@@ -38,11 +37,15 @@ public class AccountServiceTest {
 
 	@Test
 	public void testDesposit() {
+		Long balance;
+
 		accountService.deposit(account.getId(), 100L);
-		assertThat(account.getBalance(), equalTo(100L));
+		balance = accountService.getBalance(account.getId());
+		assertThat(balance, equalTo(100L));
 
 		accountService.deposit(account.getId(), 23L);
-		assertThat(account.getBalance(), equalTo(123L));
+		balance = accountService.getBalance(account.getId());
+		assertThat(balance, equalTo(123L));
 	}
 
 //	@Test

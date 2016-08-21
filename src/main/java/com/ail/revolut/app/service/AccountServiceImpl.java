@@ -23,10 +23,10 @@ public class AccountServiceImpl implements AccountService {
 			tx.begin();
 
 			result = new Account();
+			result.setBalance(0L);
 
 			em.persist(result);
 
-			em.flush();
 			tx.commit();
 
 			logger.info("Account created with id = " + result.getId());
@@ -62,6 +62,27 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void deposit(Long id, Long amount) {
+		EntityManager em = HibernateUtil.createEntityManager();
 
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+
+			Account account = em.find(Account.class, id);
+			Long balance = account.getBalance();
+			balance = balance + amount;
+			if (balance < 0) {
+				throw new RuntimeException("Overflow");
+			}
+			account.setBalance(balance);
+			tx.commit();
+		} catch (RuntimeException e) {
+			if (tx != null && tx.isActive()) tx.rollback();
+			logger.error(e.getMessage(), e);
+			throw e;
+		} finally {
+			em.close();
+		}
 	}
 }
