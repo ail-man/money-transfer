@@ -1,6 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.MoneyTransferApp;
+import com.ail.revolut.app.Main;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -20,9 +20,9 @@ public class AccountRestServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		server = MoneyTransferApp.startServer();
+		server = Main.startServer();
 		Client c = ClientBuilder.newClient();
-		target = c.target(MoneyTransferApp.BASE_URI);
+		target = c.target(Main.BASE_URI);
 	}
 
 	@After

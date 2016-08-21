@@ -1,8 +1,7 @@
-package com.ail.revolut;
+package com.ail.revolut.app;
 
-import com.ail.revolut.app.db.HibernateContextHolder;
-import com.ail.revolut.app.db.HibernateContextFactory;
 import com.ail.revolut.app.db.HibernateContext;
+import com.ail.revolut.app.db.HibernateContextFactory;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -11,23 +10,22 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
-public class MoneyTransferApp {
+public class Main {
 	public static final String BASE_URI = "http://localhost:8080/revolut/api/";
 
 	private static final String APP_PACKAGE = "com.ail";
-	private static final Logger logger = LoggerFactory.getLogger(MoneyTransferApp.class);
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
 		try {
 			final HttpServer server = startServer();
-			final HibernateContext pppHibernateContext = HibernateContextFactory.createContext();
-			HibernateContextHolder.createEntityManager();
+			final HibernateContext hibernateContext = HibernateContextFactory.createContext();
 			logger.info(String.format(
-					"Jersey app started with WADL available at %sapplication.wadl Hit enter to stop it...",
+					"Revolut app started with WADL available at %sapplication.wadl Hit enter to stop it...",
 					BASE_URI)
 			);
 			System.in.read();
-			pppHibernateContext.destroy();
+			hibernateContext.destroy();
 			server.shutdown();
 		} catch (Throwable e) {
 			logger.error(e.getMessage(), e);
