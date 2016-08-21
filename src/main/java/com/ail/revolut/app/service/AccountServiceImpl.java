@@ -41,20 +41,21 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account findAccount(Long id) {
-		Account result;
+	public Long getBalance(Long id) {
+		Long balance = null;
 
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		logger.info("Find account with id = " + id);
-		result = em.find(Account.class, id);
 
-		if (result == null) {
-			logger.info("Account not found!");
+		Account account = em.find(Account.class, id);
+		if (account != null) {
+			balance = account.getBalance();
+			logger.debug("Balance = " + account);
 		} else {
-			logger.info("Account found: " + result);
+			logger.info("Account not found!");
 		}
 
-		return result;
+		return balance;
 	}
 }

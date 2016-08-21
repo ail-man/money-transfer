@@ -1,6 +1,7 @@
 package com.ail.revolut.app;
 
 import com.ail.revolut.app.model.User;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ public class HibernateTest {
 	private static Logger logger = LoggerFactory.getLogger(HibernateTest.class);
 
 	@Test
+	@Ignore
 	public void testPersistenceLayer() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("h2unit");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
