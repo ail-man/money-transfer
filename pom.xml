@@ -58,14 +58,14 @@
 
 		<!-- JAXB to produce JSON and XML -->
 		<!--<dependency>-->
-			<!--<groupId>javax.xml.bind</groupId>-->
-			<!--<artifactId>jaxb-api</artifactId>-->
-			<!--<version>2.2.11</version>-->
+		<!--<groupId>javax.xml.bind</groupId>-->
+		<!--<artifactId>jaxb-api</artifactId>-->
+		<!--<version>2.2.11</version>-->
 		<!--</dependency>-->
 		<!--<dependency>-->
-			<!--<groupId>com.sun.xml.bind</groupId>-->
-			<!--<artifactId>jaxb-impl</artifactId>-->
-			<!--<version>2.2.11</version>-->
+		<!--<groupId>com.sun.xml.bind</groupId>-->
+		<!--<artifactId>jaxb-impl</artifactId>-->
+		<!--<version>2.2.11</version>-->
 		<!--</dependency>-->
 
 		<!-- Logging -->
@@ -81,11 +81,11 @@
 		</dependency>
 
 		<!-- Apache commons -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.commons</groupId>-->
+			<!--<artifactId>commons-lang3</artifactId>-->
+			<!--<version>3.4</version>-->
+		<!--</dependency>-->
 
 		<!-- Code generation -->
 		<dependency>
@@ -140,15 +140,16 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.example.Main</mainClass>
+					<mainClass>com.ail.revolut.app.Main</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>com.ail.revolut.app.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
