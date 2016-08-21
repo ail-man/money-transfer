@@ -12,12 +12,6 @@ import javax.persistence.EntityTransaction;
 public class TransferServiceImpl implements TransferService {
 	private static Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
-	private AccountService accountService;
-
-	public TransferServiceImpl() {
-		accountService = new AccountServiceImpl();
-	}
-
 	@Override
 	public void transfer(Long fromAccountId, Long toAccountId, Long amount) throws NotEnoughFundsException {
 		if (amount <= 0) {

@@ -5,6 +5,6 @@ import com.ail.revolut.app.model.User;
 public interface UserService {
 	User createUser(String userName);
 
-	User getUser(long id);
+	User getUser(Long id);
 }
 

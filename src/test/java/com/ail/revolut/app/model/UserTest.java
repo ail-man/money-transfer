@@ -1,5 +1,6 @@
 package com.ail.revolut.app.model;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ public class UserTest {
 	private static final Logger logger = LoggerFactory.getLogger(UserTest.class);
 
 	@Test
+	@Ignore
 	public void testToString() {
 		User user = new User();
 		user.setId(123L);

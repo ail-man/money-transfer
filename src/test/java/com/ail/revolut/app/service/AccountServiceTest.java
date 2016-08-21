@@ -2,8 +2,6 @@ package com.ail.revolut.app.service;
 
 import com.ail.revolut.app.NotEnoughFundsException;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,8 +9,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.fail;
 
 public class AccountServiceTest {
-
-	private static Logger logger = LoggerFactory.getLogger(AccountServiceTest.class);
 
 	private AccountService accountService = new AccountServiceImpl();
 	private Long accountId;

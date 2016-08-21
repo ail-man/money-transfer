@@ -11,7 +11,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(long id) {
+	public User getUser(Long id) {
 		// TODO
 		return null;
 	}
