@@ -28,7 +28,7 @@ public class RemittanceServiceImpl implements RemittanceService {
 
 			number = remittance.getNumber();
 
-			logger.info("Remittance saved with number = " + number);
+			logger.info("Remittance saved with id = " + number);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);

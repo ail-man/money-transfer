@@ -6,11 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-public class RemittanceResponse {
+public class Response {
 
 	@Getter
 	@Setter
-	private Long number;
+	private Long id;
 
 	@Getter
 	@Setter

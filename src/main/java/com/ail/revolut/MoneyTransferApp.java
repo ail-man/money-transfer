@@ -11,7 +11,7 @@ import java.net.URI;
 public class MoneyTransferApp {
 	public static final String BASE_URI = "http://localhost:8080/revolut/";
 
-	private static final String APP_PACKAGE = "com.ail.revolut";
+	private static final String APP_PACKAGE = "com.ail.revolut.rest";
 	private static final Logger logger = LoggerFactory.getLogger(MoneyTransferApp.class);
 
 	public static void main(String[] args) {
