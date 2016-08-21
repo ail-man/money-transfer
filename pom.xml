@@ -56,6 +56,17 @@
 			<version>5.2.2.Final</version>
 		</dependency>
 
+		<!-- JAXB to produce JSON and XML -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2.11</version>
+		</dependency>
 
 		<!-- Logging -->
 		<dependency>
