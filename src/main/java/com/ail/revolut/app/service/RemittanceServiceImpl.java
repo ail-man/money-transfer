@@ -22,12 +22,11 @@ public class RemittanceServiceImpl implements RemittanceService {
 			tx = em.getTransaction();
 			tx.begin();
 
-			Remittance clone = remittance.clone();
-			em.persist(clone);
+			em.persist(remittance);
 
 			tx.commit();
 
-			number = clone.getNumber();
+			number = remittance.getNumber();
 
 			logger.info("Remittance saved with number = " + number);
 		} catch (RuntimeException e) {
