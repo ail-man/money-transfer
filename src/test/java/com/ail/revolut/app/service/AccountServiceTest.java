@@ -1,15 +1,15 @@
 package com.ail.revolut.app.service;
 
+import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
 
 public class AccountServiceTest {
 
@@ -18,80 +18,97 @@ public class AccountServiceTest {
 	private AccountService accountService = new AccountServiceImpl();
 	private Account account;
 
-	@Before
-	public void init() {
-		account = accountService.createAccount();
-	}
-
 	@Test
 	public void testCreateAccount() {
+		account = accountService.createAccount();
 		assertThat(account.getId(), notNullValue());
-		assertThat(account.getBalance(), equalTo(0L));
 	}
 
 	@Test
 	public void testGetBallance() {
-		Long ballance = accountService.getBalance(account.getId());
-		assertThat(ballance, is(notNullValue()));
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
+
+		assertThat(accountService.getBalance(id), is(notNullValue()));
+	}
+
+	@Test
+	public void testNewAccountShouldHaveZeroBalance() {
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
+
+		assertThat(accountService.getBalance(id), equalTo(0L));
 	}
 
 	@Test
 	public void testDesposit() {
-		Long balance;
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
 
-		accountService.deposit(account.getId(), 100L);
-		balance = accountService.getBalance(account.getId());
-		assertThat(balance, equalTo(100L));
+		assertThat(accountService.getBalance(id), equalTo(0L));
 
-		accountService.deposit(account.getId(), 23L);
-		balance = accountService.getBalance(account.getId());
-		assertThat(balance, equalTo(123L));
+		accountService.deposit(id, 100L);
+		assertThat(accountService.getBalance(id), equalTo(100L));
+
+		accountService.deposit(id, 23L);
+		assertThat(accountService.getBalance(id), equalTo(123L));
 	}
 
-//	@Test
-//	public void testWithdraw() throws Exception {
-//		assertThat(accountService.getBalance(account.getId()), equalTo(0L));
-//		accountService.deposit(1000L);
-//
-//		assertThat(accountService.getBalance(account.getId()), equalTo(1000L));
-//
-//		account.withdraw(10L);
-//		assertThat(account.getBalance(), equalTo(990L));
-//
-//		account.withdraw(123L);
-//		assertThat(account.getBalance(), equalTo(867L));
-//	}
-//
-//	@Test
-//	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-//		assertThat(accountService.getBalance(account.getId()), equalTo(0L));
-//		assertWithdrawFails(account.getId(), 5L);
-//
-//		account.deposit(30L);
-//		assertThat(account.getBalance(), equalTo(30L));
-//		assertWithdrawFails(account.getId(), 100L);
-//		assertThat(account.getBalance(), equalTo(30L));
-//
-//		account.withdraw(10L);
-//		assertThat(account.getBalance(), equalTo(20L));
-//		assertWithdrawFails(account.getId(), 30L);
-//		assertThat(account.getBalance(), equalTo(20L));
-//
-//		account.withdraw(20L);
-//		assertThat(account.getBalance(), equalTo(0L));
-//		assertWithdrawFails(account.getId(), 1L);
-//		assertThat(account.getBalance(), equalTo(0L));
-//	}
-//
-//	private void assertWithdrawFails(long id, long amount) {
-//		try {
-//			accountService.withdraw(id, amount);
-//			fail("Should not withdraw");
-//		} catch (Exception e) {
-//			assertThat(e, instanceOf(NotEnoughFundsException.class));
-//		}
-//	}
-//
+	@Test
+	public void testWithdraw() throws Exception {
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
+
+		assertThat(accountService.getBalance(id), equalTo(0L));
+
+		accountService.deposit(id, 1000L);
+		assertThat(accountService.getBalance(id), equalTo(1000L));
+
+		accountService.withdraw(id, 10L);
+		assertThat(accountService.getBalance(id), equalTo(990L));
+
+		accountService.withdraw(id, 123L);
+		assertThat(accountService.getBalance(id), equalTo(867L));
+	}
+
+	@Test
+	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
+		account = accountService.createAccount();
+		Long id = account.getId();
+		assertThat(id, notNullValue());
+
+		assertThat(accountService.getBalance(id), equalTo(0L));
+		assertWithdrawFails(id, 5L);
+
+		accountService.deposit(id, 30L);
+		assertThat(accountService.getBalance(id), equalTo(30L));
+		assertWithdrawFails(id, 100L);
+		assertThat(accountService.getBalance(id), equalTo(30L));
+
+		accountService.withdraw(id, 10L);
+		assertThat(accountService.getBalance(id), equalTo(20L));
+		assertWithdrawFails(id, 30L);
+		assertThat(accountService.getBalance(id), equalTo(20L));
+
+		accountService.withdraw(id, 20L);
+		assertThat(accountService.getBalance(id), equalTo(0L));
+		assertWithdrawFails(id, 1L);
+		assertThat(accountService.getBalance(id), equalTo(0L));
+	}
+
+	private void assertWithdrawFails(Long id, Long amount) {
+		try {
+			accountService.withdraw(id, amount);
+			fail("Should not withdraw");
+		} catch (Exception e) {
+			assertThat(e, instanceOf(NotEnoughFundsException.class));
+		}
+	}
+
 //	@Test(expected = RuntimeException.class)
 //	public void testAccountDepositOverflow() {
 //		accountService.deposit(account.getId(), Long.MAX_VALUE);

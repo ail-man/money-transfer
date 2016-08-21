@@ -1,5 +1,6 @@
 package com.ail.revolut.app.service;
 
+import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
@@ -76,6 +77,34 @@ public class AccountServiceImpl implements AccountService {
 				throw new RuntimeException("Overflow");
 			}
 			account.setBalance(balance);
+
+			tx.commit();
+		} catch (RuntimeException e) {
+			if (tx != null && tx.isActive()) tx.rollback();
+			logger.error(e.getMessage(), e);
+			throw e;
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public void withdraw(Long id, Long amount) throws NotEnoughFundsException {
+		EntityManager em = HibernateUtil.createEntityManager();
+
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+
+			Account account = em.find(Account.class, id);
+			Long balance = account.getBalance();
+			balance = balance - amount;
+			if (balance < 0) {
+				throw new NotEnoughFundsException();
+			}
+			account.setBalance(balance);
+
 			tx.commit();
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
