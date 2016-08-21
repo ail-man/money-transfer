@@ -8,6 +8,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>com.ail.revolut.app.model.User</class>
 		<class>com.ail.revolut.app.model.Account</class>
+		<class>com.ail.revolut.app.model.Remittance</class>
 		<properties>
 			<!-- Configuring JDBC properties -->
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
