@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 public class RemittanceServiceImpl implements RemittanceService {
-	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+	private static final Logger logger = LoggerFactory.getLogger(RemittanceServiceImpl.class);
 
 	@Override
 	public Long save(Remittance remittance) {

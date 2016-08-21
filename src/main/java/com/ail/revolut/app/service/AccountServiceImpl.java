@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 public class AccountServiceImpl implements AccountService {
-	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
 	@Override
 	public Long createAccount() {
