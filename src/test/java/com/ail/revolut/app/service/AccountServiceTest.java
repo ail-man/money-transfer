@@ -94,15 +94,6 @@ public class AccountServiceTest {
 		assertThat(accountService.getBalance(accountId), equalTo(0L));
 	}
 
-	private void assertWithdrawFails(Long id, Long amount) {
-		try {
-			accountService.withdraw(id, amount);
-			fail("Should not withdraw");
-		} catch (Exception e) {
-			assertThat(e, instanceOf(NotEnoughFundsException.class));
-		}
-	}
-
 	@Test(expected = RuntimeException.class)
 	public void testAccountDepositOverflow() {
 		accountId = accountService.createAccount();
@@ -114,6 +105,41 @@ public class AccountServiceTest {
 		assertThat(accountService.getBalance(accountId), equalTo(Long.MAX_VALUE));
 
 		accountService.deposit(accountId, 1L);
+	}
+
+	@Test
+	public void testAmountShouldBeOnlyPositive() {
+		accountId = accountService.createAccount();
+		assertThat(accountId, notNullValue());
+		assertThat(accountService.getBalance(accountId), equalTo(0L));
+
+		assertDepositFails(accountId, 0L);
+		assertWithdrawFails(accountId, 0L);
+
+		assertDepositFails(accountId, -100L);
+		assertWithdrawFails(accountId, -20L);
+	}
+
+	private void assertDepositFails(Long id, Long amount) {
+		try {
+			accountService.deposit(id, amount);
+			fail("Should not deposit");
+		} catch (Exception e) {
+			assertThat(e, instanceOf(IllegalArgumentException.class));
+		}
+	}
+
+	private void assertWithdrawFails(Long id, Long amount) {
+		try {
+			accountService.withdraw(id, amount);
+			fail("Should not withdraw");
+		} catch (Exception e) {
+			if (amount > 0) {
+				assertThat(e, instanceOf(NotEnoughFundsException.class));
+			} else {
+				assertThat(e, instanceOf(IllegalArgumentException.class));
+			}
+		}
 	}
 
 }

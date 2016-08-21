@@ -64,6 +64,10 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void deposit(Long id, Long amount) {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount must be positive");
+		}
+
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		EntityTransaction tx = null;
@@ -93,6 +97,10 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void withdraw(Long id, Long amount) throws NotEnoughFundsException {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount must be positive");
+		}
+
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		EntityTransaction tx = null;
