@@ -1,5 +1,6 @@
 package com.ail.revolut.app.service;
 
+import com.ail.revolut.app.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
@@ -18,7 +19,10 @@ public class TransferServiceImpl implements TransferService {
 	}
 
 	@Override
-	public void transfer(Long fromAccountId, Long toAccountId, Long amount) {
+	public void transfer(Long fromAccountId, Long toAccountId, Long amount) throws NotEnoughFundsException {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount must be positive");
+		}
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		EntityTransaction tx = null;
@@ -30,6 +34,9 @@ public class TransferServiceImpl implements TransferService {
 			Account fromAccount = em.find(Account.class, fromAccountId);
 			Long fromBallance = fromAccount.getBalance();
 			fromAccount.setBalance(fromBallance - amount);
+			if (fromBallance < amount) {
+				throw new NotEnoughFundsException();
+			}
 
 			Account toAccount = em.find(Account.class, toAccountId);
 			Long toBallance = toAccount.getBalance();
@@ -41,8 +48,6 @@ public class TransferServiceImpl implements TransferService {
 			tx.commit();
 
 			logger.info("Transfer completed");
-//		} catch (NotEnoughFundsException e) {
-//			logger.error("Not enought funds for transfer! Available funds = {}", fromAccountId);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);
