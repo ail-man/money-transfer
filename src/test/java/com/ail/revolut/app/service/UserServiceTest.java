@@ -25,7 +25,8 @@ public class UserServiceTest {
 	}
 
 	@Test
+	@Ignore
+	// TODO
 	public void testGetUser() {
-		// TODO
 	}
 }

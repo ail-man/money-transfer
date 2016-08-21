@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-public class RemittanceData {
+public class TransferData {
 	@Getter
 	@Setter
 	private Long from;

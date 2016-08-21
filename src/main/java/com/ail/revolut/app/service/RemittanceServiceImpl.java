@@ -1,6 +1,6 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.json.RemittanceData;
+import com.ail.revolut.app.json.TransferData;
 import com.ail.revolut.app.model.Remittance;
 import com.ail.revolut.app.db.HibernateContextHolder;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class RemittanceServiceImpl implements RemittanceService {
 	private static final Logger logger = LoggerFactory.getLogger(RemittanceServiceImpl.class);
 
 	@Override
-	public Long save(RemittanceData remittanceData) {
+	public Long save(TransferData transferData) {
 		Long number = null;
 
 		EntityManager em = HibernateContextHolder.createEntityManager();
@@ -25,9 +25,9 @@ public class RemittanceServiceImpl implements RemittanceService {
 			tx.begin();
 
 			Remittance remittance = new Remittance();
-			remittance.setFromId(remittanceData.getFrom());
-			remittance.setToId(remittanceData.getTo());
-			remittance.setAmount(remittanceData.getAmount());
+			remittance.setFromId(transferData.getFrom());
+			remittance.setToId(transferData.getTo());
+			remittance.setAmount(transferData.getAmount());
 			remittance.setPerformed(new Date());
 			em.persist(remittance);
 

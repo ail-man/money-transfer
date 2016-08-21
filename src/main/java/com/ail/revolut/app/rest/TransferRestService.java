@@ -1,8 +1,11 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.json.RemittanceData;
 import com.ail.revolut.app.json.ResponseData;
-import com.ail.revolut.app.service.*;
+import com.ail.revolut.app.json.TransferData;
+import com.ail.revolut.app.service.RemittanceService;
+import com.ail.revolut.app.service.RemittanceServiceImpl;
+import com.ail.revolut.app.service.TransferService;
+import com.ail.revolut.app.service.TransferServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +19,10 @@ import javax.ws.rs.core.MediaType;
 public class TransferRestService {
 	private static final Logger logger = LoggerFactory.getLogger(TransferRestService.class);
 
-
-	private AccountService accountService;
 	private TransferService transferService;
 	private RemittanceService remittanceService;
 
 	public TransferRestService() {
-		accountService = new AccountServiceImpl();
 		transferService = new TransferServiceImpl();
 		remittanceService = new RemittanceServiceImpl();
 	}
@@ -31,13 +31,13 @@ public class TransferRestService {
 	@Path("/perform")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseData transfer(RemittanceData remittanceData) {
-		logger.debug(remittanceData.toString());
+	public ResponseData transfer(TransferData transferData) {
+		logger.debug(transferData.toString());
 
 		ResponseData responseData = new ResponseData();
 		try {
-			transferService.transfer(remittanceData.getFrom(), remittanceData.getTo(), remittanceData.getAmount());
-			responseData.setId(remittanceService.save(remittanceData));
+			transferService.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
+			responseData.setId(remittanceService.save(transferData));
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
 			logger.debug(msg, e);
