@@ -13,8 +13,8 @@ public class AccountServiceImpl implements AccountService {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	@Override
-	public Account createAccount() {
-		Account result = null;
+	public Long createAccount() {
+		Long accountId = null;
 
 		EntityManager em = HibernateUtil.createEntityManager();
 
@@ -23,14 +23,14 @@ public class AccountServiceImpl implements AccountService {
 			tx = em.getTransaction();
 			tx.begin();
 
-			result = new Account();
-			result.setBalance(0L);
+			Account account = new Account();
+			account.setBalance(0L);
 
-			em.persist(result);
-
+			em.persist(account);
 			tx.commit();
 
-			logger.info("Account created with id = " + result.getId());
+			accountId = account.getId();
+			logger.info("Account created with id = " + accountId);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
 			logger.error(e.getMessage(), e);
@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 			em.close();
 		}
 
-		return result;
+		return accountId;
 	}
 
 	@Override
