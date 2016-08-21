@@ -4,7 +4,7 @@ import com.ail.revolut.app.NotEnoughFundsException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.fail;
@@ -44,7 +44,7 @@ public class TransferServiceTest {
 	}
 
 	@Test
-	public void testTransferAmountMustBeNotGreaterThatFromBallance() {
+	public void testTransferAmountMustBeNotGreaterThanFromBallance() {
 		assertThat(accountService.getBalance(fromId), equalTo(0L));
 		assertThat(accountService.getBalance(toId), equalTo(0L));
 		assertTransferFails(fromId, toId, 10L);
@@ -57,6 +57,27 @@ public class TransferServiceTest {
 		assertTransferFails(fromId, toId, 1000L);
 		assertThat(accountService.getBalance(fromId), equalTo(100L));
 		assertThat(accountService.getBalance(toId), equalTo(0L));
+	}
+
+	@Test
+	public void testTransferToBalanceOverflow() throws Exception {
+		assertThat(accountService.getBalance(fromId), equalTo(0L));
+		assertThat(accountService.getBalance(toId), equalTo(0L));
+
+		accountService.deposit(fromId, 1L);
+		accountService.deposit(toId, Long.MAX_VALUE);
+		assertThat(accountService.getBalance(fromId), equalTo(1L));
+		assertThat(accountService.getBalance(toId), equalTo(Long.MAX_VALUE));
+
+		try {
+			transferService.transfer(fromId, toId, 1L);
+			fail("Should not transfer");
+		} catch (RuntimeException e) {
+			assertThat(e.getMessage(), is(notNullValue()));
+		}
+
+		assertThat(accountService.getBalance(fromId), equalTo(1L));
+		assertThat(accountService.getBalance(toId), equalTo(Long.MAX_VALUE));
 	}
 
 	@Test

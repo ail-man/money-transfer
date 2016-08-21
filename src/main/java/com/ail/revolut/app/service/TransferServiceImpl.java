@@ -40,7 +40,11 @@ public class TransferServiceImpl implements TransferService {
 
 			Account toAccount = em.find(Account.class, toAccountId);
 			Long toBallance = toAccount.getBalance();
-			toAccount.setBalance(toBallance + amount);
+			toBallance = toBallance + amount;
+			if (toBallance < 0) {
+				throw new RuntimeException("Overflow");
+			}
+			toAccount.setBalance(toBallance);
 
 			em.merge(fromAccount);
 			em.merge(toAccount);
