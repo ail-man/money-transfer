@@ -99,10 +99,10 @@ public class AccountServiceImpl implements AccountService {
 
 			Account account = em.find(Account.class, id);
 			Long balance = account.getBalance();
-			balance = balance - amount;
-			if (balance < 0) {
+			if (amount > balance) {
 				throw new NotEnoughFundsException();
 			}
+			balance = balance - amount;
 			account.setBalance(balance);
 
 			tx.commit();
