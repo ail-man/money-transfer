@@ -1,7 +1,6 @@
 package com.ail.revolut.app.model;
 
 
-import com.ail.revolut.app.api.IUser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +12,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @ToString(exclude = "accounts")
-public class User implements Serializable, IUser {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

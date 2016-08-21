@@ -1,6 +1,5 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.api.IAccount;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
@@ -13,8 +12,8 @@ public class AccountServiceImpl implements AccountService {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	@Override
-	public IAccount createAccount() {
-		IAccount result = null;
+	public Account createAccount() {
+		Account result = null;
 
 		EntityManager em = HibernateUtil.createEntityManager();
 
@@ -42,8 +41,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public IAccount findAccount(Long id) {
-		IAccount result;
+	public Account findAccount(Long id) {
+		Account result;
 
 		EntityManager em = HibernateUtil.createEntityManager();
 

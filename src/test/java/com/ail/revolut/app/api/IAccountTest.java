@@ -1,6 +1,7 @@
 package com.ail.revolut.app.api;
 
 import com.ail.revolut.app.NotEnoughFundsException;
+import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.service.AccountService;
 import com.ail.revolut.app.service.AccountServiceImpl;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import static org.junit.Assert.fail;
 public class IAccountTest {
 	private static final Logger logger = LoggerFactory.getLogger(IAccountTest.class);
 
-	private IAccount account;
+	private Account account;
 
 	@Before
 	public void init() {
@@ -73,7 +74,7 @@ public class IAccountTest {
 		assertThat(account.getBalance(), equalTo(0L));
 	}
 
-	private void assertWithdrawFails(IAccount account, long amount) {
+	private void assertWithdrawFails(Account account, long amount) {
 		try {
 			account.withdraw(amount);
 			fail("Should not withdraw");

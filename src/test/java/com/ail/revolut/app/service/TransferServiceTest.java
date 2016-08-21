@@ -1,6 +1,6 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.api.IAccount;
+import com.ail.revolut.app.model.Account;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,8 +9,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class TransferServiceTest {
 
-	private IAccount from;
-	private IAccount to;
+	private Account from;
+	private Account to;
 
 	@Before
 	public void init() {

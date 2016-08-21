@@ -1,7 +1,7 @@
 package com.ail.revolut.app.service;
 
 import com.ail.revolut.app.NotEnoughFundsException;
-import com.ail.revolut.app.api.IAccount;
+import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.utils.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ public class TransferServiceImpl implements TransferService {
 	private static Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
 	@Override
-	public void transfer(IAccount from, IAccount to, long amount) {
+	public void transfer(Account from, Account to, long amount) {
 		EntityManager em = HibernateUtil.createEntityManager();
 
 		EntityTransaction tx = null;

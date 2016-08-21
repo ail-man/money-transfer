@@ -1,6 +1,6 @@
 package com.ail.revolut.app.service;
 
-import com.ail.revolut.app.api.IAccount;
+import com.ail.revolut.app.model.Account;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void testCreateAccount() {
-		IAccount newAccount = accountService.createAccount();
+		Account newAccount = accountService.createAccount();
 
 		assertThat(newAccount, notNullValue());
 		assertThat(newAccount.getId(), notNullValue());
@@ -27,8 +27,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void testFindAccount() {
-		IAccount account = accountService.createAccount();
-		IAccount found = accountService.findAccount(account.getId());
+		Account account = accountService.createAccount();
+		Account found = accountService.findAccount(account.getId());
 
 		assertThat(found, is(notNullValue()));
 		assertThat(found.getId(), is(account.getId()));
