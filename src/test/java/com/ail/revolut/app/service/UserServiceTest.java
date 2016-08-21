@@ -10,8 +10,6 @@ import static org.mockito.Mockito.mock;
 
 public class UserServiceTest {
 
-	private UserService userService = new UserServiceImpl();
-
 	@Test
 	@Ignore
 	// TODO
