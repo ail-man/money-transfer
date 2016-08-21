@@ -23,12 +23,12 @@ public class Remittance implements Serializable, Cloneable {
 	@Getter
 	@Setter
 	@Column(nullable = false)
-	private Long from;
+	private Long fromId;
 
 	@Getter
 	@Setter
 	@Column(nullable = false)
-	private Long to;
+	private Long toId;
 
 	@Getter
 	@Setter
@@ -38,13 +38,7 @@ public class Remittance implements Serializable, Cloneable {
 	@Getter
 	@Setter
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date performed;
-
-	@PrePersist
-	protected void onCreate() {
-		performed = new Date();
-	}
 
 	@Override
 	public Remittance clone() {
