@@ -37,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
 		} finally {
 			em.close();
 		}
+
 		return result;
 	}
 
@@ -57,5 +58,10 @@ public class AccountServiceImpl implements AccountService {
 		}
 
 		return balance;
+	}
+
+	@Override
+	public void deposit(Long id, Long amount) {
+
 	}
 }

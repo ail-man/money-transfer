@@ -8,4 +8,6 @@ public interface AccountService {
 	Account createAccount();
 
 	Long getBalance(Long id);
+
+	void deposit(Long id, Long amount);
 }

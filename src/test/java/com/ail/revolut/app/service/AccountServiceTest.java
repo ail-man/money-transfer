@@ -10,7 +10,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
 
 public class AccountServiceTest {
 
@@ -36,16 +35,16 @@ public class AccountServiceTest {
 		Long ballance = accountService.getBalance(account.getId());
 		assertThat(ballance, is(notNullValue()));
 	}
-//
-//	@Test
-//	public void testDesposit() {
-//		accountService.deposit(account.getId(), 100L);
-//		assertThat(account.getBalance(), equalTo(100L));
-//
-//		accountService.deposit(23L);
-//		assertThat(account.getBalance(), equalTo(123L));
-//	}
-//
+
+	@Test
+	public void testDesposit() {
+		accountService.deposit(account.getId(), 100L);
+		assertThat(account.getBalance(), equalTo(100L));
+
+		accountService.deposit(account.getId(), 23L);
+		assertThat(account.getBalance(), equalTo(123L));
+	}
+
 //	@Test
 //	public void testWithdraw() throws Exception {
 //		assertThat(accountService.getBalance(account.getId()), equalTo(0L));
