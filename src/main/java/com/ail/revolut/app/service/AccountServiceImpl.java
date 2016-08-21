@@ -42,8 +42,20 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account findAccount(Long id) {
+	public IAccount findAccount(Long id) {
+		IAccount result;
+
 		EntityManager em = HibernateUtil.createEntityManager();
-		return em.find(Account.class, id);
+
+		logger.info("Find account with id = " + id);
+		result = em.find(Account.class, id);
+
+		if (result == null) {
+			logger.info("Account not found!");
+		} else {
+			logger.info("Account found: " + result);
+		}
+
+		return result;
 	}
 }
