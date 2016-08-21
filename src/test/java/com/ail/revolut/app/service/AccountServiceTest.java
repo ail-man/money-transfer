@@ -94,7 +94,7 @@ public class AccountServiceTest {
 		assertThat(accountService.getBalance(accountId), equalTo(0L));
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void testAccountDepositOverflow() {
 		accountId = accountService.createAccount();
 		assertThat(accountId, notNullValue());
@@ -104,8 +104,13 @@ public class AccountServiceTest {
 		accountService.deposit(accountId, Long.MAX_VALUE);
 		assertThat(accountService.getBalance(accountId), equalTo(Long.MAX_VALUE));
 
-		accountService.deposit(accountId, 1L);
-		// TODO test if deposit the same
+		try {
+			accountService.deposit(accountId, 1L);
+			fail("Should not transfer");
+		} catch (RuntimeException e) {
+			assertThat(e.getMessage(), is(notNullValue()));
+		}
+		assertThat(accountService.getBalance(accountId), equalTo(Long.MAX_VALUE));
 	}
 
 	@Test
