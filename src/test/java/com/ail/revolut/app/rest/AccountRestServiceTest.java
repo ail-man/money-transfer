@@ -65,19 +65,67 @@ public class AccountRestServiceTest {
 	}
 
 	@Test
-	public void testIncorrectDeposit() {
+	public void testWithdraw() {
 		Long accountId = createAccount();
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
-		assertDepositFalse(accountId, 0L);
+		Long deposit = 100L;
+		assertDepositSuccess(accountId, deposit);
+		assertAccountBalanceEqualsTo(accountId, deposit);
+
+		Long withdrawAmount = 13L;
+		assertWithdrawSuccess(accountId, withdrawAmount);
+		assertAccountBalanceEqualsTo(accountId, deposit - withdrawAmount);
+
+		Long newWithdrawAmount = 25L;
+		assertWithdrawSuccess(accountId, newWithdrawAmount);
+
+		assertWithdrawSuccess(accountId, deposit - withdrawAmount - newWithdrawAmount);
+	}
+
+	@Test
+	public void testAmountMustBeOnlyPositive() {
+		Long accountId = createAccount();
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
-		assertDepositFalse(accountId, -1L);
+		Long zeroAmount = 0L;
+		assertDepositFails(accountId, zeroAmount);
+		assertAccountBalanceEqualsTo(accountId, zeroAmount);
+
+		Long negativeAmount = -10L;
+
+		assertDepositFails(accountId, negativeAmount);
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		assertWithdrawFails(accountId, negativeAmount);
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		Long successDepositAmount = 100L;
+		assertDepositSuccess(accountId, successDepositAmount);
+		assertAccountBalanceEqualsTo(accountId, successDepositAmount);
+
+		assertDepositFails(accountId, negativeAmount);
+		assertAccountBalanceEqualsTo(accountId, successDepositAmount);
+
+		assertWithdrawFails(accountId, negativeAmount);
+		assertAccountBalanceEqualsTo(accountId, successDepositAmount);
+	}
+
+	@Test
+	public void testWithdrawMustNotBeGreaterThanDeposit() {
+		Long accountId = createAccount();
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		assertWithdrawFails(accountId, 0L);
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		Long negativeDepositAmount = -10L;
+		assertDepositFails(accountId, negativeDepositAmount);
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
 		assertDepositSuccess(accountId, 9L);
 		assertAccountBalanceEqualsTo(accountId, 9L);
-		assertDepositFalse(accountId, -10L);
+		assertDepositFails(accountId, negativeDepositAmount);
 	}
 
 	private void logResponseData(ResponseData responseData) {
@@ -113,8 +161,24 @@ public class AccountRestServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	private void assertDepositFalse(Long accountId, Long depositAmount) {
+	private void assertDepositFails(Long accountId, Long depositAmount) {
 		ResponseData responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), notNullValue());
+	}
+
+	private void assertWithdrawSuccess(Long accountId, Long withdrawAmount) {
+		ResponseData responseData = target.path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	private void assertWithdrawFails(Long accountId, Long withdrawAmount) {
+		ResponseData responseData = target.path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());

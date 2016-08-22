@@ -110,7 +110,7 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	public void testAmountShouldBeOnlyPositive() {
+	public void testAmountMustBeOnlyPositive() {
 		accountId = accountService.createAccount();
 		assertThat(accountId, notNullValue());
 		assertThat(accountService.getBalance(accountId), equalTo(0L));
