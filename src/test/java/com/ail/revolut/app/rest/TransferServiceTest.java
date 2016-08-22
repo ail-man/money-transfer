@@ -28,35 +28,35 @@ public class TransferServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testTransfer() throws Exception {
-		assertDepositSuccess(fromId, 100L);
+		assertDepositSuccess(fromId, 200L);
 
-		assertAccountBalanceEqualsTo(fromId, 100L);
+		assertAccountBalanceEqualsTo(fromId, 200L);
 		assertAccountBalanceEqualsTo(toId, 0L);
 
 		assertTransferSuccess(fromId, toId, 10L);
-		assertAccountBalanceEqualsTo(fromId, 90L);
+		assertAccountBalanceEqualsTo(fromId, 190L);
 		assertAccountBalanceEqualsTo(toId, 10L);
 
 		assertTransferSuccess(fromId, toId, 20L);
-		assertAccountBalanceEqualsTo(fromId, 70L);
+		assertAccountBalanceEqualsTo(fromId, 170L);
 		assertAccountBalanceEqualsTo(toId, 30L);
 
 		assertTransferSuccess(fromId, toId, 70L);
-		assertAccountBalanceEqualsTo(fromId, 0L);
+		assertAccountBalanceEqualsTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(toId, 100L);
 	}
 
 	@Test
 	public void testTransferAmountMustBeNotGreaterThanFromBallance() throws Exception {
-		assertTransferFails(fromId, toId, 10L);
+		assertTransferFails(fromId, toId, 20L);
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
 
-		assertDepositSuccess(fromId, 100L);
-		assertAccountBalanceEqualsTo(fromId, 100L);
-		assertAccountBalanceEqualsTo(toId, 0L);
+		assertDepositSuccess(fromId, 200L);
+		assertAccountBalanceEqualsTo(fromId, 200L);
+
 		assertTransferFails(fromId, toId, 1000L);
-		assertAccountBalanceEqualsTo(fromId, 100L);
+		assertAccountBalanceEqualsTo(fromId, 200L);
 		assertAccountBalanceEqualsTo(toId, 0L);
 	}
 

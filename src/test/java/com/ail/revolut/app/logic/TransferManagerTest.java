@@ -53,7 +53,7 @@ public class TransferManagerTest {
 
 		accountManager.deposit(fromId, 100L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
-		assertAccountBalanceEqualsTo(toId, 0L);
+
 		assertTransferFails(fromId, toId, 1000L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(toId, 0L);
