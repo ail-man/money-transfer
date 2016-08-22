@@ -36,12 +36,44 @@ class BaseServiceTest {
 		server.shutdown();
 	}
 
-	WebTarget getTarget() {
-		return this.target;
+	private WebTarget getTarget() {
+		return target;
 	}
 
-	void logResponseData(ResponseData responseData) {
+	private void logResponseData(ResponseData responseData) {
 		logger.info(responseData.toString());
+	}
+
+	void assertDepositSuccess(Long accountId, Long depositAmount) {
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), notNullValue());
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	void assertDepositFails(Long accountId, Long depositAmount) {
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), notNullValue());
+	}
+
+	void assertWithdrawSuccess(Long accountId, Long withdrawAmount) {
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), notNullValue());
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	void assertWithdrawFails(Long accountId, Long withdrawAmount) {
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), notNullValue());
 	}
 
 	Long assertCreateAccount() {
@@ -64,4 +96,5 @@ class BaseServiceTest {
 		assertThat(accountBalance, equalTo(balanceAmount));
 		assertThat(responseData.getMessage(), nullValue());
 	}
+
 }

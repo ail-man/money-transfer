@@ -1,32 +1,34 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.json.ResponseData;
+import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 
 public class AccountServiceTest extends BaseServiceTest {
 
+	private Long accountId;
+
+	@Before
+	public void init() throws Exception {
+		accountId = assertCreateAccount();
+	}
+
 	@Test
-	public void testCreateAccount() {
-		Long accountId = assertCreateAccount();
+	public void testCreateAccount() throws Exception {
 		Long nextAccountId = assertCreateAccount();
 		assertThat(nextAccountId, equalTo(++accountId));
 	}
 
 	@Test
-	public void testGetBallance() {
-		Long accountId = assertCreateAccount();
+	public void testGetBallance() throws Exception {
 		assertAccountBalanceEqualsTo(accountId, 0L);
 	}
 
 	@Test
-	public void testDeposit() {
-		Long accountId = assertCreateAccount();
+	public void testDeposit() throws Exception {
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
 		Long depositAmount = 123L;
@@ -39,8 +41,7 @@ public class AccountServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testWithdraw() {
-		Long accountId = assertCreateAccount();
+	public void testWithdraw() throws Exception {
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
 		Long deposit = 100L;
@@ -58,8 +59,7 @@ public class AccountServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testAmountMustBePositiveOnly() {
-		Long accountId = assertCreateAccount();
+	public void testAmountMustBePositiveOnly() throws Exception {
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
 		Long zeroAmount = 0L;
@@ -86,8 +86,7 @@ public class AccountServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testWithdrawMustNotBeGreaterThanDeposit() {
-		Long accountId = assertCreateAccount();
+	public void testWithdrawMustNotBeGreaterThanDeposit() throws Exception {
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
 		assertWithdrawFails(accountId, 0L);
@@ -102,38 +101,6 @@ public class AccountServiceTest extends BaseServiceTest {
 
 		assertWithdrawFails(accountId, withdrawAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount);
-	}
-
-	private void assertDepositSuccess(Long accountId, Long depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), notNullValue());
-		assertThat(responseData.getMessage(), nullValue());
-	}
-
-	private void assertDepositFails(Long accountId, Long depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), nullValue());
-		assertThat(responseData.getMessage(), notNullValue());
-	}
-
-	private void assertWithdrawSuccess(Long accountId, Long withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), notNullValue());
-		assertThat(responseData.getMessage(), nullValue());
-	}
-
-	private void assertWithdrawFails(Long accountId, Long withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), nullValue());
-		assertThat(responseData.getMessage(), notNullValue());
 	}
 
 }
