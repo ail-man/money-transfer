@@ -2,6 +2,7 @@ package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.Main;
 import com.ail.revolut.app.json.ResponseData;
+import com.ail.revolut.app.model.Account;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -11,10 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class AccountRestServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(AccountRestServiceTest.class);
@@ -36,18 +39,36 @@ public class AccountRestServiceTest {
 
 	@Test
 	public void testCreate() {
-		ResponseData responseData = target.path("/account/create").request().get(ResponseData.class);
+		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		logger.info(responseData.toString());
 
-		logger.debug(responseData.toString());
+		Long assertAccountId = responseData.getId();
+		assertThat(assertAccountId, notNullValue());
+		assertThat(responseData.getMessage(), nullValue());
 
-		long assertAccountId = 1L;
-		assertThat(responseData.getId(), equalTo(assertAccountId));
-		assertThat(responseData.getMessage(), equalTo(null));
-
-		responseData = target.path("/account/create").request().get(ResponseData.class);
+		responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		logger.info(responseData.toString());
 
 		assertThat(responseData.getId(), equalTo(++assertAccountId));
-		assertThat(responseData.getMessage(), equalTo(null));
+		assertThat(responseData.getMessage(), nullValue());
 	}
+
+	@Test
+	public void testGetBallance() {
+		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		logger.info(responseData.toString());
+
+		Long accountId = responseData.getId();
+
+		assertThat(accountId, notNullValue());
+		assertThat(responseData.getMessage(), nullValue());
+
+		responseData = target.path("/account/" + responseData.getId() + "/balance").request().get(ResponseData.class);
+		logger.info(responseData.toString());
+
+		assertThat(responseData.getId(), equalTo(0L));
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
 }
 

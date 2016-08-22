@@ -6,9 +6,7 @@ import com.ail.revolut.app.service.AccountServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/account")
@@ -23,22 +21,34 @@ public class AccountRestService {
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getIt() {
-		return "Got it!";
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/balance")
+	public ResponseData getBalance(@PathParam("id") String id) {
+		logger.info("Balance requested for account value=" + id);
+
+		ResponseData responseData = new ResponseData();
+		try {
+			responseData.setId(accountService.getBalance(Long.parseLong(id)));
+		} catch (Exception e) {
+			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
+			logger.debug(msg, e);
+			responseData.setMessage(msg);
+		}
+
+		return responseData;
 	}
 
-	@GET
-	@Path("/create")
+	@PUT
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/create")
 	public ResponseData createAccount() {
-		logger.debug("Create account requested");
+		logger.info("Create account requested");
 
 		ResponseData responseData = new ResponseData();
 		try {
 			responseData.setId(accountService.createAccount());
 		} catch (Exception e) {
-			String msg = "Something wrong: " + e.getMessage();
+			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
 			responseData.setMessage(msg);
 		}
