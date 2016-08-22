@@ -11,7 +11,7 @@ import java.util.List;
 
 @Table(name = "users")
 @Entity
-@ToString(exclude = "accounts")
+@ToString
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;

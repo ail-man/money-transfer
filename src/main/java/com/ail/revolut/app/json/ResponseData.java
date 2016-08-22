@@ -1,15 +1,9 @@
 package com.ail.revolut.app.json;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@ToString
+@Data
 public class ResponseData {
-	@Getter
-	@Setter
 	private Long id;
-	@Getter
-	@Setter
 	private String message;
 }
