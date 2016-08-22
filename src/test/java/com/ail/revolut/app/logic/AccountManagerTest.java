@@ -1,6 +1,7 @@
 package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -13,92 +14,71 @@ public class AccountManagerTest {
 	private AccountManager accountManager = new AccountManagerImpl();
 	private Long accountId;
 
+	@Before
+	public void init() {
+		accountId = accountManager.createAccount();
+	}
+
 	@Test
 	public void testCreateAccount() throws Exception {
-		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 	}
 
 	@Test
 	public void testGetBallance() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), is(notNullValue()));
+		assertThat(getBalance(), is(notNullValue()));
 	}
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
+		assertAccountBalanceEqualsTo(0L);
 	}
 
 	@Test
 	public void testDesposit() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
-
 		accountManager.deposit(accountId, 100L);
-		assertThat(accountManager.getBalance(accountId), equalTo(100L));
+		assertAccountBalanceEqualsTo(100L);
 
 		accountManager.deposit(accountId, 23L);
-		assertThat(accountManager.getBalance(accountId), equalTo(123L));
+		assertAccountBalanceEqualsTo(123L);
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
-
 		accountManager.deposit(accountId, 1000L);
-		assertThat(accountManager.getBalance(accountId), equalTo(1000L));
+		assertAccountBalanceEqualsTo(1000L);
 
 		accountManager.withdraw(accountId, 10L);
-		assertThat(accountManager.getBalance(accountId), equalTo(990L));
+		assertAccountBalanceEqualsTo(990L);
 
 		accountManager.withdraw(accountId, 123L);
-		assertThat(accountManager.getBalance(accountId), equalTo(867L));
+		assertAccountBalanceEqualsTo(867L);
 	}
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
 		assertWithdrawFails(accountId, 5L);
 
 		accountManager.deposit(accountId, 30L);
-		assertThat(accountManager.getBalance(accountId), equalTo(30L));
+		assertAccountBalanceEqualsTo(30L);
 		assertWithdrawFails(accountId, 100L);
-		assertThat(accountManager.getBalance(accountId), equalTo(30L));
+		assertAccountBalanceEqualsTo(30L);
 
 		accountManager.withdraw(accountId, 10L);
-		assertThat(accountManager.getBalance(accountId), equalTo(20L));
+		assertAccountBalanceEqualsTo(20L);
 		assertWithdrawFails(accountId, 30L);
-		assertThat(accountManager.getBalance(accountId), equalTo(20L));
+		assertAccountBalanceEqualsTo(20L);
 
 		accountManager.withdraw(accountId, 20L);
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
+		assertAccountBalanceEqualsTo(0L);
 		assertWithdrawFails(accountId, 1L);
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
+		assertAccountBalanceEqualsTo(0L);
 	}
 
 	@Test
 	public void testAccountDepositOverflow() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
-
 		accountManager.deposit(accountId, Long.MAX_VALUE);
-		assertThat(accountManager.getBalance(accountId), equalTo(Long.MAX_VALUE));
+		assertAccountBalanceEqualsTo(Long.MAX_VALUE);
 
 		try {
 			accountManager.deposit(accountId, 1L);
@@ -106,20 +86,24 @@ public class AccountManagerTest {
 		} catch (RuntimeException e) {
 			assertThat(e.getMessage(), is(notNullValue()));
 		}
-		assertThat(accountManager.getBalance(accountId), equalTo(Long.MAX_VALUE));
+		assertAccountBalanceEqualsTo(Long.MAX_VALUE);
 	}
 
 	@Test
 	public void testAmountMustBePositiveOnly() throws Exception {
-		accountId = accountManager.createAccount();
-		assertThat(accountId, notNullValue());
-		assertThat(accountManager.getBalance(accountId), equalTo(0L));
-
 		assertDepositFails(accountId, 0L);
 		assertWithdrawFails(accountId, 0L);
 
 		assertDepositFails(accountId, -100L);
 		assertWithdrawFails(accountId, -20L);
+	}
+
+	private Long getBalance() {
+		return accountManager.getBalance(accountId);
+	}
+
+	private void assertAccountBalanceEqualsTo(Long balance) {
+		assertThat(accountManager.getBalance(accountId), equalTo(balance));
 	}
 
 	private void assertDepositFails(Long id, Long amount) {
