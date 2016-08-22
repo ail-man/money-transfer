@@ -1,4 +1,4 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-public class TransferServiceImpl implements TransferService {
-	private static Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
+public class TransferManagerImpl implements TransferManager {
+	private static Logger logger = LoggerFactory.getLogger(TransferManagerImpl.class);
 
 	@Override
 	public void transfer(Long fromAccountId, Long toAccountId, Long amount) throws NotEnoughFundsException {

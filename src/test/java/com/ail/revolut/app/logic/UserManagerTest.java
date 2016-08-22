@@ -1,4 +1,4 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.model.User;
 import org.junit.Ignore;
@@ -8,17 +8,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 
-public class UserServiceTest {
+public class UserManagerTest {
 
 	@Test
 	@Ignore
 	// TODO
 	public void testCreateUser() {
-		UserService userService = mock(UserService.class);
+		UserManager userManager = mock(UserManager.class);
 
-		User user = userService.createUser("UserName");
+		User user = userManager.createUser("UserName");
 
-		User found = userService.getUser(user.getId());
+		User found = userManager.getUser(user.getId());
 
 		assertThat(found.getId(), equalTo(user.getId()));
 		assertThat(found.getName(), equalTo(user.getName()));

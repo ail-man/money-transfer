@@ -1,4 +1,4 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.json.TransferData;
 import com.ail.revolut.app.model.Remittance;
@@ -10,8 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.Date;
 
-public class RemittanceServiceImpl implements RemittanceService {
-	private static final Logger logger = LoggerFactory.getLogger(RemittanceServiceImpl.class);
+public class RemittanceManagerImpl implements RemittanceManager {
+	private static final Logger logger = LoggerFactory.getLogger(RemittanceManagerImpl.class);
 
 	@Override
 	public Long save(TransferData transferData) {

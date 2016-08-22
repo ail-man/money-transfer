@@ -1,8 +1,8 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
-public interface TransferService {
+public interface TransferManager {
 
 	void transfer(Long fromAccountId, Long toAccountId, Long amount) throws NotEnoughFundsException;
 }

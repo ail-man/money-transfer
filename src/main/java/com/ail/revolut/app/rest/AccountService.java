@@ -1,8 +1,8 @@
 package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.json.ResponseData;
-import com.ail.revolut.app.service.AccountService;
-import com.ail.revolut.app.service.AccountServiceImpl;
+import com.ail.revolut.app.logic.AccountManager;
+import com.ail.revolut.app.logic.AccountManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,14 +10,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/account")
-public class AccountRestService {
+public class AccountService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AccountRestService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
-	private AccountService accountService;
+	private AccountManager accountManager;
 
-	public AccountRestService() {
-		accountService = new AccountServiceImpl();
+	public AccountService() {
+		accountManager = new AccountManagerImpl();
 	}
 
 	@PUT
@@ -28,7 +28,7 @@ public class AccountRestService {
 
 		ResponseData responseData = new ResponseData();
 		try {
-			responseData.setValue(accountService.createAccount().toString());
+			responseData.setValue(accountManager.createAccount().toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
@@ -46,7 +46,7 @@ public class AccountRestService {
 
 		ResponseData responseData = new ResponseData();
 		try {
-			responseData.setValue(accountService.getBalance(Long.parseLong(accountId)).toString());
+			responseData.setValue(accountManager.getBalance(Long.parseLong(accountId)).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
@@ -64,7 +64,7 @@ public class AccountRestService {
 
 		ResponseData responseData = new ResponseData();
 		try {
-			accountService.deposit(accountId, amount);
+			accountManager.deposit(accountId, amount);
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
@@ -82,7 +82,7 @@ public class AccountRestService {
 
 		ResponseData responseData = new ResponseData();
 		try {
-			accountService.withdraw(accountId, amount);
+			accountManager.withdraw(accountId, amount);
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);

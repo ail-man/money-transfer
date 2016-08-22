@@ -1,8 +1,8 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.json.TransferData;
 
-public interface RemittanceService {
+public interface RemittanceManager {
 
 	Long save(TransferData transferData);
 }

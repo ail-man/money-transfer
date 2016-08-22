@@ -1,4 +1,4 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-public class AccountServiceImpl implements AccountService {
-	private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+public class AccountManagerImpl implements AccountManager {
+	private static final Logger logger = LoggerFactory.getLogger(AccountManagerImpl.class);
 
 	@Override
 	public Long createAccount() {

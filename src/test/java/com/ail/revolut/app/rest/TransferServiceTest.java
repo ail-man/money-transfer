@@ -15,8 +15,8 @@ import javax.ws.rs.client.WebTarget;
 
 import static org.junit.Assert.assertEquals;
 
-public class TransferRestServiceTest {
-	private static final Logger logger = LoggerFactory.getLogger(TransferRestServiceTest.class);
+public class TransferServiceTest {
+	private static final Logger logger = LoggerFactory.getLogger(TransferServiceTest.class);
 
 	private HttpServer server;
 	private WebTarget target;

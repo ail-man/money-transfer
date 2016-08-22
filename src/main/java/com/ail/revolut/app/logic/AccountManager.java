@@ -1,8 +1,8 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
-public interface AccountService {
+public interface AccountManager {
 
 	Long createAccount();
 

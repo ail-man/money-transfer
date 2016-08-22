@@ -2,10 +2,10 @@ package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.json.ResponseData;
 import com.ail.revolut.app.json.TransferData;
-import com.ail.revolut.app.service.RemittanceService;
-import com.ail.revolut.app.service.RemittanceServiceImpl;
-import com.ail.revolut.app.service.TransferService;
-import com.ail.revolut.app.service.TransferServiceImpl;
+import com.ail.revolut.app.logic.RemittanceManager;
+import com.ail.revolut.app.logic.RemittanceManagerImpl;
+import com.ail.revolut.app.logic.TransferManager;
+import com.ail.revolut.app.logic.TransferManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,15 +16,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/transfer")
-public class TransferRestService {
-	private static final Logger logger = LoggerFactory.getLogger(TransferRestService.class);
+public class TransferService {
+	private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
 
-	private TransferService transferService;
-	private RemittanceService remittanceService;
+	private TransferManager transferManager;
+	private RemittanceManager remittanceManager;
 
-	public TransferRestService() {
-		transferService = new TransferServiceImpl();
-		remittanceService = new RemittanceServiceImpl();
+	public TransferService() {
+		transferManager = new TransferManagerImpl();
+		remittanceManager = new RemittanceManagerImpl();
 	}
 
 	@POST
@@ -36,8 +36,8 @@ public class TransferRestService {
 
 		ResponseData responseData = new ResponseData();
 		try {
-			transferService.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
-			responseData.setValue(remittanceService.save(transferData).toString());
+			transferManager.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
+			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
 			logger.debug(msg, e);

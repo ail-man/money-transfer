@@ -19,8 +19,8 @@ import javax.ws.rs.core.MediaType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class AccountRestServiceTest {
-	private static final Logger logger = LoggerFactory.getLogger(AccountRestServiceTest.class);
+public class AccountServiceTest {
+	private static final Logger logger = LoggerFactory.getLogger(AccountServiceTest.class);
 
 	private HttpServer server;
 	private WebTarget target;

@@ -1,8 +1,8 @@
-package com.ail.revolut.app.service;
+package com.ail.revolut.app.logic;
 
 import com.ail.revolut.app.model.User;
 
-public class UserServiceImpl implements UserService {
+public class UserManagerImpl implements UserManager {
 
 	@Override
 	public User createUser(String userName) {
