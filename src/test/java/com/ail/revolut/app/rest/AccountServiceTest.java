@@ -159,7 +159,7 @@ public class AccountServiceTest {
 		ResponseData responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
 		logResponseData(responseData);
 
-		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getValue(), notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
@@ -175,7 +175,7 @@ public class AccountServiceTest {
 		ResponseData responseData = target.path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
 		logResponseData(responseData);
 
-		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getValue(), notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
 	}
 

@@ -1,8 +1,11 @@
 package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.json.ResponseData;
+import com.ail.revolut.app.json.TransferData;
 import com.ail.revolut.app.logic.AccountManager;
 import com.ail.revolut.app.logic.AccountManagerImpl;
+import com.ail.revolut.app.logic.RemittanceManager;
+import com.ail.revolut.app.logic.RemittanceManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +18,11 @@ public class AccountService {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	private AccountManager accountManager;
+	private RemittanceManager remittanceManager;
 
 	public AccountService() {
 		accountManager = new AccountManagerImpl();
+		remittanceManager = new RemittanceManagerImpl();
 	}
 
 	@PUT
@@ -65,6 +70,8 @@ public class AccountService {
 		ResponseData responseData = new ResponseData();
 		try {
 			accountManager.deposit(accountId, amount);
+			TransferData transferData = new TransferData(accountId, accountId, amount);
+			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
@@ -83,6 +90,8 @@ public class AccountService {
 		ResponseData responseData = new ResponseData();
 		try {
 			accountManager.withdraw(accountId, amount);
+			TransferData transferData = new TransferData(accountId, accountId, -amount);
+			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.debug(msg, e);
