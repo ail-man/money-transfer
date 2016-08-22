@@ -36,22 +36,22 @@ public class AccountManagerTest {
 
 	@Test
 	public void testDesposit() throws Exception {
-		accountManager.deposit(accountId, 100L);
+		deposit(100L);
 		assertAccountBalanceEqualsTo(100L);
 
-		accountManager.deposit(accountId, 23L);
+		deposit(23L);
 		assertAccountBalanceEqualsTo(123L);
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		accountManager.deposit(accountId, 1000L);
+		deposit(1000L);
 		assertAccountBalanceEqualsTo(1000L);
 
-		accountManager.withdraw(accountId, 10L);
+		withdraw(10L);
 		assertAccountBalanceEqualsTo(990L);
 
-		accountManager.withdraw(accountId, 123L);
+		withdraw(123L);
 		assertAccountBalanceEqualsTo(867L);
 	}
 
@@ -59,17 +59,17 @@ public class AccountManagerTest {
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
 		assertWithdrawFails(accountId, 5L);
 
-		accountManager.deposit(accountId, 30L);
+		deposit(30L);
 		assertAccountBalanceEqualsTo(30L);
 		assertWithdrawFails(accountId, 100L);
 		assertAccountBalanceEqualsTo(30L);
 
-		accountManager.withdraw(accountId, 10L);
+		withdraw(10L);
 		assertAccountBalanceEqualsTo(20L);
 		assertWithdrawFails(accountId, 30L);
 		assertAccountBalanceEqualsTo(20L);
 
-		accountManager.withdraw(accountId, 20L);
+		withdraw(20L);
 		assertAccountBalanceEqualsTo(0L);
 		assertWithdrawFails(accountId, 1L);
 		assertAccountBalanceEqualsTo(0L);
@@ -77,11 +77,11 @@ public class AccountManagerTest {
 
 	@Test
 	public void testAccountDepositOverflow() throws Exception {
-		accountManager.deposit(accountId, Long.MAX_VALUE);
+		deposit(Long.MAX_VALUE);
 		assertAccountBalanceEqualsTo(Long.MAX_VALUE);
 
 		try {
-			accountManager.deposit(accountId, 1L);
+			deposit(1L);
 			fail("Should not transfer");
 		} catch (RuntimeException e) {
 			assertThat(e.getMessage(), is(notNullValue()));
@@ -100,6 +100,14 @@ public class AccountManagerTest {
 
 	private Long getBalance() {
 		return accountManager.getBalance(accountId);
+	}
+
+	private void deposit(Long amount) {
+		accountManager.deposit(accountId, amount);
+	}
+
+	private void withdraw(Long amount) throws NotEnoughFundsException {
+		accountManager.withdraw(accountId, amount);
 	}
 
 	private void assertAccountBalanceEqualsTo(Long balance) {
