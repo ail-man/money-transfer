@@ -60,6 +60,34 @@ public class TransferServiceTest extends BaseServiceTest {
 		assertAccountBalanceEqualsTo(toId, 0L);
 	}
 
+
+	@Test
+	public void testTransferShouldIncrementToBalance() throws Exception {
+		assertDepositSuccess(fromId, 200L);
+		assertDepositSuccess(toId, 300L);
+		assertAccountBalanceEqualsTo(fromId, 200L);
+		assertAccountBalanceEqualsTo(toId, 300L);
+
+		Long amount = 35L;
+		Long toBalance = getBallance(toId);
+
+		assertTransferSuccess(fromId, toId, amount);
+		assertAccountBalanceEqualsTo(toId, toBalance + amount);
+	}
+
+	@Test
+	public void testTransferShouldDecrementFromBalance() throws Exception {
+		assertDepositSuccess(fromId, 200L);
+		assertAccountBalanceEqualsTo(fromId, 200L);
+
+		Long amount = 64L;
+		Long fromBalance = getBallance(fromId);
+
+		assertTransferSuccess(fromId, toId, amount);
+		assertAccountBalanceEqualsTo(fromId, fromBalance - amount);
+	}
+
+
 	private void assertTransferSuccess(Long fromId, Long toId, Long amount) {
 		ResponseData responseData = performTransfer(fromId, toId, amount);
 

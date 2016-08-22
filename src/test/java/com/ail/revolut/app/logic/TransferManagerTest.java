@@ -85,7 +85,7 @@ public class TransferManagerTest {
 		assertAccountBalanceEqualsTo(toId, 200L);
 
 		Long amount = 20L;
-		Long toBalance = accountManager.getBalance(toId);
+		Long toBalance = getBalance(toId);
 		transferManager.transfer(fromId, toId, amount);
 		assertAccountBalanceEqualsTo(toId, toBalance + amount);
 	}
@@ -96,9 +96,10 @@ public class TransferManagerTest {
 		assertAccountBalanceEqualsTo(fromId, 100L);
 
 		Long amount = 20L;
+		Long fromBalance = getBalance(fromId);
 
 		transferManager.transfer(fromId, toId, amount);
-		assertAccountBalanceEqualsTo(fromId, 80L);
+		assertAccountBalanceEqualsTo(fromId, fromBalance - amount);
 	}
 
 	@Test
@@ -107,8 +108,12 @@ public class TransferManagerTest {
 		assertTransferFails(1L, 2L, -10L);
 	}
 
+	private Long getBalance(Long accountId) {
+		return accountManager.getBalance(accountId);
+	}
+
 	private void assertAccountBalanceEqualsTo(Long accountId, Long balance) {
-		assertThat(accountManager.getBalance(accountId), equalTo(balance));
+		assertThat(getBalance(accountId), equalTo(balance));
 	}
 
 	private void assertTransferFails(Long fromId, Long toId, Long amount) {
