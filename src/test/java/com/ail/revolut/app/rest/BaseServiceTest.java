@@ -40,7 +40,7 @@ class BaseServiceTest {
 		return target;
 	}
 
-	private void logResponseData(ResponseData responseData) {
+	void logResponseData(ResponseData responseData) {
 		logger.info(responseData.toString());
 	}
 
