@@ -21,6 +21,8 @@ public class TransferManagerTest {
 	public void init() throws Exception {
 		fromId = accountManager.createAccount();
 		toId = accountManager.createAccount();
+		assertAccountBalanceEqualsTo(fromId, 0L);
+		assertAccountBalanceEqualsTo(toId, 0L);
 	}
 
 	@Test
@@ -45,8 +47,6 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferAmountMustBeNotGreaterThanFromBallance() throws Exception {
-		assertAccountBalanceEqualsTo(fromId, 0L);
-		assertAccountBalanceEqualsTo(toId, 0L);
 		assertTransferFails(fromId, toId, 10L);
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
@@ -61,9 +61,6 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferToBalanceOverflow() throws Exception {
-		assertAccountBalanceEqualsTo(fromId, 0L);
-		assertAccountBalanceEqualsTo(toId, 0L);
-
 		accountManager.deposit(fromId, 1L);
 		accountManager.deposit(toId, Long.MAX_VALUE);
 		assertAccountBalanceEqualsTo(fromId, 1L);
@@ -95,7 +92,6 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferShouldDecrementFromBalance() throws Exception {
-		assertAccountBalanceEqualsTo(fromId, 0L);
 		accountManager.deposit(fromId, 100L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
 
