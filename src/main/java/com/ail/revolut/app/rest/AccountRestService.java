@@ -73,4 +73,22 @@ public class AccountRestService {
 
 		return responseData;
 	}
+
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/withdraw")
+	public ResponseData withdraw(@PathParam("id") Long accountId, Long amount) {
+		logger.info("Withdraw requested for account id=" + accountId + ", amount=" + amount);
+
+		ResponseData responseData = new ResponseData();
+		try {
+			accountService.withdraw(accountId, amount);
+		} catch (Exception e) {
+			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
+			logger.debug(msg, e);
+			responseData.setMessage(msg);
+		}
+
+		return responseData;
+	}
 }
