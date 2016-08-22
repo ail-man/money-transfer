@@ -87,6 +87,25 @@ public class TransferServiceTest extends BaseServiceTest {
 		assertAccountBalanceEqualsTo(fromId, fromBalance - amount);
 	}
 
+	@Test
+	public void testAmountShouldBeOnlyPositive() throws Exception {
+		assertTransferFails(fromId, toId, 0L);
+		assertTransferFails(fromId, toId, -2L);
+	}
+
+	@Test
+	public void testTransferToBalanceOverflow() throws Exception {
+		assertDepositSuccess(fromId, 2L);
+		assertDepositSuccess(toId, Long.MAX_VALUE);
+
+		assertAccountBalanceEqualsTo(fromId, 2L);
+		assertAccountBalanceEqualsTo(toId, Long.MAX_VALUE);
+
+		assertTransferFails(fromId, toId, 1L);
+
+		assertAccountBalanceEqualsTo(fromId, 2L);
+		assertAccountBalanceEqualsTo(toId, Long.MAX_VALUE);
+	}
 
 	private void assertTransferSuccess(Long fromId, Long toId, Long amount) {
 		ResponseData responseData = performTransfer(fromId, toId, amount);

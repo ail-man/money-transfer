@@ -27,7 +27,7 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransfer() throws Exception {
-		accountManager.deposit(fromId, 100L);
+		depositTo(fromId, 100L);
 
 		assertAccountBalanceEqualsTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(toId, 0L);
@@ -51,7 +51,7 @@ public class TransferManagerTest {
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
 
-		accountManager.deposit(fromId, 100L);
+		depositTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
 
 		assertTransferFails(fromId, toId, 1000L);
@@ -61,8 +61,8 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferToBalanceOverflow() throws Exception {
-		accountManager.deposit(fromId, 1L);
-		accountManager.deposit(toId, Long.MAX_VALUE);
+		depositTo(fromId, 1L);
+		depositTo(toId, Long.MAX_VALUE);
 		assertAccountBalanceEqualsTo(fromId, 1L);
 		assertAccountBalanceEqualsTo(toId, Long.MAX_VALUE);
 
@@ -79,8 +79,8 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferShouldIncrementToBalance() throws Exception {
-		accountManager.deposit(fromId, 100L);
-		accountManager.deposit(toId, 200L);
+		depositTo(fromId, 100L);
+		depositTo(toId, 200L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(toId, 200L);
 
@@ -92,7 +92,7 @@ public class TransferManagerTest {
 
 	@Test
 	public void testTransferShouldDecrementFromBalance() throws Exception {
-		accountManager.deposit(fromId, 100L);
+		depositTo(fromId, 100L);
 		assertAccountBalanceEqualsTo(fromId, 100L);
 
 		Long amount = 20L;
@@ -104,8 +104,8 @@ public class TransferManagerTest {
 
 	@Test
 	public void testAmountShouldBeOnlyPositive() throws Exception {
-		assertTransferFails(1L, 2L, 0L);
-		assertTransferFails(1L, 2L, -10L);
+		assertTransferFails(fromId, toId, 0L);
+		assertTransferFails(fromId, toId, -10L);
 	}
 
 	private Long getBalance(Long accountId) {
@@ -114,6 +114,10 @@ public class TransferManagerTest {
 
 	private void assertAccountBalanceEqualsTo(Long accountId, Long balance) {
 		assertThat(getBalance(accountId), equalTo(balance));
+	}
+
+	private void depositTo(Long accountId, Long amount) {
+		accountManager.deposit(accountId, amount);
 	}
 
 	private void assertTransferFails(Long fromId, Long toId, Long amount) {
