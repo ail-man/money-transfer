@@ -84,7 +84,7 @@ public class AccountRestServiceTest {
 	}
 
 	@Test
-	public void testAmountMustBeOnlyPositive() {
+	public void testAmountMustBePositiveOnly() {
 		Long accountId = createAccount();
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
@@ -119,13 +119,15 @@ public class AccountRestServiceTest {
 		assertWithdrawFails(accountId, 0L);
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
-		Long negativeDepositAmount = -10L;
-		assertDepositFails(accountId, negativeDepositAmount);
-		assertAccountBalanceEqualsTo(accountId, 0L);
+		Long depositAmount = 10L;
+		assertDepositSuccess(accountId, depositAmount);
+		assertAccountBalanceEqualsTo(accountId, depositAmount);
 
-		assertDepositSuccess(accountId, 9L);
-		assertAccountBalanceEqualsTo(accountId, 9L);
-		assertDepositFails(accountId, negativeDepositAmount);
+		Long withdrawAmount = 20L;
+		assertThat(withdrawAmount, greaterThan(depositAmount));
+
+		assertWithdrawFails(accountId, withdrawAmount);
+		assertAccountBalanceEqualsTo(accountId, depositAmount);
 	}
 
 	private void logResponseData(ResponseData responseData) {

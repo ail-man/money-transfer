@@ -29,7 +29,7 @@ public class TransferServiceImpl implements TransferService {
 			Long fromBallance = fromAccount.getBalance();
 			fromAccount.setBalance(fromBallance - amount);
 			if (fromBallance < amount) {
-				throw new NotEnoughFundsException();
+				throw new NotEnoughFundsException("Not enough funds!");
 			}
 
 			Account toAccount = em.find(Account.class, toAccountId);
