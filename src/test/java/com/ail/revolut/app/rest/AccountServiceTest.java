@@ -3,9 +3,9 @@ package com.ail.revolut.app.rest;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.*;
 
 public class AccountServiceTest extends BaseServiceTest {
 
@@ -14,6 +14,7 @@ public class AccountServiceTest extends BaseServiceTest {
 	@Before
 	public void init() throws Exception {
 		accountId = assertCreateAccount();
+		assertAccountBalanceEqualsTo(accountId, 0L);
 	}
 
 	@Test
@@ -24,13 +25,12 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testGetBallance() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, 0L);
+		Long accountBalance = getBallance(accountId);
+		assertThat(accountBalance, is(notNullValue()));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, 0L);
-
 		Long depositAmount = 123L;
 		assertDepositSuccess(accountId, depositAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount);
@@ -42,8 +42,6 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testWithdraw() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, 0L);
-
 		Long deposit = 100L;
 		assertDepositSuccess(accountId, deposit);
 		assertAccountBalanceEqualsTo(accountId, deposit);
@@ -55,13 +53,11 @@ public class AccountServiceTest extends BaseServiceTest {
 		Long newWithdrawAmount = 25L;
 		assertWithdrawSuccess(accountId, newWithdrawAmount);
 
-		assertWithdrawSuccess(accountId, deposit - withdrawAmount - newWithdrawAmount);
+		assertWithdrawSuccess(accountId, deposit - (withdrawAmount + newWithdrawAmount));
 	}
 
 	@Test
 	public void testAmountMustBePositiveOnly() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, 0L);
-
 		Long zeroAmount = 0L;
 		assertDepositFails(accountId, zeroAmount);
 		assertAccountBalanceEqualsTo(accountId, zeroAmount);
@@ -87,8 +83,6 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testWithdrawMustNotBeGreaterThanDeposit() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, 0L);
-
 		assertWithdrawFails(accountId, 0L);
 		assertAccountBalanceEqualsTo(accountId, 0L);
 
