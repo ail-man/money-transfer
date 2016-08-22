@@ -38,96 +38,87 @@ public class AccountRestServiceTest {
 	}
 
 	@Test
-	public void testCreate() {
-		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logResponseData(responseData);
-
-		Long accountId = Long.parseLong(responseData.getValue());
-		assertThat(accountId, notNullValue());
-		assertThat(responseData.getMessage(), nullValue());
-
-		responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logResponseData(responseData);
-
-		Long nextAccountId = Long.parseLong(responseData.getValue());
-
+	public void testCreateAccount() {
+		Long accountId = createAccount();
+		Long nextAccountId = createAccount();
 		assertThat(nextAccountId, equalTo(++accountId));
-		assertThat(responseData.getMessage(), nullValue());
 	}
 
 	@Test
 	public void testGetBallance() {
-		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logResponseData(responseData);
-
-		Long accountId = Long.parseLong(responseData.getValue());
-
-		assertThat(accountId, notNullValue());
-		assertThat(responseData.getMessage(), nullValue());
-
-		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
-		logResponseData(responseData);
-
-		Long accountBalance = Long.parseLong(responseData.getValue());
-
-		assertThat(accountBalance, equalTo(0L));
-		assertThat(responseData.getMessage(), nullValue());
+		Long accountId = createAccount();
+		assertAccountBalanceEqualsTo(accountId, 0L);
 	}
 
 	@Test
 	public void testDeposit() {
+		Long accountId = createAccount();
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		Long depositAmount = 123L;
+		assertDepositSuccess(accountId, depositAmount);
+		assertAccountBalanceEqualsTo(accountId, depositAmount);
+
+		Long newDepositAmount = 345L;
+		assertDepositSuccess(accountId, newDepositAmount);
+		assertAccountBalanceEqualsTo(accountId, depositAmount + newDepositAmount);
+	}
+
+	@Test
+	public void testIncorrectDeposit() {
+		Long accountId = createAccount();
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		assertDepositFalse(accountId, 0L);
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		assertDepositFalse(accountId, -1L);
+		assertAccountBalanceEqualsTo(accountId, 0L);
+
+		assertDepositSuccess(accountId, 9L);
+		assertAccountBalanceEqualsTo(accountId, 9L);
+		assertDepositFalse(accountId, -10L);
+	}
+
+	private void logResponseData(ResponseData responseData) {
+		logger.info(responseData.toString());
+	}
+
+	private Long createAccount() {
 		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
 		logResponseData(responseData);
 
 		Long accountId = Long.parseLong(responseData.getValue());
-
 		assertThat(accountId, notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
+		return accountId;
+	}
 
-		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
+	private void assertAccountBalanceEqualsTo(Long accountId, Long balanceAmount) {
+		ResponseData responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
 		logResponseData(responseData);
 
 		Long accountBalance = Long.parseLong(responseData.getValue());
 		logger.info("Balance=" + accountBalance);
 
-		assertThat(accountBalance, equalTo(0L));
-		assertThat(responseData.getMessage(), nullValue());
-
-		Long depositAmount = 123L;
-		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), nullValue());
-		assertThat(responseData.getMessage(), nullValue());
-
-		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
-		logResponseData(responseData);
-
-		accountBalance = Long.parseLong(responseData.getValue());
-		logger.info("Balance=" + accountBalance);
-
-		assertThat(accountBalance, equalTo(depositAmount));
-		assertThat(responseData.getMessage(), nullValue());
-
-		Long newDepositAmount = 345L;
-		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(newDepositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
-		logResponseData(responseData);
-
-		assertThat(responseData.getValue(), nullValue());
-		assertThat(responseData.getMessage(), nullValue());
-
-		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
-		logResponseData(responseData);
-
-		accountBalance = Long.parseLong(responseData.getValue());
-		logger.info("Balance=" + accountBalance);
-
-		assertThat(accountBalance, equalTo(depositAmount + newDepositAmount));
+		assertThat(accountBalance, equalTo(balanceAmount));
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	private void logResponseData(ResponseData responseData) {
-		logger.info(responseData.toString());
+	private void assertDepositSuccess(Long accountId, Long depositAmount) {
+		ResponseData responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	private void assertDepositFalse(Long accountId, Long depositAmount) {
+		ResponseData responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), notNullValue());
 	}
 
 }
