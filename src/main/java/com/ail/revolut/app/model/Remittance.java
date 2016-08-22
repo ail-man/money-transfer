@@ -35,10 +35,16 @@ public class Remittance implements Serializable, Cloneable {
 	@Column(nullable = false)
 	private Long amount;
 
-	@Getter
-	@Setter
 	@Column(nullable = false)
 	private Date performed;
+
+	public Date getPerformed() {
+		return performed != null ? (Date) performed.clone() : null;
+	}
+
+	public void setPerformed(Date performed) {
+		this.performed = performed != null ? (Date) performed.clone() : null;
+	}
 
 	@Override
 	public Remittance clone() {
