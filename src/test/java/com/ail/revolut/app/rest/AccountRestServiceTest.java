@@ -6,6 +6,7 @@ import com.ail.revolut.app.model.Account;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,7 @@ public class AccountRestServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDeposit() {
 		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
 		logResponseData(responseData);
@@ -88,14 +90,41 @@ public class AccountRestServiceTest {
 		logResponseData(responseData);
 
 		Long accountBalance = Long.parseLong(responseData.getValue());
+		logger.info("Balance=" + accountBalance);
 
 		assertThat(accountBalance, equalTo(0L));
 		assertThat(responseData.getMessage(), nullValue());
 
-		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(10, MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		Long depositAmount = 123L;
+		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), nullValue());
+
+		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
+		logResponseData(responseData);
+
+		accountBalance = Long.parseLong(responseData.getValue());
+		logger.info("Balance=" + accountBalance);
+
+		assertThat(accountBalance, equalTo(depositAmount));
+		assertThat(responseData.getMessage(), nullValue());
+
+		Long newDepositAmount = 345L;
+		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(newDepositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), nullValue());
+
+		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
+		logResponseData(responseData);
+
+		accountBalance = Long.parseLong(responseData.getValue());
+		logger.info("Balance=" + accountBalance);
+
+		assertThat(accountBalance, equalTo(depositAmount + newDepositAmount));
 		assertThat(responseData.getMessage(), nullValue());
 	}
 

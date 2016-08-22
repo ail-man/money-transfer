@@ -60,7 +60,7 @@ public class AccountRestService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/deposit")
 	public ResponseData createAccount(@PathParam("id") Long accountId, Long amount) {
-		logger.info("Create account requested");
+		logger.info("Deposit requested for account id=" + accountId + ", amount=" + amount);
 
 		ResponseData responseData = new ResponseData();
 		try {
