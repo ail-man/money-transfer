@@ -40,34 +40,67 @@ public class AccountRestServiceTest {
 	@Test
 	public void testCreate() {
 		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logger.info(responseData.toString());
+		logResponseData(responseData);
 
-		Long assertAccountId = responseData.getId();
-		assertThat(assertAccountId, notNullValue());
+		Long accountId = Long.parseLong(responseData.getValue());
+		assertThat(accountId, notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
 
 		responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logger.info(responseData.toString());
+		logResponseData(responseData);
 
-		assertThat(responseData.getId(), equalTo(++assertAccountId));
+		Long nextAccountId = Long.parseLong(responseData.getValue());
+
+		assertThat(nextAccountId, equalTo(++accountId));
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
 	@Test
 	public void testGetBallance() {
 		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
-		logger.info(responseData.toString());
+		logResponseData(responseData);
 
-		Long accountId = responseData.getId();
+		Long accountId = Long.parseLong(responseData.getValue());
 
 		assertThat(accountId, notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
 
-		responseData = target.path("/account/" + responseData.getId() + "/balance").request().get(ResponseData.class);
-		logger.info(responseData.toString());
+		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
+		logResponseData(responseData);
 
-		assertThat(responseData.getId(), equalTo(0L));
+		Long accountBalance = Long.parseLong(responseData.getValue());
+
+		assertThat(accountBalance, equalTo(0L));
 		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	@Test
+	public void testDeposit() {
+		ResponseData responseData = target.path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		logResponseData(responseData);
+
+		Long accountId = Long.parseLong(responseData.getValue());
+
+		assertThat(accountId, notNullValue());
+		assertThat(responseData.getMessage(), nullValue());
+
+		responseData = target.path("/account/" + accountId + "/balance").request().get(ResponseData.class);
+		logResponseData(responseData);
+
+		Long accountBalance = Long.parseLong(responseData.getValue());
+
+		assertThat(accountBalance, equalTo(0L));
+		assertThat(responseData.getMessage(), nullValue());
+
+		responseData = target.path("/account/" + accountId + "/deposit").request().post(Entity.entity(10, MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		logResponseData(responseData);
+
+		assertThat(responseData.getValue(), nullValue());
+		assertThat(responseData.getMessage(), nullValue());
+	}
+
+	private void logResponseData(ResponseData responseData) {
+		logger.info(responseData.toString());
 	}
 
 }

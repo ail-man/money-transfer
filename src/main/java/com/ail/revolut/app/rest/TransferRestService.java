@@ -37,7 +37,7 @@ public class TransferRestService {
 		ResponseData responseData = new ResponseData();
 		try {
 			transferService.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
-			responseData.setId(remittanceService.save(transferData));
+			responseData.setValue(remittanceService.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
 			logger.debug(msg, e);

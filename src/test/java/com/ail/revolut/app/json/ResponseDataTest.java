@@ -11,12 +11,12 @@ public class ResponseDataTest {
 	public void testToString() {
 		ResponseData responseData = new ResponseData();
 
-		assertThat(responseData.toString(), equalTo("ResponseData(id=null, message=null)"));
+		assertThat(responseData.toString(), equalTo("ResponseData(value=null, message=null)"));
 
-		responseData.setId(1244L);
+		responseData.setValue("1244");
 		responseData.setMessage("Some message");
 
-		assertThat(responseData.toString(), equalTo("ResponseData(id=1244, message=Some message)"));
+		assertThat(responseData.toString(), equalTo("ResponseData(value=1244, message=Some message)"));
 	}
 
 }
