@@ -28,7 +28,6 @@ public class TransferService {
 	}
 
 	@POST
-	@Path("/perform")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ResponseData transfer(TransferData transferData) {
