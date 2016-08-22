@@ -14,7 +14,7 @@ public class RemittanceTest {
 	private Remittance remittance;
 
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		remittance = new Remittance();
 		remittance.setId(100L);
 		remittance.setFromId(1L);
@@ -24,7 +24,7 @@ public class RemittanceTest {
 	}
 
 	@Test
-	public void testClone() {
+	public void testClone() throws Exception {
 		Remittance deepClone = remittance.clone();
 		assertTrue(deepClone != remittance);
 		assertTrue(deepClone.getPerformed() != remittance.getPerformed());
@@ -37,7 +37,7 @@ public class RemittanceTest {
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws Exception {
 		Date date = new Date();
 		assertThat(remittance.toString(), equalTo("Remittance(id=100, fromId=1, toId=2, amount=300, performed=" + date.toString() + ")"));
 

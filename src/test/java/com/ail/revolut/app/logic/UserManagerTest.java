@@ -13,7 +13,7 @@ public class UserManagerTest {
 	@Test
 	@Ignore
 	// TODO
-	public void testCreateUser() {
+	public void testCreateUser() throws Exception {
 		UserManager userManager = mock(UserManager.class);
 
 		User user = userManager.createUser("UserName");
@@ -27,6 +27,6 @@ public class UserManagerTest {
 	@Test
 	@Ignore
 	// TODO
-	public void testGetUser() {
+	public void testGetUser() throws Exception {
 	}
 }

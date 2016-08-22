@@ -18,7 +18,7 @@ public class TransferManagerTest {
 	private Long toId;
 
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		fromId = accountManager.createAccount();
 		toId = accountManager.createAccount();
 	}
@@ -44,7 +44,7 @@ public class TransferManagerTest {
 	}
 
 	@Test
-	public void testTransferAmountMustBeNotGreaterThanFromBallance() {
+	public void testTransferAmountMustBeNotGreaterThanFromBallance() throws Exception {
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
 		assertTransferFails(fromId, toId, 10L);
@@ -106,7 +106,7 @@ public class TransferManagerTest {
 	}
 
 	@Test
-	public void testAmountShouldBeOnlyPositive() {
+	public void testAmountShouldBeOnlyPositive() throws Exception {
 		assertTransferFails(1L, 2L, 0L);
 		assertTransferFails(1L, 2L, -10L);
 	}

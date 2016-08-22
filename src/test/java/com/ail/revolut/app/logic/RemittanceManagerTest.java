@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class RemittanceManagerTest {
 
 	@Test
-	public void testSave() {
+	public void testSave() throws Exception {
 		RemittanceManager remittanceManager = new RemittanceManagerImpl();
 		TransferData transferData = new TransferData();
 		transferData.setFrom(1L);

@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class UserTest {
 
 	@Test
-	public void testToString() {
+	public void testToString() throws Exception {
 		User user = new User();
 
 		assertThat(user.toString(), equalTo("User(id=null, name=null, accounts=null)"));

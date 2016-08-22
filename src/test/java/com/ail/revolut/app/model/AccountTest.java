@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class AccountTest {
 
 	@Test
-	public void testToString() {
+	public void testToString() throws Exception {
 		Account account = new Account();
 
 		assertThat(account.toString(), equalTo("Account(id=null, balance=null, owner=null)"));

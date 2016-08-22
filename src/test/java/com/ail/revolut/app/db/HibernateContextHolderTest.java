@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 public class HibernateContextHolderTest {
 
 	@Test
-	public void testCreateEntityManager() {
+	public void testCreateEntityManager() throws Exception {
 		EntityManager em1 = HibernateContextHolder.createEntityManager();
 		assertThat(em1, is(notNullValue()));
 
@@ -23,7 +23,7 @@ public class HibernateContextHolderTest {
 	}
 
 	@Test
-	public void testSingleHibernateContext() {
+	public void testSingleHibernateContext() throws Exception {
 		EntityManagerFactory emf1 = HibernateContextHolder.createEntityManagerFactory();
 		EntityManagerFactory emf2 = HibernateContextHolder.createEntityManagerFactory();
 

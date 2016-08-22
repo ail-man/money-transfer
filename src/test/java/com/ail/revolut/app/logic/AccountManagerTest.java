@@ -14,13 +14,13 @@ public class AccountManagerTest {
 	private Long accountId;
 
 	@Test
-	public void testCreateAccount() {
+	public void testCreateAccount() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 	}
 
 	@Test
-	public void testGetBallance() {
+	public void testGetBallance() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 
@@ -28,7 +28,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testNewAccountShouldHaveZeroBalance() {
+	public void testNewAccountShouldHaveZeroBalance() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 
@@ -36,7 +36,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testDesposit() {
+	public void testDesposit() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 
@@ -91,7 +91,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testAccountDepositOverflow() {
+	public void testAccountDepositOverflow() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 
@@ -110,7 +110,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testAmountMustBePositiveOnly() {
+	public void testAmountMustBePositiveOnly() throws Exception {
 		accountId = accountManager.createAccount();
 		assertThat(accountId, notNullValue());
 		assertThat(accountManager.getBalance(accountId), equalTo(0L));

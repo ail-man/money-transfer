@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class ResponseDataTest {
 
 	@Test
-	public void testToString() {
+	public void testToString() throws Exception {
 		ResponseData responseData = new ResponseData();
 
 		assertThat(responseData.toString(), equalTo("ResponseData(value=null, message=null)"));
