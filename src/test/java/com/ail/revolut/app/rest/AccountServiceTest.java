@@ -30,6 +30,11 @@ public class AccountServiceTest extends BaseServiceTest {
 	}
 
 	@Test
+	public void testNewAccountShouldHaveZeroBalance() throws Exception {
+		assertAccountBalanceEqualsTo(accountId, 0L);
+	}
+
+	@Test
 	public void testDeposit() throws Exception {
 		Long depositAmount = 123L;
 		assertDepositSuccess(accountId, depositAmount);
@@ -95,6 +100,16 @@ public class AccountServiceTest extends BaseServiceTest {
 
 		assertWithdrawFails(accountId, withdrawAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount);
+	}
+
+	@Test
+	public void testAccountDepositOverflow() throws Exception {
+		Long max = Long.MAX_VALUE;
+		assertDepositSuccess(accountId, Long.MAX_VALUE);
+		assertAccountBalanceEqualsTo(accountId, Long.MAX_VALUE);
+
+		assertDepositFails(accountId, max + 1L);
+		assertAccountBalanceEqualsTo(accountId, Long.MAX_VALUE);
 	}
 
 }

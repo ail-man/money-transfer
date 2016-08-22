@@ -77,11 +77,12 @@ public class AccountManagerTest {
 
 	@Test
 	public void testAccountDepositOverflow() throws Exception {
+		Long max = Long.MAX_VALUE;
 		deposit(Long.MAX_VALUE);
 		assertAccountBalanceEqualsTo(Long.MAX_VALUE);
 
 		try {
-			deposit(1L);
+			deposit(max + 1L);
 			fail("Should not transfer");
 		} catch (RuntimeException e) {
 			assertThat(e.getMessage(), is(notNullValue()));
