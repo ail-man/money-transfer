@@ -2,8 +2,6 @@ package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.json.ResponseData;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;

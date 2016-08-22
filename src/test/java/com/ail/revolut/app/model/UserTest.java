@@ -1,8 +1,6 @@
 package com.ail.revolut.app.model;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,8 +9,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UserTest {
-
-	private static final Logger logger = LoggerFactory.getLogger(UserTest.class);
 
 	@Test
 	public void testToString() {
