@@ -36,7 +36,7 @@ class BaseServiceTest {
 		server.shutdown();
 	}
 
-	private WebTarget getTarget() {
+	WebTarget getTarget() {
 		return target;
 	}
 
