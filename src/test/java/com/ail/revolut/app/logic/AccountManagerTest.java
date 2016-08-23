@@ -25,7 +25,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void testGetBallance() throws Exception {
+	public void testGetBalance() throws Exception {
 		assertThat(getBalance(), is(notNullValue()));
 	}
 

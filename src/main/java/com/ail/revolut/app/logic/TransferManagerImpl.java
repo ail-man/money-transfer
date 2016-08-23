@@ -26,19 +26,19 @@ public class TransferManagerImpl implements TransferManager {
 			tx.begin();
 
 			Account fromAccount = em.find(Account.class, fromAccountId);
-			Long fromBallance = fromAccount.getBalance();
-			fromAccount.setBalance(fromBallance - amount);
-			if (fromBallance < amount) {
+			Long fromBalance = fromAccount.getBalance();
+			fromAccount.setBalance(fromBalance - amount);
+			if (fromBalance < amount) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}
 
 			Account toAccount = em.find(Account.class, toAccountId);
-			Long toBallance = toAccount.getBalance();
-			toBallance = toBallance + amount;
-			if (toBallance < 0) {
+			Long toBalance = toAccount.getBalance();
+			toBalance = toBalance + amount;
+			if (toBalance < 0) {
 				throw new RuntimeException("Overflow");
 			}
-			toAccount.setBalance(toBallance);
+			toAccount.setBalance(toBalance);
 
 			em.merge(fromAccount);
 			em.merge(toAccount);

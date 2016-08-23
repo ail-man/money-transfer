@@ -24,8 +24,8 @@ public class AccountServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testGetBallance() throws Exception {
-		Long accountBalance = getBallance(accountId);
+	public void testGetBalance() throws Exception {
+		Long accountBalance = getBalance(accountId);
 		assertThat(accountBalance, is(notNullValue()));
 	}
 

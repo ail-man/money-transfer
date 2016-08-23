@@ -88,12 +88,12 @@ class BaseServiceTest {
 	}
 
 	void assertAccountBalanceEqualsTo(Long accountId, Long balanceAmount) {
-		Long accountBalance = getBallance(accountId);
+		Long accountBalance = getBalance(accountId);
 
 		assertThat(accountBalance, equalTo(balanceAmount));
 	}
 
-	Long getBallance(Long accountId) {
+	Long getBalance(Long accountId) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/balance").request().get(ResponseData.class);
 		logResponseData(responseData);
 

@@ -47,7 +47,7 @@ public class TransferServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testTransferAmountMustBeNotGreaterThanFromBallance() throws Exception {
+	public void testTransferAmountMustBeNotGreaterThanFromBalance() throws Exception {
 		assertTransferFails(fromId, toId, 20L);
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
@@ -69,7 +69,7 @@ public class TransferServiceTest extends BaseServiceTest {
 		assertAccountBalanceEqualsTo(toId, 300L);
 
 		Long amount = 35L;
-		Long toBalance = getBallance(toId);
+		Long toBalance = getBalance(toId);
 
 		assertTransferSuccess(fromId, toId, amount);
 		assertAccountBalanceEqualsTo(toId, toBalance + amount);
@@ -81,7 +81,7 @@ public class TransferServiceTest extends BaseServiceTest {
 		assertAccountBalanceEqualsTo(fromId, 200L);
 
 		Long amount = 64L;
-		Long fromBalance = getBallance(fromId);
+		Long fromBalance = getBalance(fromId);
 
 		assertTransferSuccess(fromId, toId, amount);
 		assertAccountBalanceEqualsTo(fromId, fromBalance - amount);

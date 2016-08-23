@@ -46,7 +46,7 @@ public class TransferManagerTest {
 	}
 
 	@Test
-	public void testTransferAmountMustBeNotGreaterThanFromBallance() throws Exception {
+	public void testTransferAmountMustBeNotGreaterThanFromBalance() throws Exception {
 		assertTransferFails(fromId, toId, 10L);
 		assertAccountBalanceEqualsTo(fromId, 0L);
 		assertAccountBalanceEqualsTo(toId, 0L);
