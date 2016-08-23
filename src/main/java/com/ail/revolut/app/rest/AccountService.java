@@ -29,14 +29,13 @@ public class AccountService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/create")
 	public ResponseData createAccount() {
-		logger.info("Create account requested");
-
 		ResponseData responseData = new ResponseData();
 		try {
+			logger.info("Create account requested");
 			responseData.setValue(accountManager.createAccount().toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
-			logger.debug(msg, e);
+			logger.trace(msg, e);
 			responseData.setMessage(msg);
 		}
 
@@ -47,14 +46,13 @@ public class AccountService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/balance")
 	public ResponseData getBalance(@PathParam("id") String accountId) {
-		logger.info("Balance requested for account id=" + accountId);
-
 		ResponseData responseData = new ResponseData();
 		try {
+			logger.info("Balance requested for account id={}", accountId);
 			responseData.setValue(accountManager.getBalance(Long.parseLong(accountId)).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
-			logger.debug(msg, e);
+			logger.trace(msg, e);
 			responseData.setMessage(msg);
 		}
 
@@ -65,19 +63,17 @@ public class AccountService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/deposit")
 	public ResponseData deposit(@PathParam("id") Long accountId, Long amount) {
-		logger.info("Deposit requested for account id=" + accountId + ", amount=" + amount);
-
 		ResponseData responseData = new ResponseData();
 		try {
+			logger.info("Deposit requested for account id={}, amount={}", accountId, amount);
 			accountManager.deposit(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, amount);
 			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
-			logger.debug(msg, e);
+			logger.trace(msg, e);
 			responseData.setMessage(msg);
 		}
-
 		return responseData;
 	}
 
@@ -85,19 +81,17 @@ public class AccountService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/withdraw")
 	public ResponseData withdraw(@PathParam("id") Long accountId, Long amount) {
-		logger.info("Withdraw requested for account id=" + accountId + ", amount=" + amount);
-
 		ResponseData responseData = new ResponseData();
 		try {
+			logger.info("Withdraw requested for account id={}, amount={}", accountId, amount);
 			accountManager.withdraw(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, -amount);
 			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
-			logger.debug(msg, e);
+			logger.trace(msg, e);
 			responseData.setMessage(msg);
 		}
-
 		return responseData;
 	}
 }

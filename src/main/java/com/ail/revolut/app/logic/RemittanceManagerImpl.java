@@ -21,6 +21,7 @@ public class RemittanceManagerImpl implements RemittanceManager {
 
 		EntityTransaction tx = null;
 		try {
+			logger.info("Save remittance fromId={}, toId={}, amount={} info started", transferData.getFrom(), transferData.getTo(), transferData.getAmount());
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -35,10 +36,10 @@ public class RemittanceManagerImpl implements RemittanceManager {
 
 			number = remittance.getId();
 
-			logger.info("Remittance saved with id = " + number);
+			logger.info("Remittance fromId={}, toId={} saved with id={}",  transferData.getFrom(), transferData.getTo(), number);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.error(e.getMessage(), e);
+			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();

@@ -21,15 +21,15 @@ public class TransferManagerImpl implements TransferManager {
 
 		EntityTransaction tx = null;
 		try {
+			logger.info("Transfer fromId={} toId={}, amount={} started", fromAccountId, toAccountId, amount);
 			tx = em.getTransaction();
-			logger.info("Transfer from accountId={} to accountId={} with amount={} started", fromAccountId, toAccountId, amount);
 			tx.begin();
 
 			Account fromAccount = em.find(Account.class, fromAccountId);
 			Long fromBallance = fromAccount.getBalance();
 			fromAccount.setBalance(fromBallance - amount);
 			if (fromBallance < amount) {
-				throw new NotEnoughFundsException("Not enough funds!");
+				throw new NotEnoughFundsException("Not enough funds");
 			}
 
 			Account toAccount = em.find(Account.class, toAccountId);
@@ -45,10 +45,10 @@ public class TransferManagerImpl implements TransferManager {
 
 			tx.commit();
 
-			logger.info("Transfer completed");
+			logger.info("Transfer fromId={} toId={} completed", fromAccountId, toAccountId);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.debug(e.getMessage(), e);
+			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();

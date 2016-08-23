@@ -99,7 +99,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 
 		Long accountBalance = Long.parseLong(responseData.getValue());
-		logger.info("Balance=" + accountBalance);
+		logger.info("Balance={}", accountBalance);
 
 		return accountBalance;
 	}

@@ -20,6 +20,7 @@ public class AccountManagerImpl implements AccountManager {
 
 		EntityTransaction tx = null;
 		try {
+			logger.info("Account creation started");
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -31,10 +32,10 @@ public class AccountManagerImpl implements AccountManager {
 			tx.commit();
 
 			accountId = account.getId();
-			logger.info("Account created with id = " + accountId);
+			logger.info("Account created with id={}", accountId);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.error(e.getMessage(), e);
+			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();
@@ -49,12 +50,12 @@ public class AccountManagerImpl implements AccountManager {
 
 		EntityManager em = HibernateContextHolder.createEntityManager();
 
-		logger.info("Find account with id = " + id);
+		logger.info("Find account with id={}", id);
 
 		Account account = em.find(Account.class, id);
 		if (account != null) {
 			balance = account.getBalance();
-			logger.debug("Balance = " + account);
+			logger.info("Account found, balance={}", balance);
 		} else {
 			logger.info("Account not found!");
 		}
@@ -72,6 +73,7 @@ public class AccountManagerImpl implements AccountManager {
 
 		EntityTransaction tx = null;
 		try {
+			logger.info("Deposit to accountId={}, amount={} started", id, amount);
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -86,9 +88,10 @@ public class AccountManagerImpl implements AccountManager {
 			em.merge(account);
 
 			tx.commit();
+			logger.info("Deposit to accountId={} completed", id);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.debug(e.getMessage(), e);
+			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();
@@ -105,13 +108,14 @@ public class AccountManagerImpl implements AccountManager {
 
 		EntityTransaction tx = null;
 		try {
+			logger.info("Withdraw from accountId={}, amount={} started", id, amount);
 			tx = em.getTransaction();
 			tx.begin();
 
 			Account account = em.find(Account.class, id);
 			Long balance = account.getBalance();
 			if (amount > balance) {
-				throw new NotEnoughFundsException("Not enough funds!");
+				throw new NotEnoughFundsException("Not enough funds");
 			}
 			balance = balance - amount;
 			account.setBalance(balance);
@@ -119,9 +123,10 @@ public class AccountManagerImpl implements AccountManager {
 			em.merge(account);
 
 			tx.commit();
+			logger.info("Withdraw from accountId={} completed", id);
 		} catch (RuntimeException e) {
 			if (tx != null && tx.isActive()) tx.rollback();
-			logger.error(e.getMessage(), e);
+			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
 			em.close();

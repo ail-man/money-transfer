@@ -31,18 +31,16 @@ public class TransferService {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ResponseData transfer(TransferData transferData) {
-		logger.debug(transferData.toString());
-
 		ResponseData responseData = new ResponseData();
 		try {
+			logger.info("Transfer requested fromId={}, toId={}, amount={}", transferData.getFrom(), transferData.getTo(), transferData.getAmount());
 			transferManager.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
 			responseData.setValue(remittanceManager.save(transferData).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getMessage();
-			logger.debug(msg, e);
+			logger.trace(msg, e);
 			responseData.setMessage(msg);
 		}
-
 		return responseData;
 	}
 }
