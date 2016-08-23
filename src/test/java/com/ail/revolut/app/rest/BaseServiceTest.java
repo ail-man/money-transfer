@@ -1,8 +1,8 @@
 package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.Main;
-import com.ail.revolut.app.json.Money;
-import com.ail.revolut.app.json.ResponseData;
+import com.ail.revolut.app.dto.Money;
+import com.ail.revolut.app.dto.ResponseData;
 import com.ail.revolut.app.model.Account;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;

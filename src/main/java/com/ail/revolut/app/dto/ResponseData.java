@@ -1,4 +1,4 @@
-package com.ail.revolut.app.json;
+package com.ail.revolut.app.dto;
 
 import lombok.Data;
 

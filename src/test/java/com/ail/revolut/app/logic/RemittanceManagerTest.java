@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import com.ail.revolut.app.json.TransferData;
+import com.ail.revolut.app.dto.TransferData;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

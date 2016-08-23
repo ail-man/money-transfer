@@ -1,8 +1,8 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.json.Money;
-import com.ail.revolut.app.json.ResponseData;
-import com.ail.revolut.app.json.TransferData;
+import com.ail.revolut.app.dto.Money;
+import com.ail.revolut.app.dto.ResponseData;
+import com.ail.revolut.app.dto.TransferData;
 import com.ail.revolut.app.logic.AccountManager;
 import com.ail.revolut.app.logic.AccountManagerImpl;
 import com.ail.revolut.app.logic.RemittanceManager;

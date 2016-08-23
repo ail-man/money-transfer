@@ -1,7 +1,7 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.json.ResponseData;
-import com.ail.revolut.app.json.TransferData;
+import com.ail.revolut.app.dto.ResponseData;
+import com.ail.revolut.app.dto.TransferData;
 import com.ail.revolut.app.logic.RemittanceManager;
 import com.ail.revolut.app.logic.RemittanceManagerImpl;
 import com.ail.revolut.app.logic.TransferManager;

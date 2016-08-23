@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import com.ail.revolut.app.json.TransferData;
+import com.ail.revolut.app.dto.TransferData;
 import com.ail.revolut.app.model.Remittance;
 import com.ail.revolut.app.db.HibernateContextHolder;
 import org.slf4j.Logger;
