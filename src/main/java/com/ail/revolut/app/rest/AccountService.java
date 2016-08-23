@@ -1,5 +1,6 @@
 package com.ail.revolut.app.rest;
 
+import com.ail.revolut.app.json.Money;
 import com.ail.revolut.app.json.ResponseData;
 import com.ail.revolut.app.json.TransferData;
 import com.ail.revolut.app.logic.AccountManager;
@@ -62,9 +63,10 @@ public class AccountService {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/deposit")
-	public ResponseData deposit(@PathParam("id") Long accountId, Long amount) {
+	public ResponseData deposit(@PathParam("id") Long accountId, Money money) {
 		ResponseData responseData = new ResponseData();
 		try {
+			Long amount = money.getAmount();
 			logger.info("Deposit requested for account id={}, amount={}", accountId, amount);
 			accountManager.deposit(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, amount);
@@ -80,9 +82,10 @@ public class AccountService {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/withdraw")
-	public ResponseData withdraw(@PathParam("id") Long accountId, Long amount) {
+	public ResponseData withdraw(@PathParam("id") Long accountId, Money money) {
 		ResponseData responseData = new ResponseData();
 		try {
+			Long amount = money.getAmount();
 			logger.info("Withdraw requested for account id={}, amount={}", accountId, amount);
 			accountManager.withdraw(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, -amount);

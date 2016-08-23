@@ -1,6 +1,7 @@
 package com.ail.revolut.app.rest;
 
 import com.ail.revolut.app.Main;
+import com.ail.revolut.app.json.Money;
 import com.ail.revolut.app.json.ResponseData;
 import com.ail.revolut.app.model.Account;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -45,7 +46,7 @@ class BaseServiceTest {
 	}
 
 	void assertDepositSuccess(Long accountId, Long depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), notNullValue());
@@ -53,7 +54,7 @@ class BaseServiceTest {
 	}
 
 	void assertDepositFails(Long accountId, Long depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(depositAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());
@@ -61,7 +62,7 @@ class BaseServiceTest {
 	}
 
 	void assertWithdrawSuccess(Long accountId, Long withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), notNullValue());
@@ -69,7 +70,7 @@ class BaseServiceTest {
 	}
 
 	void assertWithdrawFails(Long accountId, Long withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(withdrawAmount, MediaType.TEXT_PLAIN), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());
