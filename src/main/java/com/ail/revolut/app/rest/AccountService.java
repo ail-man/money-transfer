@@ -46,11 +46,11 @@ public class AccountService {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/balance")
-	public ResponseData getBalance(@PathParam("id") String accountId) {
+	public ResponseData getBalance(@PathParam("id") Long accountId) {
 		ResponseData responseData = new ResponseData();
 		try {
 			logger.info("Balance requested for account id={}", accountId);
-			responseData.setValue(accountManager.getBalance(Long.parseLong(accountId)).toString());
+			responseData.setValue(accountManager.getBalance(accountId).toString());
 		} catch (Exception e) {
 			String msg = "Something wrong: " + e.getClass() + ": " + e.getMessage();
 			logger.trace(msg, e);
