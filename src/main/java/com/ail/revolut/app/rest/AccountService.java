@@ -61,6 +61,7 @@ public class AccountService {
 	}
 
 	@POST
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/deposit")
 	public ResponseData deposit(@PathParam("id") Long accountId, Money money) {
@@ -80,6 +81,7 @@ public class AccountService {
 	}
 
 	@POST
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/withdraw")
 	public ResponseData withdraw(@PathParam("id") Long accountId, Money money) {
