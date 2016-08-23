@@ -17,7 +17,7 @@ mvn clean package
 ```
 Then run it with
 ```
-java -jar target/money-transfer-1.0-SNAPSHOT.jar
+java -jar target/money-transfer-1.0.jar
 ```
 ### Run option 3
 To assembly as standalone jar execute
@@ -26,7 +26,7 @@ mvn clean compile assembly:single
 ```
 Then run it with (not working yet - problem with Jersey MessageBodyWriter)
 ```
-java -jar money-transfer-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar target/money-transfer-1.0-jar-with-dependencies.jar
 ```
 ## Testing with curl XML
 create new accounts
