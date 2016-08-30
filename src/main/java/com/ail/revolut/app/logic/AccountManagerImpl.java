@@ -1,8 +1,8 @@
 package com.ail.revolut.app.logic;
 
+import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
-import com.ail.revolut.app.db.HibernateContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +79,7 @@ public class AccountManagerImpl implements AccountManager {
 
 			Account account = em.find(Account.class, id);
 			Long balance = account.getBalance();
-			balance = balance + amount;
+			balance += amount;
 			if (balance < 0) {
 				throw new RuntimeException("Overflow");
 			}
@@ -117,7 +117,7 @@ public class AccountManagerImpl implements AccountManager {
 			if (amount > balance) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}
-			balance = balance - amount;
+			balance -= amount;
 			account.setBalance(balance);
 
 			em.merge(account);
