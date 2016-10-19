@@ -93,7 +93,7 @@ class BaseServiceTest {
 	void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balanceAmount) {
 		BigDecimal accountBalance = getBalance(accountId);
 
-		assertThat(accountBalance, equalTo(balanceAmount));
+		assertThat(accountBalance.compareTo(balanceAmount), equalTo(0));
 	}
 
 	BigDecimal getBalance(Long accountId) {

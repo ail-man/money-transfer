@@ -100,7 +100,7 @@ public class AccountManagerTest {
 	}
 
 	private void assertAccountBalanceEqualsTo(BigDecimal balance) {
-		assertThat(accountManager.getBalance(accountId), equalTo(balance));
+		assertThat(accountManager.getBalance(accountId).compareTo(balance), equalTo(0));
 	}
 
 	private void assertDepositFails(Long id, BigDecimal amount) {

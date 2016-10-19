@@ -96,7 +96,7 @@ public class TransferManagerTest {
 	}
 
 	private void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balance) {
-		assertThat(getBalance(accountId), equalTo(balance));
+		assertThat(getBalance(accountId).compareTo(balance), equalTo(0));
 	}
 
 	private void depositTo(Long accountId, BigDecimal amount) {
