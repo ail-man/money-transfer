@@ -1,9 +1,10 @@
 package com.ail.revolut.app.dto;
 
-import org.junit.Test;
+import java.math.BigInteger;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import org.junit.Test;
 
 public class MoneyTest {
 
@@ -13,7 +14,7 @@ public class MoneyTest {
 
 		assertThat(money.toString(), equalTo("Money(amount=null)"));
 
-		money.setAmount(123L);
+		money.setAmount(new BigInteger("123"));
 
 		assertThat(money.toString(), equalTo("Money(amount=123)"));
 	}

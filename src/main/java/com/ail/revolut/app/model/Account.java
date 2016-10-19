@@ -1,10 +1,19 @@
 package com.ail.revolut.app.model;
 
+import java.io.Serializable;
+import java.math.BigInteger;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 @Table(name = "accounts")
 @Entity
@@ -19,7 +28,7 @@ public class Account implements Serializable {
 
 	@Getter
 	@Setter
-	private Long balance;
+	private BigInteger balance;
 
 	@Getter
 	@Setter

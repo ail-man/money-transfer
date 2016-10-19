@@ -1,20 +1,22 @@
 package com.ail.revolut.app.logic;
 
+import java.math.BigInteger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
 public class TransferManagerImpl implements TransferManager {
 	private static Logger logger = LoggerFactory.getLogger(TransferManagerImpl.class);
 
 	@Override
-	public void transfer(Long fromAccountId, Long toAccountId, Long amount) throws NotEnoughFundsException {
-		if (amount <= 0) {
+	public void transfer(Long fromAccountId, Long toAccountId, BigInteger amount) throws NotEnoughFundsException {
+		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
 		EntityManager em = HibernateContextHolder.createEntityManager();
@@ -26,19 +28,15 @@ public class TransferManagerImpl implements TransferManager {
 			tx.begin();
 
 			Account fromAccount = em.find(Account.class, fromAccountId);
-			Long fromBalance = fromAccount.getBalance();
-			if (fromBalance < amount) {
+			BigInteger fromBalance = fromAccount.getBalance();
+			if (fromBalance.compareTo(amount) < 0) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}
-			fromBalance -= amount;
+			fromBalance = fromBalance.subtract(amount);
 
 			Account toAccount = em.find(Account.class, toAccountId);
-			Long toBalance = toAccount.getBalance();
-			toBalance += amount;
-			if (toBalance < 0) {
-				throw new RuntimeException("Overflow");
-			}
-
+			BigInteger toBalance = toAccount.getBalance();
+			toBalance = toBalance.add(amount);
 			fromAccount.setBalance(fromBalance);
 			toAccount.setBalance(toBalance);
 
@@ -49,7 +47,9 @@ public class TransferManagerImpl implements TransferManager {
 
 			logger.info("Transfer fromId={} toId={} completed", fromAccountId, toAccountId);
 		} catch (RuntimeException e) {
-			if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
 			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {

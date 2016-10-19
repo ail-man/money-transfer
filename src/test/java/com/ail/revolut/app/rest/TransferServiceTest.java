@@ -1,16 +1,17 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.dto.ResponseData;
-import com.ail.revolut.app.dto.TransferData;
-import org.junit.Before;
-import org.junit.Test;
+import java.math.BigInteger;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
+import com.ail.revolut.app.dto.ResponseData;
+import com.ail.revolut.app.dto.TransferData;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import org.junit.Before;
+import org.junit.Test;
 
 public class TransferServiceTest extends BaseServiceTest {
 
@@ -20,108 +21,93 @@ public class TransferServiceTest extends BaseServiceTest {
 	@Before
 	public void init() throws Exception {
 		fromId = assertCreateAccount();
-		assertAccountBalanceEqualsTo(fromId, 0L);
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("0"));
 
 		toId = assertCreateAccount();
-		assertAccountBalanceEqualsTo(toId, 0L);
+		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
 	}
 
 	@Test
 	public void testTransfer() throws Exception {
-		assertDepositSuccess(fromId, 200L);
+		assertDepositSuccess(fromId, new BigInteger("200"));
 
-		assertAccountBalanceEqualsTo(fromId, 200L);
-		assertAccountBalanceEqualsTo(toId, 0L);
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("200"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
 
-		assertTransferSuccess(fromId, toId, 10L);
-		assertAccountBalanceEqualsTo(fromId, 190L);
-		assertAccountBalanceEqualsTo(toId, 10L);
+		assertTransferSuccess(fromId, toId, new BigInteger("10"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("190"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("10"));
 
-		assertTransferSuccess(fromId, toId, 20L);
-		assertAccountBalanceEqualsTo(fromId, 170L);
-		assertAccountBalanceEqualsTo(toId, 30L);
+		assertTransferSuccess(fromId, toId, new BigInteger("20"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("170"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("30"));
 
-		assertTransferSuccess(fromId, toId, 70L);
-		assertAccountBalanceEqualsTo(fromId, 100L);
-		assertAccountBalanceEqualsTo(toId, 100L);
+		assertTransferSuccess(fromId, toId, new BigInteger("70"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("100"));
 	}
 
 	@Test
 	public void testTransferAmountMustBeNotGreaterThanFromBalance() throws Exception {
-		assertTransferFails(fromId, toId, 20L);
-		assertAccountBalanceEqualsTo(fromId, 0L);
-		assertAccountBalanceEqualsTo(toId, 0L);
+		assertTransferFails(fromId, toId, new BigInteger("20"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
 
-		assertDepositSuccess(fromId, 200L);
-		assertAccountBalanceEqualsTo(fromId, 200L);
+		assertDepositSuccess(fromId, new BigInteger("200"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("200"));
 
-		assertTransferFails(fromId, toId, 1000L);
-		assertAccountBalanceEqualsTo(fromId, 200L);
-		assertAccountBalanceEqualsTo(toId, 0L);
+		assertTransferFails(fromId, toId, new BigInteger("1000"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("200"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
 	}
-
 
 	@Test
 	public void testTransferShouldIncrementToBalance() throws Exception {
-		assertDepositSuccess(fromId, 200L);
-		assertDepositSuccess(toId, 300L);
-		assertAccountBalanceEqualsTo(fromId, 200L);
-		assertAccountBalanceEqualsTo(toId, 300L);
+		assertDepositSuccess(fromId, new BigInteger("200"));
+		assertDepositSuccess(toId, new BigInteger("300"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("200"));
+		assertAccountBalanceEqualsTo(toId, new BigInteger("300"));
 
-		Long amount = 35L;
-		Long toBalance = getBalance(toId);
+		BigInteger amount = new BigInteger("35");
+		BigInteger toBalance = getBalance(toId);
 
 		assertTransferSuccess(fromId, toId, amount);
-		assertAccountBalanceEqualsTo(toId, toBalance + amount);
+		assertAccountBalanceEqualsTo(toId, toBalance.add(amount));
 	}
 
 	@Test
 	public void testTransferShouldDecrementFromBalance() throws Exception {
-		assertDepositSuccess(fromId, 200L);
-		assertAccountBalanceEqualsTo(fromId, 200L);
+		assertDepositSuccess(fromId, new BigInteger("200"));
+		assertAccountBalanceEqualsTo(fromId, new BigInteger("200"));
 
-		Long amount = 64L;
-		Long fromBalance = getBalance(fromId);
+		BigInteger amount = new BigInteger("64");
+		BigInteger fromBalance = getBalance(fromId);
 
 		assertTransferSuccess(fromId, toId, amount);
-		assertAccountBalanceEqualsTo(fromId, fromBalance - amount);
+		assertAccountBalanceEqualsTo(fromId, fromBalance.subtract(amount));
 	}
 
 	@Test
 	public void testAmountShouldBeOnlyPositive() throws Exception {
-		assertTransferFails(fromId, toId, 0L);
-		assertTransferFails(fromId, toId, -2L);
+		assertTransferFails(fromId, toId, new BigInteger("0"));
+		assertTransferFails(fromId, toId, new BigInteger("-2"));
 	}
 
-	@Test
-	public void testTransferToBalanceOverflow() throws Exception {
-		assertDepositSuccess(fromId, 2L);
-		assertDepositSuccess(toId, Long.MAX_VALUE);
-
-		assertAccountBalanceEqualsTo(fromId, 2L);
-		assertAccountBalanceEqualsTo(toId, Long.MAX_VALUE);
-
-		assertTransferFails(fromId, toId, 1L);
-
-		assertAccountBalanceEqualsTo(fromId, 2L);
-		assertAccountBalanceEqualsTo(toId, Long.MAX_VALUE);
-	}
-
-	private void assertTransferSuccess(Long fromId, Long toId, Long amount) {
+	private void assertTransferSuccess(Long fromId, Long toId, BigInteger amount) {
 		ResponseData responseData = performTransfer(fromId, toId, amount);
 
 		assertThat(responseData.getValue(), notNullValue());
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	private void assertTransferFails(Long fromId, Long toId, Long amount) {
+	private void assertTransferFails(Long fromId, Long toId, BigInteger amount) {
 		ResponseData responseData = performTransfer(fromId, toId, amount);
 
 		assertThat(responseData.getValue(), nullValue());
 		assertThat(responseData.getMessage(), notNullValue());
 	}
 
-	private ResponseData performTransfer(Long fromId, Long toId, Long amount) {
+	private ResponseData performTransfer(Long fromId, Long toId, BigInteger amount) {
 		TransferData transferData = new TransferData(fromId, toId, amount);
 		ResponseData responseData = getTarget().path("/transfer").request().post(Entity.entity(transferData, MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);

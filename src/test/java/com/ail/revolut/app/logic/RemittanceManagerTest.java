@@ -1,10 +1,11 @@
 package com.ail.revolut.app.logic;
 
-import com.ail.revolut.app.dto.TransferData;
-import org.junit.Test;
+import java.math.BigInteger;
 
+import com.ail.revolut.app.dto.TransferData;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
+import org.junit.Test;
 
 public class RemittanceManagerTest {
 
@@ -14,7 +15,7 @@ public class RemittanceManagerTest {
 		TransferData transferData = new TransferData();
 		transferData.setFrom(1L);
 		transferData.setTo(2L);
-		transferData.setAmount(300L);
+		transferData.setAmount(new BigInteger("300"));
 
 		Long id = remittanceManager.save(transferData);
 		assertThat(id, notNullValue());

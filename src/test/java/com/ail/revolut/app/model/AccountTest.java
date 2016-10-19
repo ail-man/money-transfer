@@ -1,11 +1,11 @@
 package com.ail.revolut.app.model;
 
-import org.junit.Test;
-
+import java.math.BigInteger;
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import org.junit.Test;
 
 public class AccountTest {
 
@@ -16,7 +16,7 @@ public class AccountTest {
 		assertThat(account.toString(), equalTo("Account(id=null, balance=null, owner=null)"));
 
 		account.setId(777L);
-		account.setBalance(10500L);
+		account.setBalance(new BigInteger("10500"));
 
 		assertThat(account.toString(), equalTo("Account(id=777, balance=10500, owner=null)"));
 

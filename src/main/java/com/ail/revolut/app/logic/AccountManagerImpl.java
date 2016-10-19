@@ -1,13 +1,15 @@
 package com.ail.revolut.app.logic;
 
+import java.math.BigInteger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.model.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 public class AccountManagerImpl implements AccountManager {
 	private static final Logger logger = LoggerFactory.getLogger(AccountManagerImpl.class);
@@ -25,7 +27,7 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = new Account();
-			account.setBalance(0L);
+			account.setBalance(new BigInteger("0"));
 
 			em.persist(account);
 
@@ -34,7 +36,9 @@ public class AccountManagerImpl implements AccountManager {
 			accountId = account.getId();
 			logger.info("Account created with id={}", accountId);
 		} catch (RuntimeException e) {
-			if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
 			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
@@ -45,8 +49,8 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public Long getBalance(Long id) {
-		Long balance = null;
+	public BigInteger getBalance(Long id) {
+		BigInteger balance = null;
 
 		EntityManager em = HibernateContextHolder.createEntityManager();
 
@@ -64,8 +68,8 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public void deposit(Long id, Long amount) {
-		if (amount <= 0) {
+	public void deposit(Long id, BigInteger amount) {
+		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
 
@@ -78,11 +82,8 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = em.find(Account.class, id);
-			Long balance = account.getBalance();
-			balance += amount;
-			if (balance < 0) {
-				throw new RuntimeException("Overflow");
-			}
+			BigInteger balance = account.getBalance();
+			balance = balance.add(amount);
 			account.setBalance(balance);
 
 			em.merge(account);
@@ -90,7 +91,9 @@ public class AccountManagerImpl implements AccountManager {
 			tx.commit();
 			logger.info("Deposit to accountId={} completed", id);
 		} catch (RuntimeException e) {
-			if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
 			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {
@@ -99,8 +102,8 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public void withdraw(Long id, Long amount) throws NotEnoughFundsException {
-		if (amount <= 0) {
+	public void withdraw(Long id, BigInteger amount) throws NotEnoughFundsException {
+		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
 
@@ -113,11 +116,11 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = em.find(Account.class, id);
-			Long balance = account.getBalance();
-			if (amount > balance) {
+			BigInteger balance = account.getBalance();
+			if (balance.compareTo(amount) < 0) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}
-			balance -= amount;
+			balance = balance.subtract(amount);
 			account.setBalance(balance);
 
 			em.merge(account);
@@ -125,7 +128,9 @@ public class AccountManagerImpl implements AccountManager {
 			tx.commit();
 			logger.info("Withdraw from accountId={} completed", id);
 		} catch (RuntimeException e) {
-			if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
 			logger.trace(e.getMessage(), e);
 			throw e;
 		} finally {

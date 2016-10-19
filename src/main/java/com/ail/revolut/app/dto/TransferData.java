@@ -1,11 +1,13 @@
 package com.ail.revolut.app.dto;
 
+import java.io.Serializable;
+import java.math.BigInteger;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +18,5 @@ public class TransferData implements Serializable {
 
 	private Long from;
 	private Long to;
-	private Long amount;
+	private BigInteger amount;
 }

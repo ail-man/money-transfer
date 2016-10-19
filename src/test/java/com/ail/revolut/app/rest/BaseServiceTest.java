@@ -1,14 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import com.ail.revolut.app.Main;
-import com.ail.revolut.app.dto.Money;
-import com.ail.revolut.app.dto.ResponseData;
-import com.ail.revolut.app.model.Account;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.junit.After;
-import org.junit.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.math.BigInteger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,8 +8,19 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
+import com.ail.revolut.app.Main;
+import com.ail.revolut.app.dto.Money;
+import com.ail.revolut.app.dto.ResponseData;
+import com.ail.revolut.app.model.Account;
+import org.glassfish.grizzly.http.server.HttpServer;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import org.junit.After;
+import org.junit.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BaseServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(BaseServiceTest.class);
@@ -45,7 +48,7 @@ class BaseServiceTest {
 		logger.info(responseData.toString());
 	}
 
-	void assertDepositSuccess(Long accountId, Long depositAmount) {
+	void assertDepositSuccess(Long accountId, BigInteger depositAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -53,7 +56,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	void assertDepositFails(Long accountId, Long depositAmount) {
+	void assertDepositFails(Long accountId, BigInteger depositAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -61,7 +64,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), notNullValue());
 	}
 
-	void assertWithdrawSuccess(Long accountId, Long withdrawAmount) {
+	void assertWithdrawSuccess(Long accountId, BigInteger withdrawAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -69,7 +72,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	void assertWithdrawFails(Long accountId, Long withdrawAmount) {
+	void assertWithdrawFails(Long accountId, BigInteger withdrawAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -87,19 +90,19 @@ class BaseServiceTest {
 		return accountId;
 	}
 
-	void assertAccountBalanceEqualsTo(Long accountId, Long balanceAmount) {
-		Long accountBalance = getBalance(accountId);
+	void assertAccountBalanceEqualsTo(Long accountId, BigInteger balanceAmount) {
+		BigInteger accountBalance = getBalance(accountId);
 
 		assertThat(accountBalance, equalTo(balanceAmount));
 	}
 
-	Long getBalance(Long accountId) {
+	BigInteger getBalance(Long accountId) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/balance").request().get(ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getMessage(), nullValue());
 
-		Long accountBalance = Long.parseLong(responseData.getValue());
+		BigInteger accountBalance = new BigInteger(responseData.getValue());
 		logger.info("Balance={}", accountBalance);
 
 		return accountBalance;

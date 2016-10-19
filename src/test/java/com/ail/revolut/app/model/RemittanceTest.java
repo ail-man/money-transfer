@@ -1,13 +1,13 @@
 package com.ail.revolut.app.model;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import java.math.BigInteger;
 import java.util.Date;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import org.junit.Before;
+import org.junit.Test;
 
 public class RemittanceTest {
 
@@ -19,7 +19,7 @@ public class RemittanceTest {
 		remittance.setId(100L);
 		remittance.setFromId(1L);
 		remittance.setToId(2L);
-		remittance.setAmount(300L);
+		remittance.setAmount(new BigInteger("300"));
 		remittance.setPerformed(new Date());
 	}
 
