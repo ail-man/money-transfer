@@ -1,7 +1,7 @@
 package com.ail.revolut.app.dto;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class Money implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private BigInteger amount;
+	private BigDecimal amount;
 }

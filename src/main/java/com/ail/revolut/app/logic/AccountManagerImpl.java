@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -27,7 +27,7 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = new Account();
-			account.setBalance(new BigInteger("0"));
+			account.setBalance(new BigDecimal("0"));
 
 			em.persist(account);
 
@@ -49,8 +49,8 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public BigInteger getBalance(Long id) {
-		BigInteger balance = null;
+	public BigDecimal getBalance(Long id) {
+		BigDecimal balance = null;
 
 		EntityManager em = HibernateContextHolder.createEntityManager();
 
@@ -68,7 +68,7 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public void deposit(Long id, BigInteger amount) {
+	public void deposit(Long id, BigDecimal amount) {
 		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
@@ -82,7 +82,7 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = em.find(Account.class, id);
-			BigInteger balance = account.getBalance();
+			BigDecimal balance = account.getBalance();
 			balance = balance.add(amount);
 			account.setBalance(balance);
 
@@ -102,7 +102,7 @@ public class AccountManagerImpl implements AccountManager {
 	}
 
 	@Override
-	public void withdraw(Long id, BigInteger amount) throws NotEnoughFundsException {
+	public void withdraw(Long id, BigDecimal amount) throws NotEnoughFundsException {
 		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
@@ -116,7 +116,7 @@ public class AccountManagerImpl implements AccountManager {
 			tx.begin();
 
 			Account account = em.find(Account.class, id);
-			BigInteger balance = account.getBalance();
+			BigDecimal balance = account.getBalance();
 			if (balance.compareTo(amount) < 0) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}

@@ -1,7 +1,7 @@
 package com.ail.revolut.app.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +28,7 @@ public class Account implements Serializable {
 
 	@Getter
 	@Setter
-	private BigInteger balance;
+	private BigDecimal balance;
 
 	@Getter
 	@Setter

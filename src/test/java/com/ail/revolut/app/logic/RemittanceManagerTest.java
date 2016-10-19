@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import com.ail.revolut.app.dto.TransferData;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,7 +15,7 @@ public class RemittanceManagerTest {
 		TransferData transferData = new TransferData();
 		transferData.setFrom(1L);
 		transferData.setTo(2L);
-		transferData.setAmount(new BigInteger("300"));
+		transferData.setAmount(new BigDecimal("300"));
 
 		Long id = remittanceManager.save(transferData);
 		assertThat(id, notNullValue());

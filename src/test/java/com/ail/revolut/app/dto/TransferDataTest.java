@@ -1,6 +1,6 @@
 package com.ail.revolut.app.dto;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +16,7 @@ public class TransferDataTest {
 
 		transferData.setFrom(132L);
 		transferData.setTo(4315L);
-		transferData.setAmount(new BigInteger("6261"));
+		transferData.setAmount(new BigDecimal("6261"));
 		assertThat(transferData.toString(), equalTo("TransferData(from=132, to=4315, amount=6261)"));
 	}
 

@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -22,64 +22,64 @@ public class TransferManagerTest {
 	public void init() throws Exception {
 		fromId = accountManager.createAccount();
 		toId = accountManager.createAccount();
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("0"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("0"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("0"));
 	}
 
 	@Test
 	public void testTransfer() throws Exception {
-		depositTo(fromId, new BigInteger("100"));
+		depositTo(fromId, new BigDecimal("100"));
 
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("0"));
 
-		transferManager.transfer(fromId, toId, new BigInteger("10"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("90"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("10"));
+		transferManager.transfer(fromId, toId, new BigDecimal("10"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("90"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("10"));
 
-		transferManager.transfer(fromId, toId, new BigInteger("20"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("70"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("30"));
+		transferManager.transfer(fromId, toId, new BigDecimal("20"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("70"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("30"));
 
-		transferManager.transfer(fromId, toId, new BigInteger("70"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("0"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("100"));
+		transferManager.transfer(fromId, toId, new BigDecimal("70"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("0"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("100"));
 	}
 
 	@Test
 	public void testTransferAmountMustBeNotGreaterThanFromBalance() throws Exception {
-		assertTransferFails(fromId, toId, new BigInteger("10"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("0"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
+		assertTransferFails(fromId, toId, new BigDecimal("10"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("0"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("0"));
 
-		depositTo(fromId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
+		depositTo(fromId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("100"));
 
-		assertTransferFails(fromId, toId, new BigInteger("1000"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("0"));
+		assertTransferFails(fromId, toId, new BigDecimal("1000"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("0"));
 	}
 
 	@Test
 	public void testTransferShouldIncrementToBalance() throws Exception {
-		depositTo(fromId, new BigInteger("100"));
-		depositTo(toId, new BigInteger("200"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(toId, new BigInteger("200"));
+		depositTo(fromId, new BigDecimal("100"));
+		depositTo(toId, new BigDecimal("200"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(toId, new BigDecimal("200"));
 
-		BigInteger amount = new BigInteger("20");
-		BigInteger toBalance = getBalance(toId);
+		BigDecimal amount = new BigDecimal("20");
+		BigDecimal toBalance = getBalance(toId);
 		transferManager.transfer(fromId, toId, amount);
 		assertAccountBalanceEqualsTo(toId, toBalance.add(amount));
 	}
 
 	@Test
 	public void testTransferShouldDecrementFromBalance() throws Exception {
-		depositTo(fromId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(fromId, new BigInteger("100"));
+		depositTo(fromId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(fromId, new BigDecimal("100"));
 
-		BigInteger amount = new BigInteger("20");
-		BigInteger fromBalance = getBalance(fromId);
+		BigDecimal amount = new BigDecimal("20");
+		BigDecimal fromBalance = getBalance(fromId);
 
 		transferManager.transfer(fromId, toId, amount);
 		assertAccountBalanceEqualsTo(fromId, fromBalance.subtract(amount));
@@ -87,23 +87,23 @@ public class TransferManagerTest {
 
 	@Test
 	public void testAmountShouldBeOnlyPositive() throws Exception {
-		assertTransferFails(fromId, toId, new BigInteger("0"));
-		assertTransferFails(fromId, toId, new BigInteger("-10"));
+		assertTransferFails(fromId, toId, new BigDecimal("0"));
+		assertTransferFails(fromId, toId, new BigDecimal("-10"));
 	}
 
-	private BigInteger getBalance(Long accountId) {
+	private BigDecimal getBalance(Long accountId) {
 		return accountManager.getBalance(accountId);
 	}
 
-	private void assertAccountBalanceEqualsTo(Long accountId, BigInteger balance) {
+	private void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balance) {
 		assertThat(getBalance(accountId), equalTo(balance));
 	}
 
-	private void depositTo(Long accountId, BigInteger amount) {
+	private void depositTo(Long accountId, BigDecimal amount) {
 		accountManager.deposit(accountId, amount);
 	}
 
-	private void assertTransferFails(Long fromId, Long toId, BigInteger amount) {
+	private void assertTransferFails(Long fromId, Long toId, BigDecimal amount) {
 		try {
 			transferManager.transfer(fromId, toId, amount);
 			fail("Should not transfer");

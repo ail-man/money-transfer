@@ -1,6 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,7 +17,7 @@ public class AccountServiceTest extends BaseServiceTest {
 	@Before
 	public void init() throws Exception {
 		accountId = assertCreateAccount();
-		assertAccountBalanceEqualsTo(accountId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(accountId, new BigDecimal("0"));
 	}
 
 	@Test
@@ -28,37 +28,37 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testGetBalance() throws Exception {
-		BigInteger accountBalance = getBalance(accountId);
+		BigDecimal accountBalance = getBalance(accountId);
 		assertThat(accountBalance, is(notNullValue()));
 	}
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		assertAccountBalanceEqualsTo(accountId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(accountId, new BigDecimal("0"));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		BigInteger depositAmount = new BigInteger("123");
+		BigDecimal depositAmount = new BigDecimal("123");
 		assertDepositSuccess(accountId, depositAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount);
 
-		BigInteger newDepositAmount = new BigInteger("345");
+		BigDecimal newDepositAmount = new BigDecimal("345");
 		assertDepositSuccess(accountId, newDepositAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount.add(newDepositAmount));
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		BigInteger deposit = new BigInteger("100");
+		BigDecimal deposit = new BigDecimal("100");
 		assertDepositSuccess(accountId, deposit);
 		assertAccountBalanceEqualsTo(accountId, deposit);
 
-		BigInteger withdrawAmount = new BigInteger("13");
+		BigDecimal withdrawAmount = new BigDecimal("13");
 		assertWithdrawSuccess(accountId, withdrawAmount);
 		assertAccountBalanceEqualsTo(accountId, deposit.subtract(withdrawAmount));
 
-		BigInteger newWithdrawAmount = new BigInteger("25");
+		BigDecimal newWithdrawAmount = new BigDecimal("25");
 		assertWithdrawSuccess(accountId, newWithdrawAmount);
 
 		assertWithdrawSuccess(accountId, deposit.subtract(withdrawAmount.add(newWithdrawAmount)));
@@ -66,19 +66,19 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testAmountMustBePositiveOnly() throws Exception {
-		BigInteger zeroAmount = new BigInteger("0");
+		BigDecimal zeroAmount = new BigDecimal("0");
 		assertDepositFails(accountId, zeroAmount);
 		assertAccountBalanceEqualsTo(accountId, zeroAmount);
 
-		BigInteger negativeAmount = new BigInteger("-10");
+		BigDecimal negativeAmount = new BigDecimal("-10");
 
 		assertDepositFails(accountId, negativeAmount);
-		assertAccountBalanceEqualsTo(accountId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(accountId, new BigDecimal("0"));
 
 		assertWithdrawFails(accountId, negativeAmount);
-		assertAccountBalanceEqualsTo(accountId, new BigInteger("0"));
+		assertAccountBalanceEqualsTo(accountId, new BigDecimal("0"));
 
-		BigInteger successDepositAmount = new BigInteger("100");
+		BigDecimal successDepositAmount = new BigDecimal("100");
 		assertDepositSuccess(accountId, successDepositAmount);
 		assertAccountBalanceEqualsTo(accountId, successDepositAmount);
 
@@ -91,14 +91,14 @@ public class AccountServiceTest extends BaseServiceTest {
 
 	@Test
 	public void testWithdrawMustNotBeGreaterThanDeposit() throws Exception {
-		assertWithdrawFails(accountId, new BigInteger("0"));
-		assertAccountBalanceEqualsTo(accountId, new BigInteger("0"));
+		assertWithdrawFails(accountId, new BigDecimal("0"));
+		assertAccountBalanceEqualsTo(accountId, new BigDecimal("0"));
 
-		BigInteger depositAmount = new BigInteger("10");
+		BigDecimal depositAmount = new BigDecimal("10");
 		assertDepositSuccess(accountId, depositAmount);
 		assertAccountBalanceEqualsTo(accountId, depositAmount);
 
-		BigInteger withdrawAmount = new BigInteger("20");
+		BigDecimal withdrawAmount = new BigDecimal("20");
 		assertThat(withdrawAmount, greaterThan(depositAmount));
 
 		assertWithdrawFails(accountId, withdrawAmount);

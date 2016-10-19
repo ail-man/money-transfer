@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -15,7 +15,7 @@ public class TransferManagerImpl implements TransferManager {
 	private static Logger logger = LoggerFactory.getLogger(TransferManagerImpl.class);
 
 	@Override
-	public void transfer(Long fromAccountId, Long toAccountId, BigInteger amount) throws NotEnoughFundsException {
+	public void transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) throws NotEnoughFundsException {
 		if (amount.signum() <= 0) {
 			throw new IllegalArgumentException("Amount must be positive");
 		}
@@ -28,14 +28,14 @@ public class TransferManagerImpl implements TransferManager {
 			tx.begin();
 
 			Account fromAccount = em.find(Account.class, fromAccountId);
-			BigInteger fromBalance = fromAccount.getBalance();
+			BigDecimal fromBalance = fromAccount.getBalance();
 			if (fromBalance.compareTo(amount) < 0) {
 				throw new NotEnoughFundsException("Not enough funds");
 			}
 			fromBalance = fromBalance.subtract(amount);
 
 			Account toAccount = em.find(Account.class, toAccountId);
-			BigInteger toBalance = toAccount.getBalance();
+			BigDecimal toBalance = toAccount.getBalance();
 			toBalance = toBalance.add(amount);
 			fromAccount.setBalance(fromBalance);
 			toAccount.setBalance(toBalance);

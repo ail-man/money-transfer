@@ -1,6 +1,6 @@
 package com.ail.revolut.app.logic;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -34,76 +34,76 @@ public class AccountManagerTest {
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		assertAccountBalanceEqualsTo(new BigInteger("0"));
+		assertAccountBalanceEqualsTo(new BigDecimal("0"));
 	}
 
 	@Test
 	public void testDesposit() throws Exception {
-		deposit(new BigInteger("100"));
-		assertAccountBalanceEqualsTo(new BigInteger("100"));
+		deposit(new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(new BigDecimal("100"));
 
-		deposit(new BigInteger("23"));
-		assertAccountBalanceEqualsTo(new BigInteger("123"));
+		deposit(new BigDecimal("23"));
+		assertAccountBalanceEqualsTo(new BigDecimal("123"));
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		deposit(new BigInteger("1000"));
-		assertAccountBalanceEqualsTo(new BigInteger("1000"));
+		deposit(new BigDecimal("1000"));
+		assertAccountBalanceEqualsTo(new BigDecimal("1000"));
 
-		withdraw(new BigInteger("10"));
-		assertAccountBalanceEqualsTo(new BigInteger("990"));
+		withdraw(new BigDecimal("10"));
+		assertAccountBalanceEqualsTo(new BigDecimal("990"));
 
-		withdraw(new BigInteger("123"));
-		assertAccountBalanceEqualsTo(new BigInteger("867"));
+		withdraw(new BigDecimal("123"));
+		assertAccountBalanceEqualsTo(new BigDecimal("867"));
 	}
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		assertWithdrawFails(accountId, new BigInteger("5"));
+		assertWithdrawFails(accountId, new BigDecimal("5"));
 
-		deposit(new BigInteger("30"));
-		assertAccountBalanceEqualsTo(new BigInteger("30"));
-		assertWithdrawFails(accountId, new BigInteger("100"));
-		assertAccountBalanceEqualsTo(new BigInteger("30"));
+		deposit(new BigDecimal("30"));
+		assertAccountBalanceEqualsTo(new BigDecimal("30"));
+		assertWithdrawFails(accountId, new BigDecimal("100"));
+		assertAccountBalanceEqualsTo(new BigDecimal("30"));
 
-		withdraw(new BigInteger("10"));
-		assertAccountBalanceEqualsTo(new BigInteger("20"));
-		assertWithdrawFails(accountId, new BigInteger("30"));
-		assertAccountBalanceEqualsTo(new BigInteger("20"));
+		withdraw(new BigDecimal("10"));
+		assertAccountBalanceEqualsTo(new BigDecimal("20"));
+		assertWithdrawFails(accountId, new BigDecimal("30"));
+		assertAccountBalanceEqualsTo(new BigDecimal("20"));
 
-		withdraw(new BigInteger("20"));
-		assertAccountBalanceEqualsTo(new BigInteger("0"));
-		assertWithdrawFails(accountId, new BigInteger("1"));
-		assertAccountBalanceEqualsTo(new BigInteger("0"));
+		withdraw(new BigDecimal("20"));
+		assertAccountBalanceEqualsTo(new BigDecimal("0"));
+		assertWithdrawFails(accountId, new BigDecimal("1"));
+		assertAccountBalanceEqualsTo(new BigDecimal("0"));
 	}
 
 	@Test
 	public void testAmountMustBePositiveOnly() throws Exception {
-		assertDepositFails(accountId, new BigInteger("0"));
-		assertWithdrawFails(accountId, new BigInteger("0"));
+		assertDepositFails(accountId, new BigDecimal("0"));
+		assertWithdrawFails(accountId, new BigDecimal("0"));
 
-		assertDepositFails(accountId, new BigInteger("-100"));
-		assertWithdrawFails(accountId, new BigInteger("-20"));
+		assertDepositFails(accountId, new BigDecimal("-100"));
+		assertWithdrawFails(accountId, new BigDecimal("-20"));
 	}
 
-	private BigInteger getBalance() {
+	private BigDecimal getBalance() {
 		return accountManager.getBalance(accountId);
 	}
 
-	private void deposit(BigInteger amount) {
+	private void deposit(BigDecimal amount) {
 		accountManager.deposit(accountId, amount);
 	}
 
-	private void withdraw(BigInteger amount) throws NotEnoughFundsException {
+	private void withdraw(BigDecimal amount) throws NotEnoughFundsException {
 		accountManager.withdraw(accountId, amount);
 	}
 
-	private void assertAccountBalanceEqualsTo(BigInteger balance) {
+	private void assertAccountBalanceEqualsTo(BigDecimal balance) {
 		assertThat(accountManager.getBalance(accountId), equalTo(balance));
 	}
 
-	private void assertDepositFails(Long id, BigInteger amount) {
+	private void assertDepositFails(Long id, BigDecimal amount) {
 		try {
 			accountManager.deposit(id, amount);
 			fail("Should not deposit");
@@ -112,7 +112,7 @@ public class AccountManagerTest {
 		}
 	}
 
-	private void assertWithdrawFails(Long id, BigInteger amount) {
+	private void assertWithdrawFails(Long id, BigDecimal amount) {
 		try {
 			accountManager.withdraw(id, amount);
 			fail("Should not withdraw");

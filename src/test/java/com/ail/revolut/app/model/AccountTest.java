@@ -1,6 +1,6 @@
 package com.ail.revolut.app.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,7 +16,7 @@ public class AccountTest {
 		assertThat(account.toString(), equalTo("Account(id=null, balance=null, owner=null)"));
 
 		account.setId(777L);
-		account.setBalance(new BigInteger("10500"));
+		account.setBalance(new BigDecimal("10500"));
 
 		assertThat(account.toString(), equalTo("Account(id=777, balance=10500, owner=null)"));
 

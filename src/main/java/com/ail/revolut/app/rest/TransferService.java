@@ -1,5 +1,11 @@
 package com.ail.revolut.app.rest;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import com.ail.revolut.app.dto.ResponseData;
 import com.ail.revolut.app.dto.TransferData;
 import com.ail.revolut.app.logic.RemittanceManager;
@@ -8,12 +14,6 @@ import com.ail.revolut.app.logic.TransferManager;
 import com.ail.revolut.app.logic.TransferManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Path("/transfer")
 public class TransferService {

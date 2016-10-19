@@ -1,6 +1,6 @@
 package com.ail.revolut.app.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -23,12 +23,12 @@ public class UserTest {
 
 		Account account1 = new Account();
 		account1.setId(555L);
-		account1.setBalance(new BigInteger("10000"));
+		account1.setBalance(new BigDecimal("10000"));
 		account1.setOwner(user);
 
 		Account account2 = new Account();
 		account2.setId(95L);
-		account2.setBalance(new BigInteger("4053"));
+		account2.setBalance(new BigDecimal("4053"));
 		account2.setOwner(user);
 
 		user.setAccounts(Arrays.asList(account1, account2));

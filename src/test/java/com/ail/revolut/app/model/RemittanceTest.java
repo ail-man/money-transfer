@@ -1,6 +1,6 @@
 package com.ail.revolut.app.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static junit.framework.TestCase.assertTrue;
@@ -19,7 +19,7 @@ public class RemittanceTest {
 		remittance.setId(100L);
 		remittance.setFromId(1L);
 		remittance.setToId(2L);
-		remittance.setAmount(new BigInteger("300"));
+		remittance.setAmount(new BigDecimal("300"));
 		remittance.setPerformed(new Date());
 	}
 

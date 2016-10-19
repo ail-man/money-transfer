@@ -1,7 +1,7 @@
 package com.ail.revolut.app.dto;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,5 +18,5 @@ public class TransferData implements Serializable {
 
 	private Long from;
 	private Long to;
-	private BigInteger amount;
+	private BigDecimal amount;
 }

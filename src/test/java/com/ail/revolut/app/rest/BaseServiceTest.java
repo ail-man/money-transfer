@@ -1,6 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -48,7 +48,7 @@ class BaseServiceTest {
 		logger.info(responseData.toString());
 	}
 
-	void assertDepositSuccess(Long accountId, BigInteger depositAmount) {
+	void assertDepositSuccess(Long accountId, BigDecimal depositAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -56,7 +56,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	void assertDepositFails(Long accountId, BigInteger depositAmount) {
+	void assertDepositFails(Long accountId, BigDecimal depositAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -64,7 +64,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), notNullValue());
 	}
 
-	void assertWithdrawSuccess(Long accountId, BigInteger withdrawAmount) {
+	void assertWithdrawSuccess(Long accountId, BigDecimal withdrawAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -72,7 +72,7 @@ class BaseServiceTest {
 		assertThat(responseData.getMessage(), nullValue());
 	}
 
-	void assertWithdrawFails(Long accountId, BigInteger withdrawAmount) {
+	void assertWithdrawFails(Long accountId, BigDecimal withdrawAmount) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
@@ -90,19 +90,19 @@ class BaseServiceTest {
 		return accountId;
 	}
 
-	void assertAccountBalanceEqualsTo(Long accountId, BigInteger balanceAmount) {
-		BigInteger accountBalance = getBalance(accountId);
+	void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balanceAmount) {
+		BigDecimal accountBalance = getBalance(accountId);
 
 		assertThat(accountBalance, equalTo(balanceAmount));
 	}
 
-	BigInteger getBalance(Long accountId) {
+	BigDecimal getBalance(Long accountId) {
 		ResponseData responseData = getTarget().path("/account/" + accountId + "/balance").request().get(ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getMessage(), nullValue());
 
-		BigInteger accountBalance = new BigInteger(responseData.getValue());
+		BigDecimal accountBalance = new BigDecimal(responseData.getValue());
 		logger.info("Balance={}", accountBalance);
 
 		return accountBalance;

@@ -1,6 +1,6 @@
 package com.ail.revolut.app.rest;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -75,7 +75,7 @@ public class AccountService {
 	public ResponseData deposit(@PathParam("id") Long accountId, Money money) {
 		ResponseData responseData = new ResponseData();
 		try {
-			BigInteger amount = money.getAmount();
+			BigDecimal amount = money.getAmount();
 			logger.info("Deposit requested for account id={}, amount={}", accountId, amount);
 			accountManager.deposit(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, amount);
@@ -95,7 +95,7 @@ public class AccountService {
 	public ResponseData withdraw(@PathParam("id") Long accountId, Money money) {
 		ResponseData responseData = new ResponseData();
 		try {
-			BigInteger amount = money.getAmount();
+			BigDecimal amount = money.getAmount();
 			logger.info("Withdraw requested for account id={}, amount={}", accountId, amount);
 			accountManager.withdraw(accountId, amount);
 			TransferData transferData = new TransferData(accountId, accountId, amount.negate());

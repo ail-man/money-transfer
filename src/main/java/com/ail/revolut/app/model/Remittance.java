@@ -1,7 +1,7 @@
 package com.ail.revolut.app.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -40,7 +40,7 @@ public class Remittance implements Serializable, Cloneable {
 	@Getter
 	@Setter
 	@Column(nullable = false)
-	private BigInteger amount;
+	private BigDecimal amount;
 
 	@Column(nullable = false)
 	private Date performed;

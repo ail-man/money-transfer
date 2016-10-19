@@ -1,9 +1,10 @@
 package com.ail.revolut.app.dto;
 
-import lombok.Data;
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+
+import lombok.Data;
 
 @Data
 @XmlRootElement

@@ -7,4 +7,3 @@ public interface UserManager {
 
 	User getUser(Long id);
 }
-
