@@ -12,12 +12,10 @@ import com.ail.revolut.app.logic.RemittanceManager;
 import com.ail.revolut.app.logic.RemittanceManagerImpl;
 import com.ail.revolut.app.logic.TransferManager;
 import com.ail.revolut.app.logic.TransferManagerImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ail.revolut.app.rest.common.AbstractService;
 
 @Path("/transfer")
-public class TransferService {
-	private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
+public class TransferService extends AbstractService {
 
 	private TransferManager transferManager;
 	private RemittanceManager remittanceManager;
@@ -28,19 +26,15 @@ public class TransferService {
 	}
 
 	@POST
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public ResponseData transfer(TransferData transferData) {
-		ResponseData responseData = new ResponseData();
-		try {
+		return handleRequest(() -> {
+			ResponseData responseData = new ResponseData();
 			logger.info("Transfer requested fromId={}, toId={}, amount={}", transferData.getFrom(), transferData.getTo(), transferData.getAmount());
 			transferManager.transfer(transferData.getFrom(), transferData.getTo(), transferData.getAmount());
 			responseData.setValue(remittanceManager.save(transferData).toString());
-		} catch (Exception e) {
-			String msg = "Something wrong: " + e.getMessage();
-			logger.trace(msg, e);
-			responseData.setMessage(msg);
-		}
-		return responseData;
+			return responseData;
+		});
 	}
 }
