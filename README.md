@@ -41,15 +41,15 @@ curl -i http://localhost:8080/revolut/api/account/2/balance
 ```
 deposit on account id=1 10 dollars
 ```
-curl -i -X POST http://localhost:8080/revolut/api/account/1/deposit -H "Content-Type: application/xml" -d "<money><amount>1000</amount></money>"
+curl -i -X POST http://localhost:8080/revolut/api/account/1/deposit -H "Content-Type: application/xml" -d "<money><amount>10</amount></money>"
 ```
 withdraw from account id=1 4 dollars and 25 cents
 ```
-curl -i -X POST http://localhost:8080/revolut/api/account/1/withdraw -H "Content-Type: application/xml" -d "<money><amount>425</amount></money>"
+curl -i -X POST http://localhost:8080/revolut/api/account/1/withdraw -H "Content-Type: application/xml" -d "<money><amount>4.25</amount></money>"
 ```
 transfer from account id=1 to account id=2 2 dollars and 53 cents
 ```
-curl -i -X POST http://localhost:8080/revolut/api/transfer -H "Content-Type: application/xml" -d "<transferData><amount>253</amount><from>1</from><to>2</to></transferData>"
+curl -i -X POST http://localhost:8080/revolut/api/transfer -H "Content-Type: application/xml" -d "<transferData><amount>2.53</amount><from>1</from><to>2</to></transferData>"
 ```
 ## Testing with curl JSON
 create new accounts
@@ -64,13 +64,13 @@ curl -i http://localhost:8080/revolut/api/account/2/balance
 ```
 deposit on account id=1 10 dollars
 ```
-curl -i -X POST http://localhost:8080/revolut/api/account/1/deposit -H "Content-Type: application/json" -d "{\"amount\":\"1000\"}"
+curl -i -X POST http://localhost:8080/revolut/api/account/1/deposit -H "Content-Type: application/json" -d "{\"amount\":\"10\"}"
 ```
 withdraw from account id=1 4 dollars and 25 cents
 ```
-curl -i -X POST http://localhost:8080/revolut/api/account/1/withdraw -H "Content-Type: application/json" -d "{\"amount\":\"425\"}"
+curl -i -X POST http://localhost:8080/revolut/api/account/1/withdraw -H "Content-Type: application/json" -d "{\"amount\":\"4.25\"}"
 ```
 transfer from account id=1 to account id=2 2 dollars and 53 cents
 ```
-curl -i -X POST http://localhost:8080/revolut/api/transfer -H "Content-Type: application/json" -d "{\"amount\":\"253\",\"from\":\"1\",\"to\":\"2\"}"
+curl -i -X POST http://localhost:8080/revolut/api/transfer -H "Content-Type: application/json" -d "{\"amount\":\"2.53\",\"from\":\"1\",\"to\":\"2\"}"
 ```
