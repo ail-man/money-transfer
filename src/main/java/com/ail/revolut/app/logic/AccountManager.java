@@ -2,15 +2,14 @@ package com.ail.revolut.app.logic;
 
 import java.math.BigDecimal;
 
-import com.ail.revolut.app.exception.NotEnoughFundsException;
-
 public interface AccountManager {
 
-	Long createAccount();
+	Long createAccount() throws Exception;
 
-	BigDecimal getBalance(Long id);
+	BigDecimal getBalance(Long id) throws Exception;
 
-	void deposit(Long id, BigDecimal amount);
+	void deposit(Long id, BigDecimal amount) throws Exception;
 
-	void withdraw(Long id, BigDecimal amount) throws NotEnoughFundsException;
+	void withdraw(Long id, BigDecimal amount) throws Exception;
+
 }

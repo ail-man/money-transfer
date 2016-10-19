@@ -91,15 +91,15 @@ public class TransferManagerTest {
 		assertTransferFails(fromId, toId, new BigDecimal("-10"));
 	}
 
-	private BigDecimal getBalance(Long accountId) {
+	private BigDecimal getBalance(Long accountId) throws Exception {
 		return accountManager.getBalance(accountId);
 	}
 
-	private void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balance) {
+	private void assertAccountBalanceEqualsTo(Long accountId, BigDecimal balance) throws Exception {
 		assertThat(getBalance(accountId).compareTo(balance), equalTo(0));
 	}
 
-	private void depositTo(Long accountId, BigDecimal amount) {
+	private void depositTo(Long accountId, BigDecimal amount) throws Exception {
 		accountManager.deposit(accountId, amount);
 	}
 

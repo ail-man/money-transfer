@@ -18,7 +18,7 @@ public class AccountManagerTest {
 	private Long accountId;
 
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		accountId = accountManager.createAccount();
 	}
 
@@ -87,19 +87,19 @@ public class AccountManagerTest {
 		assertWithdrawFails(accountId, new BigDecimal("-20"));
 	}
 
-	private BigDecimal getBalance() {
+	private BigDecimal getBalance() throws Exception {
 		return accountManager.getBalance(accountId);
 	}
 
-	private void deposit(BigDecimal amount) {
+	private void deposit(BigDecimal amount) throws Exception {
 		accountManager.deposit(accountId, amount);
 	}
 
-	private void withdraw(BigDecimal amount) throws NotEnoughFundsException {
+	private void withdraw(BigDecimal amount) throws Exception {
 		accountManager.withdraw(accountId, amount);
 	}
 
-	private void assertAccountBalanceEqualsTo(BigDecimal balance) {
+	private void assertAccountBalanceEqualsTo(BigDecimal balance) throws Exception {
 		assertThat(accountManager.getBalance(accountId).compareTo(balance), equalTo(0));
 	}
 
