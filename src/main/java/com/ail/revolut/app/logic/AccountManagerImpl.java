@@ -36,9 +36,7 @@ public class AccountManagerImpl extends AbstractManager implements AccountManage
 
 	@Override
 	public void deposit(Long id, BigDecimal amount) throws Exception {
-		if (amount.signum() <= 0) {
-			throw new IllegalArgumentException("Amount must be positive");
-		}
+		checkAmount(amount);
 		logger.info("Deposit to accountId={}, amount={} started", id, amount);
 		perform(em -> {
 			Account account = em.find(Account.class, id);
@@ -53,9 +51,7 @@ public class AccountManagerImpl extends AbstractManager implements AccountManage
 
 	@Override
 	public void withdraw(Long id, BigDecimal amount) throws Exception {
-		if (amount.signum() <= 0) {
-			throw new IllegalArgumentException("Amount must be positive");
-		}
+		checkAmount(amount);
 		logger.info("Withdraw from accountId={}, amount={} started", id, amount);
 		perform(em -> {
 			Account account = em.find(Account.class, id);
@@ -68,5 +64,11 @@ public class AccountManagerImpl extends AbstractManager implements AccountManage
 			return null;
 		});
 		logger.info("Withdraw from accountId={} completed", id);
+	}
+
+	private void checkAmount(BigDecimal amount) {
+		if (amount.signum() <= 0) {
+			throw new IllegalArgumentException("Amount must be positive");
+		}
 	}
 }
