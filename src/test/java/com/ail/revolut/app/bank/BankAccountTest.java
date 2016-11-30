@@ -73,6 +73,7 @@ public class BankAccountTest {
 		}
 	}
 
-	// TODO предусмотреть конвертацию, если кладётся или снимается в другой валюте
+	// TODO conversion if deposit/withdraw different currency
+	// TODO link to Account entity - ???
 
 }
