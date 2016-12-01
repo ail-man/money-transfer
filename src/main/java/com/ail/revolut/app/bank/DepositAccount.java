@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import org.apache.commons.lang3.Validate;
 
-public class BankAccount {
+public class DepositAccount implements Account {
 
 	private final Currency currency;
 	private BigDecimal balance;
 
-	BankAccount(Currency currency) {
+	DepositAccount(Currency currency) {
 		this.currency = currency;
 		this.balance = BigDecimal.ZERO;
 	}

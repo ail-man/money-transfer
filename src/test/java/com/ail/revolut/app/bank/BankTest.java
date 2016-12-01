@@ -19,19 +19,19 @@ public class BankTest extends BaseTest {
 
 	@Test
 	public void testCreateBankAccount() throws Exception {
-		BankAccount bankAccount = bank.createBankAccount(Currency.RUB);
-		assertThat(bankAccount.getBalance(), equalTo(BigDecimal.ZERO));
+		Account account = bank.createDepositAccount(Currency.RUB);
+		assertThat(account.getBalance(), equalTo(BigDecimal.ZERO));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		BankAccount bankAccount = bank.createBankAccount(Currency.RUB);
+		Account account = bank.createDepositAccount(Currency.RUB);
 
-		bank.deposit(bankAccount, new Money(new BigDecimal("2"), Currency.RUB));
-		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("2")));
+		bank.deposit(account, new Money(new BigDecimal("2"), Currency.RUB));
+		assertThat(account.getBalance(), equalTo(new BigDecimal("2")));
 
-		bank.deposit(bankAccount, new Money(new BigDecimal("3"), Currency.RUB));
-		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("5")));
+		bank.deposit(account, new Money(new BigDecimal("3"), Currency.RUB));
+		assertThat(account.getBalance(), equalTo(new BigDecimal("5")));
 	}
 
 	// TODO can withdraw to negative balance (credit)

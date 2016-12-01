@@ -5,16 +5,16 @@ import org.apache.commons.lang3.Validate;
 
 public class Bank {
 
-	public BankAccount createBankAccount(Currency currency) {
+	public Account createDepositAccount(Currency currency) {
 		Validate.notNull(currency);
-		return new BankAccount(currency);
+		return new DepositAccount(currency);
 	}
 
-	public void deposit(BankAccount bankAccount, Money money) {
-		bankAccount.deposit(money);
+	public void deposit(Account account, Money money) {
+		account.deposit(money);
 	}
 
-	public void withdraw(BankAccount bankAccount, Money money) throws NotEnoughFundsException {
-		bankAccount.withdraw(money);
+	public void withdraw(Account account, Money money) throws NotEnoughFundsException {
+		account.withdraw(money);
 	}
 }
