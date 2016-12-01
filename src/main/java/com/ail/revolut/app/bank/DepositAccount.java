@@ -33,4 +33,8 @@ public class DepositAccount implements Account {
 	public BigDecimal getBalance() {
 		return balance;
 	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
 }

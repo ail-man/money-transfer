@@ -11,4 +11,6 @@ public interface Account {
 	void withdraw(Money money) throws NotEnoughFundsException;
 
 	BigDecimal getBalance();
+
+	Currency getCurrency();
 }

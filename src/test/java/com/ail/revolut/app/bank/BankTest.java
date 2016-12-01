@@ -24,7 +24,7 @@ public class BankTest extends BaseTest {
 	}
 
 	@Test
-	public void testDeposit() throws Exception {
+	public void testDepositTheSameCurrency() throws Exception {
 		Account account = bank.createDepositAccount(Currency.RUB);
 
 		bank.deposit(account, new Money(new BigDecimal("2"), Currency.RUB));
@@ -32,6 +32,17 @@ public class BankTest extends BaseTest {
 
 		bank.deposit(account, new Money(new BigDecimal("3"), Currency.RUB));
 		assertThat(account.getBalance(), equalTo(new BigDecimal("5")));
+	}
+
+	@Test
+	public void testDepositDifferentCurrency() throws Exception {
+		Account account = bank.createDepositAccount(Currency.RUB);
+
+		bank.deposit(account, new Money(new BigDecimal("10"), Currency.RUB));
+		assertThat(account.getBalance(), equalTo(new BigDecimal("10")));
+
+		bank.deposit(account, new Money(new BigDecimal("1"), Currency.USD));
+		assertThat(account.getBalance(), equalTo(new BigDecimal("73.828")));
 	}
 
 	// TODO can withdraw to negative balance (credit)
