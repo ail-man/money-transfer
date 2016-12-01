@@ -53,10 +53,10 @@ public class BankAccountTest extends BaseTest {
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		assertOperationFails(() -> bankAccount.withdraw(new Money(new BigDecimal("1.00"), Currency.RUB)), NotEnoughFundsException.class);
+		assertTestFails(() -> bankAccount.withdraw(new Money(new BigDecimal("1.00"), Currency.RUB)), NotEnoughFundsException.class);
 
 		bankAccount.deposit(new Money(new BigDecimal("10.00"), Currency.RUB));
-		assertOperationFails(() -> bankAccount.withdraw(new Money(new BigDecimal("10.01"), Currency.RUB)), NotEnoughFundsException.class);
+		assertTestFails(() -> bankAccount.withdraw(new Money(new BigDecimal("10.01"), Currency.RUB)), NotEnoughFundsException.class);
 	}
 
 	// TODO conversion if deposit/withdraw different currency

@@ -8,7 +8,7 @@ public class BaseTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
-	protected void assertOperationFails(TestOperation testOperation, Class<?> exceptionClass) throws Exception {
+	protected void assertTestFails(TestOperation testOperation, Class<?> exceptionClass) throws Exception {
 		try {
 			testOperation.perform();
 			fail("should fail");
