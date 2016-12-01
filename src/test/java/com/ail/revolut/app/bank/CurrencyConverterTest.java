@@ -15,12 +15,12 @@ public class CurrencyConverterTest {
 		assertEquals(new Money(new BigDecimal("63.828"), Currency.RUB), money);
 
 		money = converter.convert(new Money(new BigDecimal("1"), Currency.EUR), Currency.RUB);
-		assertEquals(new Money(new BigDecimal("67.849164"), Currency.RUB), money);
+		assertEquals(new Money(new BigDecimal("67.758"), Currency.RUB), money);
 
 		money = converter.convert(new Money(new BigDecimal("1"), Currency.EUR), Currency.USD);
-		assertEquals(new Money(new BigDecimal("1.063"), Currency.USD), money);
+		assertEquals(new Money(new BigDecimal("1.062"), Currency.USD), money);
 
 		money = converter.convert(new Money(new BigDecimal("3"), Currency.USD), Currency.EUR);
-		assertEquals(new Money(new BigDecimal("3.189"), Currency.EUR), money);
+		assertEquals(new Money(new BigDecimal("2.826"), Currency.EUR), money);
 	}
 }
