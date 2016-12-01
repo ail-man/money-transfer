@@ -3,7 +3,6 @@ package com.ail.revolut.app.bank;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -15,9 +14,7 @@ public class Money {
 	private final Currency currency;
 
 	public Money(String amount, Currency currency) {
-		BigDecimal amountValue = new BigDecimal(amount).setScale(PRECISION, BigDecimal.ROUND_CEILING);
-		Validate.notNull(currency);
-		this.amount = amountValue;
+		this.amount = new BigDecimal(amount).setScale(PRECISION, BigDecimal.ROUND_CEILING);
 		this.currency = currency;
 	}
 
