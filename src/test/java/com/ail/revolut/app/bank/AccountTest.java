@@ -8,17 +8,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
 
-public class DepositAccountTest extends BaseTest {
+public class AccountTest extends BaseTest {
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		Account account = new DepositAccount(RUB);
+		Account account = new Account(RUB);
 		assertThat(account.getBalance(), equalTo(new Money("0", RUB)));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		Account account = new DepositAccount(RUB);
+		Account account = new Account(RUB);
 
 		account.deposit(new Money("3.410", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("3.410", RUB)));
@@ -29,7 +29,7 @@ public class DepositAccountTest extends BaseTest {
 
 	@Test
 	public void testWithdraw() throws Exception {
-		Account account = new DepositAccount(RUB);
+		Account account = new Account(RUB);
 
 		account.deposit(new Money("10.000", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("10.000", RUB)));
@@ -43,7 +43,7 @@ public class DepositAccountTest extends BaseTest {
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		Account account = new DepositAccount(RUB);
+		Account account = new Account(RUB);
 
 		assertTestFails(() -> account.withdraw(new Money("1.000", RUB)), NotEnoughFundsException.class);
 
@@ -53,7 +53,7 @@ public class DepositAccountTest extends BaseTest {
 
 	@Test
 	public void testDepositAmountDifferentCurrency() throws Exception {
-		Account account = new DepositAccount(RUB);
+		Account account = new Account(RUB);
 
 		account.deposit(new Money("3", EUR));
 		assertThat(account.getBalance(), equalTo(new Money("203.2738853505", RUB)));

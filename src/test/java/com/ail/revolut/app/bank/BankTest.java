@@ -17,14 +17,14 @@ public class BankTest extends BaseTest {
 	}
 
 	@Test
-	public void testCreateBankAccount() throws Exception {
-		Account account = bank.createDepositAccount(RUB);
+	public void testCreateAccount() throws Exception {
+		Account account = bank.createAccount(RUB);
 		assertThat(account.getBalance(), equalTo(new Money("0", RUB)));
 	}
 
 	@Test
 	public void testDepositTheSameCurrency() throws Exception {
-		Account account = bank.createDepositAccount(RUB);
+		Account account = bank.createAccount(RUB);
 
 		bank.deposit(account, new Money("2", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
@@ -35,7 +35,7 @@ public class BankTest extends BaseTest {
 
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
-		Account account = bank.createDepositAccount(RUB);
+		Account account = bank.createAccount(RUB);
 
 		bank.deposit(account, new Money("10", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("10", RUB)));

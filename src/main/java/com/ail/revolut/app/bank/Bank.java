@@ -4,8 +4,8 @@ import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public class Bank {
 
-	public Account createDepositAccount(Currency currency) {
-		return new DepositAccount(currency);
+	public Account createAccount(Currency currency) {
+		return new Account(currency);
 	}
 
 	public void deposit(Account account, Money money) {

@@ -2,13 +2,32 @@ package com.ail.revolut.app.bank;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
-public interface Account {
+public class Account {
 
-	void deposit(Money money);
+	private final Currency currency;
+	private Money balance;
 
-	void withdraw(Money money) throws NotEnoughFundsException;
+	Account(Currency currency) {
+		this.currency = currency;
+		this.balance = new Money("0", currency);
+	}
 
-	Money getBalance();
+	public void deposit(Money money) {
+		balance = balance.add(money.convertTo(currency));
+	}
 
-	Currency getCurrency();
+	public void withdraw(Money money) throws NotEnoughFundsException {
+		if (balance.compareTo(money) < 0) {
+			throw new NotEnoughFundsException("not enough funds");
+		}
+		balance = balance.subtract(money.convertTo(currency));
+	}
+
+	public Money getBalance() {
+		return balance;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
 }
