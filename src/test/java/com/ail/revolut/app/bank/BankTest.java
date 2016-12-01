@@ -2,7 +2,6 @@ package com.ail.revolut.app.bank;
 
 import java.math.BigDecimal;
 
-import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
