@@ -77,6 +77,7 @@ public class MoneyTest extends BaseTest {
 	public void testHashCodeEquals() {
 		Money money1 = new Money(new BigDecimal("1"), Currency.RUB);
 		Money money2 = new Money(new BigDecimal("1"), Currency.RUB);
+
 		assertThat(money1, equalTo(money2));
 		assertThat(money1.hashCode(), equalTo(money2.hashCode()));
 	}

@@ -2,6 +2,7 @@ package com.ail.revolut.app.bank;
 
 import java.math.BigDecimal;
 
+import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -33,4 +34,6 @@ public class BankTest extends BaseTest {
 		bank.deposit(bankAccount, new Money(new BigDecimal("3"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("5")));
 	}
+
+	// TODO can withdraw to negative balance (credit)
 }

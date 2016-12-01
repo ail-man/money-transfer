@@ -11,19 +11,14 @@ import org.junit.Test;
 public class BankAccountTest extends BaseTest {
 
 	@Test
-	public void testNotNull() throws Exception {
-		assertTestFails(() -> BankAccount.create(null), NullPointerException.class);
-	}
-
-	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		BankAccount bankAccount = BankAccount.create(Currency.RUB);
+		BankAccount bankAccount = new BankAccount(Currency.RUB);
 		assertThat(bankAccount.getBalance(), equalTo(BigDecimal.ZERO));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		BankAccount bankAccount = BankAccount.create(Currency.RUB);
+		BankAccount bankAccount = new BankAccount(Currency.RUB);
 
 		bankAccount.deposit(new Money(new BigDecimal("3.41"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("3.41")));
@@ -34,13 +29,13 @@ public class BankAccountTest extends BaseTest {
 
 	@Test
 	public void testDepositDiffrentCurrency() throws Exception {
-		BankAccount bankAccount = BankAccount.create(Currency.RUB);
+		BankAccount bankAccount = new BankAccount(Currency.RUB);
 		assertTestFails(() -> bankAccount.deposit(new Money(new BigDecimal("3.41"), Currency.EUR)), IllegalArgumentException.class);
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		BankAccount bankAccount = BankAccount.create(Currency.RUB);
+		BankAccount bankAccount = new BankAccount(Currency.RUB);
 
 		bankAccount.deposit(new Money(new BigDecimal("10.00"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("10.00")));
@@ -54,7 +49,7 @@ public class BankAccountTest extends BaseTest {
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		BankAccount bankAccount = BankAccount.create(Currency.RUB);
+		BankAccount bankAccount = new BankAccount(Currency.RUB);
 
 		assertTestFails(() -> bankAccount.withdraw(new Money(new BigDecimal("1.00"), Currency.RUB)), NotEnoughFundsException.class);
 

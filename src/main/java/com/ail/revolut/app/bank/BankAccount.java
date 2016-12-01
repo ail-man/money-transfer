@@ -10,14 +10,9 @@ public class BankAccount {
 	private final Currency currency;
 	private BigDecimal balance;
 
-	private BankAccount(Currency currency) {
+	BankAccount(Currency currency) {
 		this.currency = currency;
 		this.balance = BigDecimal.ZERO;
-	}
-
-	public static BankAccount create(Currency currency) {
-		Validate.notNull(currency);
-		return new BankAccount(currency);
 	}
 
 	public void deposit(Money money) {
