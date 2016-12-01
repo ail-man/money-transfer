@@ -12,15 +12,11 @@ public class Money {
 	private final BigDecimal amount;
 	private final Currency currency;
 
-	private Money(BigDecimal amount, Currency currency) {
-		this.amount = amount;
-		this.currency = currency;
-	}
-
-	public static Money create(BigDecimal amount, Currency currency) {
+	public Money(BigDecimal amount, Currency currency) {
 		Validate.isTrue(amount.signum() > 0, "Amount must be positive");
 		Validate.notNull(currency);
-		return new Money(amount, currency);
+		this.amount = amount;
+		this.currency = currency;
 	}
 
 	public BigDecimal getAmount() {

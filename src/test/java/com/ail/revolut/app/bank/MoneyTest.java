@@ -12,26 +12,26 @@ public class MoneyTest extends BaseTest {
 
 	@Test
 	public void testMoneyMustBePositiveOnly() throws Exception {
-		assertTestFails(() -> Money.create(new BigDecimal("0"), Currency.RUB), IllegalArgumentException.class);
-		assertTestFails(() -> Money.create(new BigDecimal("-10"), Currency.RUB), IllegalArgumentException.class);
+		assertTestFails(() -> new Money(new BigDecimal("0"), Currency.RUB), IllegalArgumentException.class);
+		assertTestFails(() -> new Money(new BigDecimal("-10"), Currency.RUB), IllegalArgumentException.class);
 	}
 
 	@Test
 	public void testMoneyConstructor() throws Exception {
-		Money.create(new BigDecimal("10"), Currency.RUB);
+		new Money(new BigDecimal("10"), Currency.RUB);
 	}
 
 	@Test
 	public void testEqualsReflexivity() throws Exception {
-		Money money = Money.create(new BigDecimal("12.99"), Currency.RUB);
+		Money money = new Money(new BigDecimal("12.99"), Currency.RUB);
 
 		assertThat(money, equalTo(money));
 	}
 
 	@Test
 	public void testEqualsSymmetry() {
-		Money money1 = Money.create(new BigDecimal("1.23"), Currency.EUR);
-		Money money2 = Money.create(new BigDecimal("1.23"), Currency.EUR);
+		Money money1 = new Money(new BigDecimal("1.23"), Currency.EUR);
+		Money money2 = new Money(new BigDecimal("1.23"), Currency.EUR);
 
 		assertThat(money1, equalTo(money2));
 		assertThat(money2, equalTo(money1));
@@ -39,8 +39,8 @@ public class MoneyTest extends BaseTest {
 
 	@Test
 	public void testEqualsConsistency() {
-		Money money1 = Money.create(new BigDecimal("123.4"), Currency.USD);
-		Money money2 = Money.create(new BigDecimal("123.4"), Currency.USD);
+		Money money1 = new Money(new BigDecimal("123.4"), Currency.USD);
+		Money money2 = new Money(new BigDecimal("123.4"), Currency.USD);
 
 		assertThat(money1, equalTo(money2));
 		assertThat(money1, equalTo(money2));
@@ -48,9 +48,9 @@ public class MoneyTest extends BaseTest {
 
 	@Test
 	public void testEqualsTransitivity() {
-		Money money1 = Money.create(new BigDecimal("99.99"), Currency.RUR);
-		Money money2 = Money.create(new BigDecimal("99.99"), Currency.RUR);
-		Money money3 = Money.create(new BigDecimal("99.99"), Currency.RUR);
+		Money money1 = new Money(new BigDecimal("99.99"), Currency.RUR);
+		Money money2 = new Money(new BigDecimal("99.99"), Currency.RUR);
+		Money money3 = new Money(new BigDecimal("99.99"), Currency.RUR);
 
 		assertThat(money1, equalTo(money2));
 		assertThat(money2, equalTo(money3));
@@ -60,30 +60,30 @@ public class MoneyTest extends BaseTest {
 
 	@Test
 	public void testNotEquals() throws Exception {
-		Money money = Money.create(new BigDecimal("12.99"), Currency.RUB);
+		Money money = new Money(new BigDecimal("12.99"), Currency.RUB);
 
-		assertThat(money, not(equalTo(Money.create(new BigDecimal("4"), Currency.RUB))));
-		assertThat(money, not(equalTo(Money.create(new BigDecimal("12.99"), Currency.EUR))));
+		assertThat(money, not(equalTo(new Money(new BigDecimal("4"), Currency.RUB))));
+		assertThat(money, not(equalTo(new Money(new BigDecimal("12.99"), Currency.EUR))));
 	}
 
 	@Test
 	public void testHashCodeConsistency() {
-		Money money = Money.create(new BigDecimal("12.99"), Currency.RUB);
+		Money money = new Money(new BigDecimal("12.99"), Currency.RUB);
 
 		assertThat(money.hashCode(), equalTo(money.hashCode()));
 	}
 
 	@Test
 	public void testHashCodeEquals() {
-		Money money1 = Money.create(new BigDecimal("1"), Currency.RUB);
-		Money money2 = Money.create(new BigDecimal("1"), Currency.RUB);
+		Money money1 = new Money(new BigDecimal("1"), Currency.RUB);
+		Money money2 = new Money(new BigDecimal("1"), Currency.RUB);
 		assertThat(money1, equalTo(money2));
 		assertThat(money1.hashCode(), equalTo(money2.hashCode()));
 	}
 
 	@Test
 	public void testToString() {
-		logger.debug(Money.create(new BigDecimal("12.99"), Currency.RUB).toString());
+		logger.debug(new Money(new BigDecimal("12.99"), Currency.RUB).toString());
 	}
 
 }

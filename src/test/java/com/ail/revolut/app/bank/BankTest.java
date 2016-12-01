@@ -27,10 +27,10 @@ public class BankTest extends BaseTest {
 	public void testDeposit() throws Exception {
 		BankAccount bankAccount = bank.createBankAccount(Currency.RUB);
 
-		bank.deposit(bankAccount, Money.create(new BigDecimal("2"), Currency.RUB));
+		bank.deposit(bankAccount, new Money(new BigDecimal("2"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("2")));
 
-		bank.deposit(bankAccount, Money.create(new BigDecimal("3"), Currency.RUB));
+		bank.deposit(bankAccount, new Money(new BigDecimal("3"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("5")));
 	}
 }
