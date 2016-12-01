@@ -14,14 +14,14 @@ public class MoneyTest {
 	@Test
 	public void testMoneyMustBePositiveOnly() {
 		try {
-			new Money(new BigDecimal("-10"), Currency.RUR);
+			new Money(new BigDecimal("-10"), Currency.RUB);
 			fail("should fail");
 		} catch (IllegalArgumentException e) {
 			logger.debug(e.getMessage());
 		}
 
 		try {
-			new Money(new BigDecimal("0"), Currency.RUR);
+			new Money(new BigDecimal("0"), Currency.RUB);
 			fail("should fail");
 		} catch (IllegalArgumentException e) {
 			logger.debug(e.getMessage());
@@ -30,7 +30,7 @@ public class MoneyTest {
 
 	@Test
 	public void testMoneyConstructor() {
-		new Money(new BigDecimal("10"), Currency.RUR);
+		new Money(new BigDecimal("10"), Currency.RUB);
 	}
 
 	// TODO test equals
