@@ -40,7 +40,7 @@ public class BankAccountTest extends BaseTest {
 	}
 
 	@Test
-	public void testWithDraw() throws Exception {
+	public void testWithdraw() throws Exception {
 		bankAccount.deposit(new Money(new BigDecimal("10.00"), Currency.RUB));
 		assertThat(bankAccount.getBalance(), equalTo(new BigDecimal("10.00")));
 
