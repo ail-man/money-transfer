@@ -1,36 +1,29 @@
 package com.ail.revolut.app.bank;
 
-import java.math.BigDecimal;
-
 import com.ail.revolut.app.exception.NotEnoughFundsException;
-import org.apache.commons.lang3.Validate;
 
 public class DepositAccount implements Account {
 
 	private final Currency currency;
-	private BigDecimal balance;
+	private Money balance;
 
 	DepositAccount(Currency currency) {
 		this.currency = currency;
-		this.balance = BigDecimal.ZERO;
+		this.balance = new Money("0", currency);
 	}
 
 	public void deposit(Money money) {
-		Validate.notNull(money);
-		if (!money.getCurrency().equals(currency)) {
-			throw new IllegalArgumentException("currency is different");
-		}
-		balance = balance.add(money.getAmount());
+		balance = balance.add(money.convertTo(currency));
 	}
 
 	public void withdraw(Money money) throws NotEnoughFundsException {
-		if (balance.compareTo(money.getAmount()) < 0) {
+		if (balance.compareTo(money) < 0) {
 			throw new NotEnoughFundsException("not enough funds");
 		}
-		balance = balance.subtract(money.getAmount());
+		balance = balance.subtract(money.convertTo(currency));
 	}
 
-	public BigDecimal getBalance() {
+	public Money getBalance() {
 		return balance;
 	}
 

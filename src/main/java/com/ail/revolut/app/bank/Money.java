@@ -1,30 +1,74 @@
 package com.ail.revolut.app.bank;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Money {
+
+	public static final int PRECISION = 10;
 
 	private final BigDecimal amount;
 	private final Currency currency;
 
-	public Money(BigDecimal amount, Currency currency) {
-		Validate.isTrue(amount.signum() > 0, "Amount must be positive");
+	public Money(String amount, Currency currency) {
+		BigDecimal amountValue = new BigDecimal(amount).setScale(PRECISION, BigDecimal.ROUND_CEILING);
 		Validate.notNull(currency);
-		this.amount = amount;
+		this.amount = amountValue;
 		this.currency = currency;
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
+	public String getAmount() {
+		return amount.toString();
 	}
 
 	public Currency getCurrency() {
 		return currency;
+	}
+
+	public Money convertTo(Currency currency) {
+		BigDecimal conversionRate = getConversionRate(currency.getRate(), this.currency.getRate());
+		BigDecimal resultAmount = amount.multiply(conversionRate);
+		return new Money(resultAmount.toString(), currency);
+	}
+
+	public Money add(Money money) {
+		BigDecimal resultAmount;
+		if (this.currency.equals(money.currency)) {
+			resultAmount = this.amount.add(money.amount);
+		} else {
+			resultAmount = this.amount.add(money.convertTo(this.currency).amount);
+		}
+		return new Money(resultAmount.toString(), this.currency);
+	}
+
+	public Money subtract(Money money) {
+		BigDecimal resultAmount;
+		if (this.currency.equals(money.currency)) {
+			resultAmount = this.amount.subtract(money.amount);
+		} else {
+			resultAmount = this.amount.subtract(money.convertTo(this.currency).amount);
+		}
+		return new Money(resultAmount.toString(), this.currency);
+	}
+
+	public Money multiply(String multiplicand) {
+		return new Money(amount.multiply(new BigDecimal(multiplicand)).toString(), currency);
+	}
+
+	public Money divide(String divisor) {
+		return new Money(amount.divide(new BigDecimal(divisor), PRECISION, BigDecimal.ROUND_CEILING).toString(), currency);
+	}
+
+	public int compareTo(Money money) {
+		return this.amount.compareTo(money.amount);
+	}
+
+	private BigDecimal getConversionRate(BigDecimal rateFrom, BigDecimal rateTo) {
+		return rateFrom.divide(rateTo, PRECISION, RoundingMode.CEILING);
 	}
 
 	@Override
@@ -53,9 +97,6 @@ public class Money {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this)
-				.append("amount", amount)
-				.append("currency", currency)
-				.toString();
+		return amount + "(" + currency + ")";
 	}
 }

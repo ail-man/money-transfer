@@ -1,7 +1,7 @@
 package com.ail.revolut.app.bank;
 
-import java.math.BigDecimal;
-
+import static com.ail.revolut.app.bank.Currency.EUR;
+import static com.ail.revolut.app.bank.Currency.RUB;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,52 +12,54 @@ public class DepositAccountTest extends BaseTest {
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		Account account = new DepositAccount(Currency.RUB);
-		assertThat(account.getBalance(), equalTo(BigDecimal.ZERO));
+		Account account = new DepositAccount(RUB);
+		assertThat(account.getBalance(), equalTo(new Money("0", RUB)));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		Account account = new DepositAccount(Currency.RUB);
+		Account account = new DepositAccount(RUB);
 
-		account.deposit(new Money(new BigDecimal("3.41"), Currency.RUB));
-		assertThat(account.getBalance(), equalTo(new BigDecimal("3.41")));
+		account.deposit(new Money("3.410", RUB));
+		assertThat(account.getBalance(), equalTo(new Money("3.410", RUB)));
 
-		account.deposit(new Money(new BigDecimal("2.35"), Currency.RUB));
-		assertThat(account.getBalance(), equalTo(new BigDecimal("5.76")));
-	}
-
-	@Test
-	public void testDepositDiffrentCurrency() throws Exception {
-		Account account = new DepositAccount(Currency.RUB);
-		assertTestFails(() -> account.deposit(new Money(new BigDecimal("3.41"), Currency.EUR)), IllegalArgumentException.class);
+		account.deposit(new Money("2.350", RUB));
+		assertThat(account.getBalance(), equalTo(new Money("5.760", RUB)));
 	}
 
 	@Test
 	public void testWithdraw() throws Exception {
-		Account account = new DepositAccount(Currency.RUB);
+		Account account = new DepositAccount(RUB);
 
-		account.deposit(new Money(new BigDecimal("10.00"), Currency.RUB));
-		assertThat(account.getBalance(), equalTo(new BigDecimal("10.00")));
+		account.deposit(new Money("10.000", RUB));
+		assertThat(account.getBalance(), equalTo(new Money("10.000", RUB)));
 
-		account.withdraw(new Money(new BigDecimal("2.00"), Currency.RUB));
-		assertThat(account.getBalance(), equalTo(new BigDecimal("8.00")));
+		account.withdraw(new Money("2.000", RUB));
+		assertThat(account.getBalance(), equalTo(new Money("8.000", RUB)));
 
-		account.withdraw(new Money(new BigDecimal("3.15"), Currency.RUB));
-		assertThat(account.getBalance(), equalTo(new BigDecimal("4.85")));
+		account.withdraw(new Money("3.150", RUB));
+		assertThat(account.getBalance(), equalTo(new Money("4.850", RUB)));
 	}
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		Account account = new DepositAccount(Currency.RUB);
+		Account account = new DepositAccount(RUB);
 
-		assertTestFails(() -> account.withdraw(new Money(new BigDecimal("1.00"), Currency.RUB)), NotEnoughFundsException.class);
+		assertTestFails(() -> account.withdraw(new Money("1.000", RUB)), NotEnoughFundsException.class);
 
-		account.deposit(new Money(new BigDecimal("10.00"), Currency.RUB));
-		assertTestFails(() -> account.withdraw(new Money(new BigDecimal("10.01"), Currency.RUB)), NotEnoughFundsException.class);
+		account.deposit(new Money("10.000", RUB));
+		assertTestFails(() -> account.withdraw(new Money("10.010", RUB)), NotEnoughFundsException.class);
 	}
 
-	// TODO conversion if deposit/withdraw different currency
+	@Test
+	public void testDepositAmountDifferentCurrency() throws Exception {
+		Account account = new DepositAccount(RUB);
+
+		account.deposit(new Money("3", EUR));
+		assertThat(account.getBalance(), equalTo(new Money("203.2738853505", RUB)));
+	}
+
+	// TODO get commission to some bank account
 	// TODO link to Account entity - ???
 
 }

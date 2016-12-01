@@ -1,7 +1,5 @@
 package com.ail.revolut.app.bank;
 
-import java.math.BigDecimal;
-
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public interface Account {
@@ -10,7 +8,7 @@ public interface Account {
 
 	void withdraw(Money money) throws NotEnoughFundsException;
 
-	BigDecimal getBalance();
+	Money getBalance();
 
 	Currency getCurrency();
 }
