@@ -3,19 +3,15 @@ package com.ail.revolut.app.bank;
 import java.math.BigDecimal;
 
 import com.ail.revolut.app.exception.NotEnoughFundsException;
+import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class BankAccountTest {
-
-	private static final Logger logger = LoggerFactory.getLogger(BankAccountTest.class);
+public class BankAccountTest extends BaseTest {
 
 	private BankAccount bankAccount;
 
@@ -57,20 +53,10 @@ public class BankAccountTest {
 
 	@Test
 	public void testWithdrawAmountCantBeGreaterThanBalance() throws Exception {
-		try {
-			bankAccount.withdraw(new Money(new BigDecimal("1.00"), Currency.RUR));
-			fail("should fail");
-		} catch (NotEnoughFundsException e) {
-			logger.debug(e.getMessage());
-		}
+		assertOperationFails(() -> bankAccount.withdraw(new Money(new BigDecimal("1.00"), Currency.RUR)), Exception.class, NotEnoughFundsException.class);
 
 		bankAccount.deposit(new Money(new BigDecimal("10.00"), Currency.RUR));
-		try {
-			bankAccount.withdraw(new Money(new BigDecimal("10.01"), Currency.RUR));
-			fail("should fail");
-		} catch (NotEnoughFundsException e) {
-			logger.debug(e.getMessage());
-		}
+		assertOperationFails(() -> bankAccount.withdraw(new Money(new BigDecimal("10.01"), Currency.RUR)), NotEnoughFundsException.class);
 	}
 
 	// TODO conversion if deposit/withdraw different currency
