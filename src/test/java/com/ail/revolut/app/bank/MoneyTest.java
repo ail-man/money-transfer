@@ -2,30 +2,15 @@ package com.ail.revolut.app.bank;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.fail;
+import com.ail.revolut.app.helper.BaseTest;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class MoneyTest {
-
-	private static final Logger logger = LoggerFactory.getLogger(MoneyTest.class);
+public class MoneyTest extends BaseTest {
 
 	@Test
-	public void testMoneyMustBePositiveOnly() {
-		try {
-			new Money(new BigDecimal("-10"), Currency.RUB);
-			fail("should fail");
-		} catch (IllegalArgumentException e) {
-			logger.debug(e.getMessage());
-		}
-
-		try {
-			new Money(new BigDecimal("0"), Currency.RUB);
-			fail("should fail");
-		} catch (IllegalArgumentException e) {
-			logger.debug(e.getMessage());
-		}
+	public void testMoneyMustBePositiveOnly() throws Exception {
+		assertTestFails(() -> new Money(new BigDecimal("0"), Currency.RUB), IllegalArgumentException.class);
+		assertTestFails(() -> new Money(new BigDecimal("-10"), Currency.RUB), IllegalArgumentException.class);
 	}
 
 	@Test
