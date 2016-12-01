@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 public class BaseTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+	protected static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
 	protected void assertTestFails(TestOperation testOperation, Class<?> exceptionClass) throws Exception {
 		try {
