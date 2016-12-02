@@ -20,8 +20,6 @@ public class BankTest extends BaseTest {
 		Account account = bank.createAccount(person, USD);
 		assertThat(account.getOwner(), equalTo(person));
 		assertThat(account.getCurrency(), equalTo(USD));
-		// TODO fix duplication
-		assertThat(account.getBalance().getCurrency(), equalTo(USD));
 	}
 
 	@Test

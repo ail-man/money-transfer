@@ -5,14 +5,12 @@ import org.apache.commons.lang3.Validate;
 public class Account {
 
 	private final Person owner;
-	private final Currency currency;
 	private Money balance;
 
 	public Account(Person owner, Currency currency) {
 		Validate.notNull(owner);
 		Validate.notNull(currency);
 		this.owner = owner;
-		this.currency = currency;
 		this.balance = new Money("0", currency);
 	}
 
@@ -21,7 +19,7 @@ public class Account {
 	}
 
 	public Currency getCurrency() {
-		return currency;
+		return balance.getCurrency();
 	}
 
 	public Money getBalance() {
@@ -29,7 +27,7 @@ public class Account {
 	}
 
 	public void setBalance(Money balance) {
-		Validate.notNull(balance);
+		Validate.isTrue(getCurrency().equals(balance.getCurrency()), "currencies should be equals");
 		this.balance = balance;
 	}
 
