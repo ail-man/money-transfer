@@ -1,30 +1,29 @@
 package com.ail.revolut.app.bank;
 
 import static com.ail.revolut.app.bank.Currency.RUB;
+import static com.ail.revolut.app.bank.Currency.USD;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import org.junit.Before;
 import org.junit.Test;
 
 public class BankTest extends BaseTest {
 
-	private Bank bank;
-
-	@Before
-	public void init() {
-		bank = new Bank();
-	}
-
 	@Test
 	public void testCreateAccount() throws Exception {
-		Account account = bank.createAccount(RUB);
-		assertThat(account.getBalance(), equalTo(new Money("0", RUB)));
+		Bank bank = new Bank();
+		Person person = new Person().withName("pers1");
+
+		Account account = bank.createAccount(person, USD);
+		assertThat(account.getOwner(), equalTo(person));
+		assertThat(account.getBalance(), equalTo(new Money("0", USD)));
 	}
 
 	@Test
 	public void testDepositTheSameCurrency() throws Exception {
-		Account account = bank.createAccount(RUB);
+		Bank bank = new Bank();
+		Person person = new Person().withName("pers2");
+		Account account = bank.createAccount(person, RUB);
 
 		bank.deposit(account, new Money("2", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
@@ -35,12 +34,14 @@ public class BankTest extends BaseTest {
 
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
-		Account account = bank.createAccount(RUB);
+		Bank bank = new Bank();
+		Person person = new Person().withName("pers3");
+		Account account = bank.createAccount(person, RUB);
 
 		bank.deposit(account, new Money("10", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("10", RUB)));
 
-		bank.deposit(account, new Money("1", Currency.USD));
+		bank.deposit(account, new Money("1", USD));
 		assertThat(account.getBalance(), equalTo(new Money("73.828", RUB)));
 	}
 

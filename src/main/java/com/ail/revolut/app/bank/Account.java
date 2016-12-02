@@ -4,10 +4,12 @@ import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public class Account {
 
+	private final Person owner;
 	private final Currency currency;
 	private Money balance;
 
-	Account(Currency currency) {
+	Account(Person owner, Currency currency) {
+		this.owner = owner;
 		this.currency = currency;
 		this.balance = new Money("0", currency);
 	}
@@ -30,4 +32,9 @@ public class Account {
 	public Currency getCurrency() {
 		return currency;
 	}
+
+	public Person getOwner() {
+		return owner;
+	}
+
 }
