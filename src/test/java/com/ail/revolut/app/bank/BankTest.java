@@ -2,10 +2,13 @@ package com.ail.revolut.app.bank;
 
 import static com.ail.revolut.app.bank.Currency.RUB;
 import static com.ail.revolut.app.bank.Currency.USD;
+import com.ail.revolut.app.bank.deposit.DepositStrategy;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BankTest extends BaseTest {
 
@@ -16,34 +19,22 @@ public class BankTest extends BaseTest {
 
 		Account account = bank.createAccount(person, USD);
 		assertThat(account.getOwner(), equalTo(person));
-		assertThat(account.getBalance(), equalTo(new Money("0", USD)));
+		assertThat(account.getCurrency(), equalTo(USD));
+		// TODO fix duplication
+		assertThat(account.getBalance().getCurrency(), equalTo(USD));
 	}
 
 	@Test
-	public void testDepositTheSameCurrency() throws Exception {
+	public void testDeposit() throws Exception {
 		Bank bank = new Bank();
 		Person person = new Person().withName("pers2");
 		Account account = bank.createAccount(person, RUB);
+		DepositStrategy depositStrategy = mock(DepositStrategy.class);
 
-		bank.deposit(account, new Money("2", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
-
-		bank.deposit(account, new Money("3", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("5", RUB)));
+		when(depositStrategy.deposit(account, new Money("2", RUB))).thenReturn(new Money("0", RUB));
 	}
 
-	@Test
-	public void testDepositDifferentCurrency() throws Exception {
-		Bank bank = new Bank();
-		Person person = new Person().withName("pers3");
-		Account account = bank.createAccount(person, RUB);
-
-		bank.deposit(account, new Money("10", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("10", RUB)));
-
-		bank.deposit(account, new Money("1", USD));
-		assertThat(account.getBalance(), equalTo(new Money("73.828", RUB)));
-	}
-
-	// TODO can withdraw to negative balance (credit)
+	// TODO strategy can withdraw to negative balance (credit)
+	// TODO strategy get commission to some bank account
+	// TODO strategy link to Account entity - ???
 }

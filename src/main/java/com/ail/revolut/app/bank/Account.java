@@ -1,6 +1,6 @@
 package com.ail.revolut.app.bank;
 
-import com.ail.revolut.app.exception.NotEnoughFundsException;
+import org.apache.commons.lang3.Validate;
 
 public class Account {
 
@@ -8,33 +8,29 @@ public class Account {
 	private final Currency currency;
 	private Money balance;
 
-	Account(Person owner, Currency currency) {
+	public Account(Person owner, Currency currency) {
+		Validate.notNull(owner);
+		Validate.notNull(currency);
 		this.owner = owner;
 		this.currency = currency;
 		this.balance = new Money("0", currency);
 	}
 
-	public void deposit(Money money) {
-		balance = balance.add(money.convertTo(currency));
-	}
-
-	public void withdraw(Money money) throws NotEnoughFundsException {
-		if (balance.compareTo(money) < 0) {
-			throw new NotEnoughFundsException("not enough funds");
-		}
-		balance = balance.subtract(money.convertTo(currency));
-	}
-
-	public Money getBalance() {
-		return balance;
+	public Person getOwner() {
+		return owner;
 	}
 
 	public Currency getCurrency() {
 		return currency;
 	}
 
-	public Person getOwner() {
-		return owner;
+	public Money getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Money balance) {
+		Validate.notNull(balance);
+		this.balance = balance;
 	}
 
 }
