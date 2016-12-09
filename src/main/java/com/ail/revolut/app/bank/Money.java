@@ -28,7 +28,7 @@ public class Money {
 	}
 
 	public Money convertTo(Currency currency) {
-		BigDecimal conversionRate = getConversionRate(currency.getRate(), this.currency.getRate());
+		BigDecimal conversionRate = getConversionRate(new BigDecimal(currency.getRate()), new BigDecimal(this.currency.getRate()));
 		BigDecimal resultAmount = amount.multiply(conversionRate);
 		return new Money(resultAmount.toString(), currency);
 	}

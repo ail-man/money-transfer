@@ -1,17 +1,15 @@
 package com.ail.revolut.app.bank;
 
-import java.math.BigDecimal;
-
 public enum Currency {
-	RUB(643, new BigDecimal("63.828")),
-	RUR(810, new BigDecimal("63828")),
-	USD(840, new BigDecimal("1")),
-	EUR(978, new BigDecimal("0.942"));
+	RUB(643, "63.828"),
+	RUR(810, "63828"),
+	USD(840, "1"),
+	EUR(978, "0.942");
 
 	private final int code;
-	private final BigDecimal rate;
+	private final String rate;
 
-	Currency(int code, BigDecimal rate) {
+	Currency(int code, String rate) {
 		this.code = code;
 		this.rate = rate;
 	}
@@ -24,7 +22,7 @@ public enum Currency {
 		return code;
 	}
 
-	public BigDecimal getRate() {
+	public String getRate() {
 		return rate;
 	}
 }
