@@ -1,6 +1,7 @@
 package com.ail.revolut.app.bank;
 
 import com.ail.revolut.app.bank.deposit.DepositStrategy;
+import org.apache.commons.lang3.Validate;
 
 public class Bank {
 
@@ -9,10 +10,22 @@ public class Bank {
 	}
 
 	public Money deposit(Account account, Money money, DepositStrategy depositStrategy) {
-		return depositStrategy.deposit(account, money);
+		Money balanceBefore = account.getBalance();
+		Money commission = depositStrategy.deposit(account, money);
+		Money balanceAfter = account.getBalance();
+
+		validateDeposit(money, balanceBefore, commission, balanceAfter);
+
+		return commission;
 	}
 
 	//	public void withdraw(Account account, Money money, WithdrawStrategy withdrawStrategy) throws NotEnoughFundsException {
 	//		withdrawStrategy.withdraw(account, money);
 	//	}
+
+	private void validateDeposit(Money money, Money balanceBefore, Money commission, Money balanceAfter) {
+		Money depositedAmount = balanceAfter.subtract(balanceBefore);
+		Validate.isTrue(money.equals(commission.add(depositedAmount)), "What happened to the other money?! Oh no no no...");
+	}
+
 }
