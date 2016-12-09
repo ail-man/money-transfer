@@ -5,6 +5,6 @@ import com.ail.revolut.app.bank.Money;
 
 public interface DepositStrategy {
 
-	Money deposit(Account account, Money money);
+	Money deposit(Account account, Money amount);
 
 }

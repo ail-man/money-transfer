@@ -23,24 +23,33 @@ public class BankTest extends BaseTest {
 	@Test
 	public void testDeposit() throws Exception {
 		Bank bank = Bank.create();
-		Person person = Person.create("");
+		Person person = Person.create("1").withName("Vasili");
 		Account account = bank.createAccount(person, RUB);
 
-		DepositStrategy depositStrategy = (account1, money) -> {
-			String commissionFactor = "0.01";
-			Money commission = money.multiply(commissionFactor);
-			//			account1.setBalance(account1.getBalance().add(money).subtract(commission));
+		DepositStrategy depositStrategy = (acc, money) -> {
+			String commissionFactor;
+			if (account.getCurrency().equals(money.getCurrency())) {
+				commissionFactor = "0";
+			} else {
+				commissionFactor = "0.05";
+			}
+			Money commission = money.multiply(commissionFactor).convertTo(RUB);
+			acc.deposit(money, commission);
 			return commission;
 		};
 
 		Money deposit = new Money("2", RUB);
 		Money commission = bank.deposit(account, deposit, depositStrategy);
 
-		assertThat(commission, equalTo(new Money("0.02", RUB)));
-		assertThat(account.getBalance(), equalTo(new Money("1.98", RUB)));
+		assertThat(commission, equalTo(new Money("0", RUB)));
+		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
 
-		assertThat(account.getBalance().add(commission), equalTo(deposit));
+		deposit = new Money("10", USD);
+		commission = bank.deposit(account, deposit, depositStrategy);
+
+		assertThat(commission, equalTo(new Money("31.914", RUB)));
+		assertThat(account.getBalance(), equalTo(new Money("608.366", RUB)));
 	}
 
-	// TODO Currency must load dynamically => All test presented with test Currency
+	// TODO Currency must load dynamically => All test presented with test Currency!!!
 }
