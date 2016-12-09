@@ -8,23 +8,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
 
-public class BankTest extends BaseTest {
+public class BankImplTest extends BaseTest {
 
 	@Test
 	public void testCreateAccount() throws Exception {
-		Bank bank = Bank.create();
+		BankImpl bankImpl = BankImpl.create();
 		Person person = Person.create("");
 
-		Account account = bank.createAccount(person, USD);
+		Account account = bankImpl.createAccount(person, USD);
 		assertThat(account.getOwner(), equalTo(person));
 		assertThat(account.getCurrency(), equalTo(USD));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		Bank bank = Bank.create();
+		BankImpl bankImpl = BankImpl.create();
 		Person person = Person.create("1").withName("Vasili");
-		Account account = bank.createAccount(person, RUB);
+		Account account = bankImpl.createAccount(person, RUB);
 
 		DepositStrategy depositStrategy = (acc, money) -> {
 			String commissionFactor;
@@ -39,13 +39,13 @@ public class BankTest extends BaseTest {
 		};
 
 		Money deposit = new Money("2", RUB);
-		Money commission = bank.deposit(account, deposit, depositStrategy);
+		Money commission = bankImpl.deposit(account, deposit, depositStrategy);
 
 		assertThat(commission, equalTo(new Money("0", RUB)));
 		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
 
 		deposit = new Money("10", USD);
-		commission = bank.deposit(account, deposit, depositStrategy);
+		commission = bankImpl.deposit(account, deposit, depositStrategy);
 
 		assertThat(commission, equalTo(new Money("31.914", RUB)));
 		assertThat(account.getBalance(), equalTo(new Money("608.366", RUB)));

@@ -1,33 +1,18 @@
 package com.ail.revolut.app.bank;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.ail.revolut.app.bank.deposit.DepositStrategy;
+import com.ail.revolut.app.bank.transfer.TransferStrategy;
+import com.ail.revolut.app.bank.withdraw.WithdrawStrategy;
 
-public class Bank {
+public interface Bank {
 
-	private final Map<String, Account> accountMap;
-	private int counter;
+	Account createAccount(Person person, Currency currency);
 
-	private Bank() {
-		accountMap = new HashMap<>();
-		counter = 0;
-	}
+	Money getBalance(Account account);
 
-	public static Bank create() {
-		return new Bank();
-	}
+	Money deposit(Account account, Money amount, DepositStrategy depositStrategy);
 
-	public Account createAccount(Person person, Currency currency) {
-		String accountId = String.valueOf(counter++);
-		Account account = Account.create(accountId, person, currency);
-		accountMap.put(accountId, account);
-		return account;
-	}
+	Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy);
 
-	public Money deposit(Account account, Money amount, DepositStrategy depositStrategy) {
-		return depositStrategy.deposit(account, amount);
-	}
-
+	Money transfer(Account fromAccount, Account toAccount, Money amount, TransferStrategy transferStrategy);
 }
