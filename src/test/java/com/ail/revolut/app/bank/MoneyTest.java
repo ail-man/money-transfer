@@ -114,12 +114,46 @@ public class MoneyTest extends BaseTest {
 	}
 
 	@Test
-	public void compareTo() throws Exception {
+	public void compareToTheSameCurrencies() throws Exception {
 		assertThat(new Money("3", USD).compareTo(new Money("2", USD)), equalTo(1));
 		assertThat(new Money("1", USD).compareTo(new Money("4", USD)), equalTo(-1));
 		assertThat(new Money("5", USD).compareTo(new Money("5", USD)), equalTo(0));
+	}
 
+	@Test
+	public void compareToDifferentCurrencies() throws Exception {
 		assertTestFails(() -> new Money("1", USD).compareTo(new Money("63.828", RUB)), IllegalArgumentException.class);
+	}
+
+	@Test
+	public void testSignum() throws Exception {
+		assertThat(new Money("3", USD).signum(), equalTo(1));
+		assertThat(new Money("-2", USD).signum(), equalTo(-1));
+		assertThat(new Money("0", USD).signum(), equalTo(0));
+	}
+
+	@Test
+	public void testMinTheSameCurrencies() throws Exception {
+		assertThat(new Money("1", USD).min(new Money("1", USD)), equalTo(new Money("1", USD)));
+		assertThat(new Money("3", USD).min(new Money("2", USD)), equalTo(new Money("2", USD)));
+		assertThat(new Money("5", USD).min(new Money("7", USD)), equalTo(new Money("5", USD)));
+	}
+
+	@Test
+	public void testMinDifferentCurrencies() throws Exception {
+		assertTestFails(() -> new Money("3", USD).min(new Money("2", EUR)), IllegalArgumentException.class);
+	}
+
+	@Test
+	public void testMaxTheSameCurrencies() throws Exception {
+		assertThat(new Money("4", USD).max(new Money("4", USD)), equalTo(new Money("4", USD)));
+		assertThat(new Money("1", USD).max(new Money("3", USD)), equalTo(new Money("3", USD)));
+		assertThat(new Money("9", USD).max(new Money("6", USD)), equalTo(new Money("9", USD)));
+	}
+
+	@Test
+	public void testMaxDifferentCurrencies() throws Exception {
+		assertTestFails(() -> new Money("1", USD).min(new Money("1", EUR)), IllegalArgumentException.class);
 	}
 
 }

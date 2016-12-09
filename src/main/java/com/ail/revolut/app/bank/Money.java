@@ -62,12 +62,20 @@ public class Money {
 	}
 
 	public int compareTo(Money money) {
-		Validate.isTrue(this.currency.equals(money.currency), "Currencies must be the same");
+		validateCurrencies(money);
 		return this.amount.compareTo(money.amount);
+	}
+
+	private void validateCurrencies(Money money) {
+		Validate.isTrue(this.currency.equals(money.currency), "Currencies must be the same");
 	}
 
 	private BigDecimal getConversionRate(BigDecimal rateFrom, BigDecimal rateTo) {
 		return rateFrom.divide(rateTo, PRECISION, RoundingMode.CEILING);
+	}
+
+	public int signum() {
+		return amount.signum();
 	}
 
 	@Override
@@ -97,5 +105,15 @@ public class Money {
 	@Override
 	public String toString() {
 		return amount + "(" + currency + ")";
+	}
+
+	public Money min(Money money) {
+		validateCurrencies(money);
+		return new Money(this.amount.min(money.amount).toString(), this.currency);
+	}
+
+	public Money max(Money money) {
+		validateCurrencies(money);
+		return new Money(this.amount.max(money.amount).toString(), this.currency);
 	}
 }
