@@ -8,8 +8,8 @@ public class Bank {
 		return new Account(person, currency);
 	}
 
-	public void deposit(Account account, Money money, DepositStrategy depositStrategy) {
-		depositStrategy.deposit(account, money);
+	public Money deposit(Account account, Money money, DepositStrategy depositStrategy) {
+		return depositStrategy.deposit(account, money);
 	}
 
 	//	public void withdraw(Account account, Money money, WithdrawStrategy withdrawStrategy) throws NotEnoughFundsException {

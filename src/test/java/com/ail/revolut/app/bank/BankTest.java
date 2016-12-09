@@ -7,8 +7,6 @@ import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BankTest extends BaseTest {
 
@@ -27,12 +25,23 @@ public class BankTest extends BaseTest {
 		Bank bank = new Bank();
 		Person person = new Person().withName("pers2");
 		Account account = bank.createAccount(person, RUB);
-		DepositStrategy depositStrategy = mock(DepositStrategy.class);
 
-		when(depositStrategy.deposit(account, new Money("2", RUB))).thenReturn(new Money("0", RUB));
+		DepositStrategy depositStrategy = (account1, money) -> {
+			String commissionFactor = "0.01";
+			Money commission = money.multiply(commissionFactor);
+			account1.setBalance(account1.getBalance().add(money).subtract(commission));
+			return commission;
+		};
+
+		Money deposit = new Money("2", RUB);
+		Money commission = bank.deposit(account, deposit, depositStrategy);
+
+		assertThat(commission, equalTo(new Money("0.02", RUB)));
+		assertThat(account.getBalance(), equalTo(new Money("1.98", RUB)));
+
+		assertThat(account.getBalance().add(commission), equalTo(deposit));
 	}
 
 	// TODO strategy can withdraw to negative balance (credit)
-	// TODO strategy get commission to some bank account
 	// TODO strategy link to Account entity - ???
 }
