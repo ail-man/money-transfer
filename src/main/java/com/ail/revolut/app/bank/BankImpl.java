@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ail.revolut.app.bank.deposit.DepositStrategy;
 import com.ail.revolut.app.bank.transfer.TransferStrategy;
 import com.ail.revolut.app.bank.withdraw.WithdrawStrategy;
+import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public class BankImpl implements Bank {
 
@@ -38,13 +39,14 @@ public class BankImpl implements Bank {
 	}
 
 	@Override
-	public Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy) {
+	public Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy) throws NotEnoughFundsException {
 		return withdrawStrategy.withdraw(account, amount);
 	}
 
 	@Override
-	public Money transfer(Account fromAccount, Account toAccount, Money amount, TransferStrategy transferStrategy) {
-		return transferStrategy.transfer(fromAccount, toAccount, amount);
+	public Money transfer(Bank fromBank, Account fromAccount, Bank toBank, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException {
+		// TODO
+		return null;
 	}
 
 }

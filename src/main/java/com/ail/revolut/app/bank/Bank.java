@@ -3,6 +3,7 @@ package com.ail.revolut.app.bank;
 import com.ail.revolut.app.bank.deposit.DepositStrategy;
 import com.ail.revolut.app.bank.transfer.TransferStrategy;
 import com.ail.revolut.app.bank.withdraw.WithdrawStrategy;
+import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public interface Bank {
 
@@ -12,7 +13,7 @@ public interface Bank {
 
 	Money deposit(Account account, Money amount, DepositStrategy depositStrategy);
 
-	Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy);
+	Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy) throws NotEnoughFundsException;
 
-	Money transfer(Account fromAccount, Account toAccount, Money amount, TransferStrategy transferStrategy);
+	Money transfer(Bank fromBank, Account fromAccount, Bank toBank, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException;
 }
