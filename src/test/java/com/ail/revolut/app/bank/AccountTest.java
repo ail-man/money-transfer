@@ -10,8 +10,8 @@ public class AccountTest extends BaseTest {
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		Person person = new Person().withName("pers1");
-		Account account = new Account(person, RUB);
+		Person person = Person.create("1").withName("pers1");
+		Account account = Account.create("", person, RUB);
 		assertThat(account.getBalance(), equalTo(new Money("0", RUB)));
 	}
 

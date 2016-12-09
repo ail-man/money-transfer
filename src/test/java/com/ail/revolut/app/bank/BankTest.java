@@ -12,8 +12,8 @@ public class BankTest extends BaseTest {
 
 	@Test
 	public void testCreateAccount() throws Exception {
-		Bank bank = new Bank();
-		Person person = new Person().withName("pers1");
+		Bank bank = Bank.create();
+		Person person = Person.create("").withName("pers1");
 
 		Account account = bank.createAccount(person, USD);
 		assertThat(account.getOwner(), equalTo(person));
@@ -22,8 +22,8 @@ public class BankTest extends BaseTest {
 
 	@Test
 	public void testDeposit() throws Exception {
-		Bank bank = new Bank();
-		Person person = new Person().withName("pers2");
+		Bank bank = Bank.create();
+		Person person = Person.create("").withName("pers2");
 		Account account = bank.createAccount(person, RUB);
 
 		DepositStrategy depositStrategy = (account1, money) -> {

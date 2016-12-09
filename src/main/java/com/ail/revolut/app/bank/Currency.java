@@ -16,6 +16,10 @@ public enum Currency {
 		this.rate = rate;
 	}
 
+	public static Currency defaultCurrency() {
+		return USD;
+	}
+
 	public int getCode() {
 		return code;
 	}
