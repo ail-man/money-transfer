@@ -47,9 +47,21 @@ public class Account {
 		return balance;
 	}
 
-	public void setBalance(Money balance) {
-		Validate.isTrue(getCurrency().equals(balance.getCurrency()), "currencies should be equals");
-		this.balance = balance;
+	public void deposit(Money amount, Money commission) {
+		validate(amount, commission);
+
+		balance = balance.add(amount).subtract(commission);
+	}
+
+	public void withdraw(Money money, Money commission) {
+		validate(money, commission);
+
+		balance = balance.subtract(money).subtract(commission);
+	}
+
+	private void validate(Money money, Money commission) {
+		Validate.isTrue(money.signum() > 0, "Amount must be positive");
+		Validate.isTrue(commission.signum() >= 0, "Commission can't be negative");
 	}
 
 	@Override

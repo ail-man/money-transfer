@@ -29,7 +29,7 @@ public class BankTest extends BaseTest {
 		DepositStrategy depositStrategy = (account1, money) -> {
 			String commissionFactor = "0.01";
 			Money commission = money.multiply(commissionFactor);
-			account1.setBalance(account1.getBalance().add(money).subtract(commission));
+			//			account1.setBalance(account1.getBalance().add(money).subtract(commission));
 			return commission;
 		};
 
@@ -42,6 +42,5 @@ public class BankTest extends BaseTest {
 		assertThat(account.getBalance().add(commission), equalTo(deposit));
 	}
 
-	// TODO strategy can withdraw to negative balance (credit)
-	// TODO strategy link to Account entity - ???
+	// TODO Currency must load dynamically => All test presented with test Currency
 }
