@@ -1,8 +1,9 @@
 package com.ail.revolut.app.bank;
 
-import static com.ail.revolut.app.bank.Currency.EUR;
-import static com.ail.revolut.app.bank.Currency.RUB;
-import static com.ail.revolut.app.bank.Currency.USD;
+import static com.ail.revolut.app.bank.CurrencyImpl.EUR;
+import static com.ail.revolut.app.bank.CurrencyImpl.RUB;
+import static com.ail.revolut.app.bank.CurrencyImpl.RUR;
+import static com.ail.revolut.app.bank.CurrencyImpl.USD;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -43,9 +44,9 @@ public class MoneyTest extends BaseTest {
 
 	@Test
 	public void testEqualsTransitivity() {
-		Money money1 = new Money("99.99", Currency.RUR);
-		Money money2 = new Money("99.99", Currency.RUR);
-		Money money3 = new Money("99.99", Currency.RUR);
+		Money money1 = new Money("99.99", RUR);
+		Money money2 = new Money("99.99", RUR);
+		Money money3 = new Money("99.99", RUR);
 
 		assertThat(money1, equalTo(money2));
 		assertThat(money2, equalTo(money3));

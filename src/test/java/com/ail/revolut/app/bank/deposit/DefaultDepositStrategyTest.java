@@ -1,8 +1,8 @@
 package com.ail.revolut.app.bank.deposit;
 
 import com.ail.revolut.app.bank.Account;
-import static com.ail.revolut.app.bank.Currency.RUB;
-import static com.ail.revolut.app.bank.Currency.USD;
+import static com.ail.revolut.app.bank.CurrencyImpl.RUB;
+import static com.ail.revolut.app.bank.CurrencyImpl.USD;
 import com.ail.revolut.app.bank.Money;
 import com.ail.revolut.app.bank.Person;
 import com.ail.revolut.app.helper.BaseTest;
