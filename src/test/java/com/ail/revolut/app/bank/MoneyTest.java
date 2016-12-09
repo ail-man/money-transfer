@@ -118,6 +118,8 @@ public class MoneyTest extends BaseTest {
 		assertThat(new Money("3", USD).compareTo(new Money("2", USD)), equalTo(1));
 		assertThat(new Money("1", USD).compareTo(new Money("4", USD)), equalTo(-1));
 		assertThat(new Money("5", USD).compareTo(new Money("5", USD)), equalTo(0));
+
+		assertTestFails(() -> new Money("1", USD).compareTo(new Money("63.828", RUB)), IllegalArgumentException.class);
 	}
 
 }

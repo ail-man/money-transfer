@@ -3,6 +3,7 @@ package com.ail.revolut.app.bank;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -61,6 +62,7 @@ public class Money {
 	}
 
 	public int compareTo(Money money) {
+		Validate.isTrue(this.currency.equals(money.currency), "Currencies must be the same");
 		return this.amount.compareTo(money.amount);
 	}
 
