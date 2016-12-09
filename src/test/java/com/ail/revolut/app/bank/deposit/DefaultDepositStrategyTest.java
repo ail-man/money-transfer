@@ -17,28 +17,26 @@ public class DefaultDepositStrategyTest extends BaseTest {
 	private DepositStrategy depositStrategy;
 
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		account = new Account(new Person().withName("pers"), RUB);
 		depositStrategy = new DefaultDepositStrategy();
 	}
 
 	@Test
-	public void testDepositTheSameCurrency() {
-		// TODO show with test, how it works (plus)
+	public void testDepositTheSameCurrency() throws Exception {
 		Money commission;
 
 		commission = depositStrategy.deposit(account, new Money("2", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
 		assertThat(commission, equalTo(new Money("0", RUB)));
 
-		depositStrategy.deposit(account, new Money("3", RUB));
+		commission = depositStrategy.deposit(account, new Money("3", RUB));
 		assertThat(account.getBalance(), equalTo(new Money("5", RUB)));
 		assertThat(commission, equalTo(new Money("0", RUB)));
 	}
 
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
-		// TODO use currency rates to calculate result in asserts for different currency
 		Money commission;
 
 		commission = depositStrategy.deposit(account, new Money("10", RUB));
