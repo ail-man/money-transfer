@@ -12,19 +12,19 @@ public class BankImplTest extends BaseTest {
 
 	@Test
 	public void testCreateAccount() throws Exception {
-		BankImpl bankImpl = BankImpl.create();
-		Person person = Person.create("");
+		Bank bank = BankImpl.create();
+		Person person = Person.create();
 
-		Account account = bankImpl.createAccount(person, USD);
+		Account account = bank.createAccount(person, USD);
 		assertThat(account.getOwner(), equalTo(person));
 		assertThat(account.getCurrency(), equalTo(USD));
 	}
 
 	@Test
 	public void testDeposit() throws Exception {
-		BankImpl bankImpl = BankImpl.create();
-		Person person = Person.create("1").withName("Vasili");
-		Account account = bankImpl.createAccount(person, RUB);
+		Bank bank = BankImpl.create();
+		Person person = Person.create().withName("Vasili");
+		Account account = bank.createAccount(person, RUB);
 
 		DepositStrategy depositStrategy = (acc, money) -> {
 			String commissionFactor;
@@ -39,13 +39,13 @@ public class BankImplTest extends BaseTest {
 		};
 
 		Money amount = Money.create("2", RUB);
-		Money commission = bankImpl.deposit(account, amount, depositStrategy);
+		Money commission = bank.deposit(account, amount, depositStrategy);
 
 		assertThat(commission, equalTo(Money.zero(RUB)));
 		assertThat(account.getBalance(), equalTo(Money.create("2", RUB)));
 
 		amount = Money.create("10", USD);
-		commission = bankImpl.deposit(account, amount, depositStrategy);
+		commission = bank.deposit(account, amount, depositStrategy);
 
 		assertThat(commission, equalTo(Money.create("31.914", RUB)));
 		assertThat(account.getBalance(), equalTo(Money.create("608.366", RUB)));
@@ -53,9 +53,9 @@ public class BankImplTest extends BaseTest {
 
 	@Test
 	public void testWithdraw() throws Exception {
-		BankImpl bankImpl = BankImpl.create();
-		Person person = Person.create("2").withName("Petr");
-		Account account = bankImpl.createAccount(person, USD);
+		Bank bank = BankImpl.create();
+		Person person = Person.create().withName("Petr");
+		Account account = bank.createAccount(person, USD);
 
 		WithdrawStrategy withdrawStrategy = (acc, money) -> {
 			String commissionFactor;
@@ -70,13 +70,13 @@ public class BankImplTest extends BaseTest {
 		};
 
 		Money amount = Money.create("2", EUR);
-		Money commission = bankImpl.withdraw(account, amount, withdrawStrategy);
+		Money commission = bank.withdraw(account, amount, withdrawStrategy);
 
 		assertThat(commission, equalTo(Money.create("0.1061571126", USD)));
 		assertThat(account.getBalance(), equalTo(Money.create("-2.2292993632", USD)));
 
 		amount = Money.create("10", USD);
-		commission = bankImpl.withdraw(account, amount, withdrawStrategy);
+		commission = bank.withdraw(account, amount, withdrawStrategy);
 
 		assertThat(commission, equalTo(Money.zero(USD)));
 		assertThat(account.getBalance(), equalTo(Money.create("-12.2292993632", USD)));

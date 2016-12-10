@@ -1,5 +1,8 @@
 package com.ail.revolut.app.bank;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -7,6 +10,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Person {
 
 	private static final String ANONYMOUS = "ANONYMOUS";
+	private static final Map<String, Person> map = new HashMap<>();
+	private static long counter = 0;
 
 	private final String id;
 	private String name;
@@ -16,14 +21,10 @@ public class Person {
 		this.name = ANONYMOUS;
 	}
 
-	public Person(Person owner) {
-		this.id = owner.id;
-		this.setName(owner.name);
-	}
-
-	public static Person create(String id) {
-		Validate.notNull(id);
-		return new Person(id);
+	public static Person create() {
+		Person person = new Person(String.valueOf(counter++));
+		map.put(person.getId(), person);
+		return person;
 	}
 
 	public String getId() {

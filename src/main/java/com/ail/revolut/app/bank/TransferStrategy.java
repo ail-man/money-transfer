@@ -6,5 +6,4 @@ public interface TransferStrategy {
 
 	Money transfer(Account fromAccount, Account toAccount, Money amount) throws NotEnoughFundsException;
 
-	Money transfer(Bank fromBank, Account fromAccount, Bank toBank, Account toAccount) throws NotEnoughFundsException;
 }

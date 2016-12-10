@@ -12,13 +12,13 @@ public class AccountTest extends BaseTest {
 
 	@Test
 	public void testNewAccountShouldHaveZeroBalance() throws Exception {
-		Account account = Account.create("", Person.create(""), RUB);
+		Account account = Account.create("", Person.create(), RUB);
 		assertThat(account.getBalance(), equalTo(Money.zero(RUB)));
 	}
 
 	@Test
 	public void testDepositTheSameCurrency() throws Exception {
-		Account account = Account.create("", Person.create(""), RUB);
+		Account account = Account.create("", Person.create(), RUB);
 
 		account.deposit(Money.create("10", RUB), Money.zero(RUB));
 		assertThat(account.getBalance(), equalTo(Money.create("10", RUB)));
@@ -32,7 +32,7 @@ public class AccountTest extends BaseTest {
 
 	@Test
 	public void testDepositDiferentCurrency() throws Exception {
-		Account account = Account.create("1", Person.create("1"), USD);
+		Account account = Account.create("1", Person.create(), USD);
 
 		account.deposit(Money.create("100", RUB), Money.zero(USD));
 		assertThat(account.getBalance(), equalTo(Money.create("1.5667105400", USD)));
@@ -46,7 +46,7 @@ public class AccountTest extends BaseTest {
 
 	@Test
 	public void testWithdrawTheSameCurrency() throws Exception {
-		Account account = Account.create("", Person.create(""), RUB);
+		Account account = Account.create("", Person.create(), RUB);
 
 		account.withdraw(Money.create("10", RUB), Money.zero(RUB));
 		assertThat(account.getBalance(), equalTo(Money.create("-10", RUB)));
@@ -60,7 +60,7 @@ public class AccountTest extends BaseTest {
 
 	@Test
 	public void testtWithdrawDiferentCurrency() throws Exception {
-		Account account = Account.create("1", Person.create("1"), USD);
+		Account account = Account.create("1", Person.create(), USD);
 
 		account.withdraw(Money.create("100", RUB), Money.zero(USD));
 		assertThat(account.getBalance(), equalTo(Money.create("-1.5667105400", USD)));

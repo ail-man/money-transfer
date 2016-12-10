@@ -12,5 +12,6 @@ public interface Bank {
 
 	Money withdraw(Account account, Money amount, WithdrawStrategy withdrawStrategy) throws NotEnoughFundsException;
 
-	Money transfer(Bank fromBank, Account fromAccount, Bank toBank, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException;
+	Money transfer(Account fromAccount, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException;
+
 }

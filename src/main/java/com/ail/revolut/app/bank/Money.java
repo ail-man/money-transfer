@@ -89,6 +89,16 @@ public class Money {
 		return amount.signum();
 	}
 
+	public Money min(Money money) {
+		validateCurrencies(money);
+		return new Money(this.amount.min(money.amount).toString(), this.currency);
+	}
+
+	public Money max(Money money) {
+		validateCurrencies(money);
+		return new Money(this.amount.max(money.amount).toString(), this.currency);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -116,15 +126,5 @@ public class Money {
 	@Override
 	public String toString() {
 		return amount + "(" + currency + ")";
-	}
-
-	public Money min(Money money) {
-		validateCurrencies(money);
-		return new Money(this.amount.min(money.amount).toString(), this.currency);
-	}
-
-	public Money max(Money money) {
-		validateCurrencies(money);
-		return new Money(this.amount.max(money.amount).toString(), this.currency);
 	}
 }

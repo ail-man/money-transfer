@@ -15,7 +15,7 @@ public class DefaultDepositStrategyTest extends BaseTest {
 
 	@Before
 	public void init() throws Exception {
-		account = Account.create("", Person.create(""), RUB);
+		account = Account.create("", Person.create(), RUB);
 		depositStrategy = new DefaultDepositStrategy();
 	}
 

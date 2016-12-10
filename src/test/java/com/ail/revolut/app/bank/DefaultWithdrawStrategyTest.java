@@ -16,7 +16,7 @@ public class DefaultWithdrawStrategyTest extends BaseTest {
 
 	@Before
 	public void init() throws Exception {
-		account = Account.create("", Person.create(""), USD);
+		account = Account.create("", Person.create(), USD);
 		account.deposit(Money.create("10", USD), Money.zero(USD));
 		assertThat(account.getBalance(), equalTo(Money.create("10", USD)));
 		withdrawStrategy = new DefaultWithdrawStrategy();
