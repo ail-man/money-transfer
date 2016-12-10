@@ -11,7 +11,7 @@ public class BaseTest {
 	protected void assertTestFails(TestOperation testOperation, Class<?> exceptionClass) throws Exception {
 		try {
 			testOperation.perform();
-			fail("should fail");
+			fail("should fail with " + exceptionClass.getName());
 		} catch (Exception e) {
 			if (exceptionClass.isInstance(e)) {
 				logger.debug(e.getMessage());
