@@ -47,13 +47,13 @@ public class Account {
 		return balance;
 	}
 
-	public void deposit(Money amount, Money commission) {
+	void deposit(Money amount, Money commission) {
 		validate(amount, commission);
 
 		balance = balance.add(amount).subtract(commission);
 	}
 
-	public void withdraw(Money money, Money commission) {
+	void withdraw(Money money, Money commission) {
 		validate(money, commission);
 
 		balance = balance.subtract(money).subtract(commission);

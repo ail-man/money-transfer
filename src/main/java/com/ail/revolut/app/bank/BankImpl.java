@@ -3,9 +3,6 @@ package com.ail.revolut.app.bank;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ail.revolut.app.bank.deposit.DepositStrategy;
-import com.ail.revolut.app.bank.transfer.TransferStrategy;
-import com.ail.revolut.app.bank.withdraw.WithdrawStrategy;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public class BankImpl implements Bank {

@@ -1,10 +1,7 @@
-package com.ail.revolut.app.bank.deposit;
+package com.ail.revolut.app.bank;
 
-import com.ail.revolut.app.bank.Account;
 import static com.ail.revolut.app.bank.CurrencyImpl.RUB;
 import static com.ail.revolut.app.bank.CurrencyImpl.USD;
-import com.ail.revolut.app.bank.Money;
-import com.ail.revolut.app.bank.Person;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

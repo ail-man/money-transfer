@@ -3,8 +3,6 @@ package com.ail.revolut.app.bank;
 import static com.ail.revolut.app.bank.CurrencyImpl.EUR;
 import static com.ail.revolut.app.bank.CurrencyImpl.RUB;
 import static com.ail.revolut.app.bank.CurrencyImpl.USD;
-import com.ail.revolut.app.bank.deposit.DepositStrategy;
-import com.ail.revolut.app.bank.withdraw.WithdrawStrategy;
 import com.ail.revolut.app.helper.BaseTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

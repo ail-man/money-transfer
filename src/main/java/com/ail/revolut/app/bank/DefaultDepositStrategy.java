@@ -1,7 +1,4 @@
-package com.ail.revolut.app.bank.deposit;
-
-import com.ail.revolut.app.bank.Account;
-import com.ail.revolut.app.bank.Money;
+package com.ail.revolut.app.bank;
 
 public class DefaultDepositStrategy implements DepositStrategy {
 

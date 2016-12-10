@@ -1,7 +1,5 @@
-package com.ail.revolut.app.bank.withdraw;
+package com.ail.revolut.app.bank;
 
-import com.ail.revolut.app.bank.Account;
-import com.ail.revolut.app.bank.Money;
 import com.ail.revolut.app.exception.NotEnoughFundsException;
 
 public interface WithdrawStrategy {
