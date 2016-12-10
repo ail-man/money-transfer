@@ -8,13 +8,13 @@ import com.ail.revolut.app.logic.AccountManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AbstractManager {
+public abstract class AbstractManager {
 	protected static final Logger logger = LoggerFactory.getLogger(AccountManagerImpl.class);
 
 	protected <T> T perform(Operation<T> operation) throws Exception {
 		EntityManager em = HibernateContextHolder.createEntityManager();
 		EntityTransaction tx = null;
-		T result = null;
+		T result;
 		try {
 			tx = em.getTransaction();
 			tx.begin();
