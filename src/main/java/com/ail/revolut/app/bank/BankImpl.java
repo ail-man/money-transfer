@@ -42,8 +42,11 @@ public class BankImpl implements Bank {
 
 	@Override
 	public Money transfer(Bank fromBank, Account fromAccount, Bank toBank, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException {
-		// TODO
-		return null;
+		return transferStrategy.transfer(fromBank, fromAccount, toBank, toAccount);
+	}
+
+	public Money transfer(Account fromAccount, Account toAccount, Money amount, TransferStrategy transferStrategy) throws NotEnoughFundsException {
+		return transfer(this, fromAccount, this, toAccount, amount, transferStrategy);
 	}
 
 }
