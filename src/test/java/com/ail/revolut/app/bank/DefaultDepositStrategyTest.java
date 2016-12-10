@@ -23,26 +23,26 @@ public class DefaultDepositStrategyTest extends BaseTest {
 	public void testDepositTheSameCurrency() throws Exception {
 		Money commission;
 
-		commission = depositStrategy.deposit(account, new Money("2", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
-		assertThat(commission, equalTo(new Money("0", RUB)));
+		commission = depositStrategy.deposit(account, Money.create("2", RUB));
+		assertThat(account.getBalance(), equalTo(Money.create("2", RUB)));
+		assertThat(commission, equalTo(Money.zero(RUB)));
 
-		commission = depositStrategy.deposit(account, new Money("3", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("5", RUB)));
-		assertThat(commission, equalTo(new Money("0", RUB)));
+		commission = depositStrategy.deposit(account, Money.create("3", RUB));
+		assertThat(account.getBalance(), equalTo(Money.create("5", RUB)));
+		assertThat(commission, equalTo(Money.zero(RUB)));
 	}
 
 	@Test
 	public void testDepositDifferentCurrency() throws Exception {
 		Money commission;
 
-		commission = depositStrategy.deposit(account, new Money("10", RUB));
-		assertThat(account.getBalance(), equalTo(new Money("10", RUB)));
-		assertThat(commission, equalTo(new Money("0", RUB)));
+		commission = depositStrategy.deposit(account, Money.create("10", RUB));
+		assertThat(account.getBalance(), equalTo(Money.create("10", RUB)));
+		assertThat(commission, equalTo(Money.zero(RUB)));
 
-		commission = depositStrategy.deposit(account, new Money("2", USD));
-		assertThat(account.getBalance(), equalTo(new Money("137.656", RUB)));
-		assertThat(commission, equalTo(new Money("0", RUB)));
+		commission = depositStrategy.deposit(account, Money.create("2", USD));
+		assertThat(account.getBalance(), equalTo(Money.create("137.656", RUB)));
+		assertThat(commission, equalTo(Money.zero(RUB)));
 	}
 
 }

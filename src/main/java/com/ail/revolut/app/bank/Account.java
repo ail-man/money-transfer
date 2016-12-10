@@ -11,19 +11,13 @@ public class Account {
 	private final Person owner;
 	private Money balance;
 
-	public Account(Account account) {
-		this.id = account.getId();
-		this.owner = account.getOwner();
-		this.balance = account.getBalance();
-	}
-
 	private Account(String id, Person owner, Currency currency) {
 		this.id = id;
 		this.owner = owner;
-		this.balance = new Money("0", currency);
+		this.balance = Money.zero(currency);
 	}
 
-	public static Account create(String id, Person owner, Currency currency) {
+	static Account create(String id, Person owner, Currency currency) {
 		Validate.notNull(id);
 		Validate.notNull(owner);
 		Validate.notNull(currency);

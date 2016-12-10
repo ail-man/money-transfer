@@ -8,10 +8,10 @@ public class DefaultWithdrawStrategy implements WithdrawStrategy {
 	public Money withdraw(Account account, Money amount) throws NotEnoughFundsException {
 		Currency accountCurrency = account.getCurrency();
 		Money balance = account.getBalance().subtract(amount);
-		if (balance.compareTo(new Money("0", accountCurrency)) < 0) {
+		if (balance.signum() < 0) {
 			throw new NotEnoughFundsException();
 		}
-		Money commission = new Money("0", accountCurrency);
+		Money commission = Money.zero(accountCurrency);
 		account.withdraw(amount.convertTo(accountCurrency), commission);
 		return commission;
 	}

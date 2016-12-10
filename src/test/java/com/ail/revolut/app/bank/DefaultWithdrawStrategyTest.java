@@ -17,8 +17,8 @@ public class DefaultWithdrawStrategyTest extends BaseTest {
 	@Before
 	public void init() throws Exception {
 		account = Account.create("", Person.create(""), USD);
-		account.deposit(new Money("10", USD), new Money("0", USD));
-		assertThat(account.getBalance(), equalTo(new Money("10", USD)));
+		account.deposit(Money.create("10", USD), Money.zero(USD));
+		assertThat(account.getBalance(), equalTo(Money.create("10", USD)));
 		withdrawStrategy = new DefaultWithdrawStrategy();
 	}
 
@@ -26,29 +26,29 @@ public class DefaultWithdrawStrategyTest extends BaseTest {
 	public void testWithdrawTheSameCurrency() throws Exception {
 		Money commission;
 
-		commission = withdrawStrategy.withdraw(account, new Money("4", USD));
-		assertThat(account.getBalance(), equalTo(new Money("6", USD)));
-		assertThat(commission, equalTo(new Money("0", USD)));
+		commission = withdrawStrategy.withdraw(account, Money.create("4", USD));
+		assertThat(account.getBalance(), equalTo(Money.create("6", USD)));
+		assertThat(commission, equalTo(Money.zero(USD)));
 
-		commission = withdrawStrategy.withdraw(account, new Money("5", USD));
-		assertThat(account.getBalance(), equalTo(new Money("1", USD)));
-		assertThat(commission, equalTo(new Money("0", USD)));
+		commission = withdrawStrategy.withdraw(account, Money.create("5", USD));
+		assertThat(account.getBalance(), equalTo(Money.create("1", USD)));
+		assertThat(commission, equalTo(Money.zero(USD)));
 
-		assertTestFails(() -> withdrawStrategy.withdraw(account, new Money("2", USD)), NotEnoughFundsException.class);
+		assertTestFails(() -> withdrawStrategy.withdraw(account, Money.create("2", USD)), NotEnoughFundsException.class);
 	}
 
 	@Test
 	public void testWithdrawTDifferentCurrency() throws Exception {
 		Money commission;
 
-		commission = withdrawStrategy.withdraw(account, new Money("3", EUR));
-		assertThat(account.getBalance(), equalTo(new Money("6.8152866241", USD)));
-		assertThat(commission, equalTo(new Money("0", USD)));
+		commission = withdrawStrategy.withdraw(account, Money.create("3", EUR));
+		assertThat(account.getBalance(), equalTo(Money.create("6.8152866241", USD)));
+		assertThat(commission, equalTo(Money.zero(USD)));
 
-		commission = withdrawStrategy.withdraw(account, new Money("5", USD));
-		assertThat(account.getBalance(), equalTo(new Money("1.8152866241", USD)));
-		assertThat(commission, equalTo(new Money("0", USD)));
+		commission = withdrawStrategy.withdraw(account, Money.create("5", USD));
+		assertThat(account.getBalance(), equalTo(Money.create("1.8152866241", USD)));
+		assertThat(commission, equalTo(Money.zero(USD)));
 
-		assertTestFails(() -> withdrawStrategy.withdraw(account, new Money("2", EUR)), NotEnoughFundsException.class);
+		assertTestFails(() -> withdrawStrategy.withdraw(account, Money.create("2", EUR)), NotEnoughFundsException.class);
 	}
 }

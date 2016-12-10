@@ -38,17 +38,17 @@ public class BankImplTest extends BaseTest {
 			return commission;
 		};
 
-		Money amount = new Money("2", RUB);
+		Money amount = Money.create("2", RUB);
 		Money commission = bankImpl.deposit(account, amount, depositStrategy);
 
-		assertThat(commission, equalTo(new Money("0", RUB)));
-		assertThat(account.getBalance(), equalTo(new Money("2", RUB)));
+		assertThat(commission, equalTo(Money.zero(RUB)));
+		assertThat(account.getBalance(), equalTo(Money.create("2", RUB)));
 
-		amount = new Money("10", USD);
+		amount = Money.create("10", USD);
 		commission = bankImpl.deposit(account, amount, depositStrategy);
 
-		assertThat(commission, equalTo(new Money("31.914", RUB)));
-		assertThat(account.getBalance(), equalTo(new Money("608.366", RUB)));
+		assertThat(commission, equalTo(Money.create("31.914", RUB)));
+		assertThat(account.getBalance(), equalTo(Money.create("608.366", RUB)));
 	}
 
 	@Test
@@ -69,16 +69,16 @@ public class BankImplTest extends BaseTest {
 			return commission;
 		};
 
-		Money amount = new Money("2", EUR);
+		Money amount = Money.create("2", EUR);
 		Money commission = bankImpl.withdraw(account, amount, withdrawStrategy);
 
-		assertThat(commission, equalTo(new Money("0.1061571126", USD)));
-		assertThat(account.getBalance(), equalTo(new Money("-2.2292993632", USD)));
+		assertThat(commission, equalTo(Money.create("0.1061571126", USD)));
+		assertThat(account.getBalance(), equalTo(Money.create("-2.2292993632", USD)));
 
-		amount = new Money("10", USD);
+		amount = Money.create("10", USD);
 		commission = bankImpl.withdraw(account, amount, withdrawStrategy);
 
-		assertThat(commission, equalTo(new Money("0", USD)));
-		assertThat(account.getBalance(), equalTo(new Money("-12.2292993632", USD)));
+		assertThat(commission, equalTo(Money.zero(USD)));
+		assertThat(account.getBalance(), equalTo(Money.create("-12.2292993632", USD)));
 	}
 }

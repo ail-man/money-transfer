@@ -10,13 +10,24 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Money {
 
 	public static final int PRECISION = 10;
+	private static final String ZERO = "0";
 
 	private final BigDecimal amount;
 	private final Currency currency;
 
-	public Money(String amount, Currency currency) {
+	private Money(String amount, Currency currency) {
 		this.amount = new BigDecimal(amount).setScale(PRECISION, BigDecimal.ROUND_CEILING);
 		this.currency = currency;
+	}
+
+	public static Money create(String amount, Currency currency) {
+		Validate.notNull(amount);
+		Validate.notNull(currency);
+		return new Money(amount, currency);
+	}
+
+	public static Money zero(Currency currency) {
+		return create(ZERO, currency);
 	}
 
 	public String getAmount() {

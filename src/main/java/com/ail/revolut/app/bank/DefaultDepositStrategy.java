@@ -4,7 +4,7 @@ public class DefaultDepositStrategy implements DepositStrategy {
 
 	@Override
 	public Money deposit(Account account, Money amount) {
-		Money commission = new Money("0", account.getCurrency());
+		Money commission = Money.zero(account.getCurrency());
 		account.deposit(amount, commission);
 		return commission;
 	}
