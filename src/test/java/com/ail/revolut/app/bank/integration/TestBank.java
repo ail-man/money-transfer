@@ -26,4 +26,5 @@ public class TestBank extends BaseTest {
 		bank.deposit(account, Money.create("100", USD), new DefaultDepositStrategy());
 	}
 
+	// TODO refactor with https://dzone.com/articles/osgi-gateway-micro-services
 }
