@@ -18,15 +18,15 @@ import com.ail.revolut.app.logic.AccountManager;
 import com.ail.revolut.app.logic.AccountManagerImpl;
 import com.ail.revolut.app.logic.RemittanceManager;
 import com.ail.revolut.app.logic.RemittanceManagerImpl;
-import com.ail.revolut.app.rest.common.AbstractService;
+import com.ail.revolut.app.rest.common.AbstractRestService;
 
 @Path("/account")
-public class AccountService extends AbstractService {
+public class AccountRestService extends AbstractRestService {
 
 	private AccountManager accountManager;
 	private RemittanceManager remittanceManager;
 
-	public AccountService() {
+	public AccountRestService() {
 		accountManager = new AccountManagerImpl();
 		remittanceManager = new RemittanceManagerImpl();
 	}

@@ -12,15 +12,15 @@ import com.ail.revolut.app.logic.RemittanceManager;
 import com.ail.revolut.app.logic.RemittanceManagerImpl;
 import com.ail.revolut.app.logic.TransferManager;
 import com.ail.revolut.app.logic.TransferManagerImpl;
-import com.ail.revolut.app.rest.common.AbstractService;
+import com.ail.revolut.app.rest.common.AbstractRestService;
 
 @Path("/transfer")
-public class TransferService extends AbstractService {
+public class TransferRestService extends AbstractRestService {
 
 	private TransferManager transferManager;
 	private RemittanceManager remittanceManager;
 
-	public TransferService() {
+	public TransferRestService() {
 		transferManager = new TransferManagerImpl();
 		remittanceManager = new RemittanceManagerImpl();
 	}

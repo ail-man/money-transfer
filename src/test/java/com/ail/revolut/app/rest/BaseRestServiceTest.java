@@ -22,8 +22,8 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class BaseServiceTest {
-	private static final Logger logger = LoggerFactory.getLogger(BaseServiceTest.class);
+class BaseRestServiceTest {
+	private static final Logger logger = LoggerFactory.getLogger(BaseRestServiceTest.class);
 
 	private HttpServer server;
 	private WebTarget target;

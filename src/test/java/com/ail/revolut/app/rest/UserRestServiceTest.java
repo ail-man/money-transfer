@@ -1,5 +1,5 @@
 package com.ail.revolut.app.rest;
 
 // TODO
-public class RemittanceService {
+public class UserRestServiceTest {
 }

@@ -4,8 +4,8 @@ import com.ail.revolut.app.dto.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractService {
-	protected static final Logger logger = LoggerFactory.getLogger(AbstractService.class);
+public abstract class AbstractRestService {
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractRestService.class);
 
 	protected ResponseData handleRequest(RequestHandler requestHandler) {
 		try {

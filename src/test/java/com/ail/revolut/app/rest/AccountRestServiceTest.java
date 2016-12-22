@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AccountServiceTest extends BaseServiceTest {
+public class AccountRestServiceTest extends BaseRestServiceTest {
 
 	private Long accountId;
 

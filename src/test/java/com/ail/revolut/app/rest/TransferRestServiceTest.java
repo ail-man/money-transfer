@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.nullValue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TransferServiceTest extends BaseServiceTest {
+public class TransferRestServiceTest extends BaseRestServiceTest {
 
 	private Long fromId;
 	private Long toId;
