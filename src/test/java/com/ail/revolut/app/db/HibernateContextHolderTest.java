@@ -1,22 +1,21 @@
 package com.ail.revolut.app.db;
 
-import org.junit.Test;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import org.junit.Test;
 
 public class HibernateContextHolderTest {
 
 	@Test
 	public void testCreateEntityManager() throws Exception {
-		EntityManager em1 = HibernateContextHolder.createEntityManager();
+		EntityManager em1 = HibernateContextHolder.getInstance().createEntityManager();
 		assertThat(em1, is(notNullValue()));
 
-		EntityManager em2 = HibernateContextHolder.createEntityManager();
+		EntityManager em2 = HibernateContextHolder.getInstance().createEntityManager();
 		assertThat(em2, is(notNullValue()));
 
 		assertTrue(em1 != em2);
@@ -24,10 +23,10 @@ public class HibernateContextHolderTest {
 
 	@Test
 	public void testSingleHibernateContext() throws Exception {
-		EntityManagerFactory emf1 = HibernateContextHolder.createEntityManagerFactory();
-		EntityManagerFactory emf2 = HibernateContextHolder.createEntityManagerFactory();
+		HibernateContextHolder contextHolder1 = HibernateContextHolder.getInstance();
+		HibernateContextHolder contextHolder2 = HibernateContextHolder.getInstance();
 
-		assertTrue(emf1 == emf2);
+		assertTrue(contextHolder1 == contextHolder2);
 	}
 
 }

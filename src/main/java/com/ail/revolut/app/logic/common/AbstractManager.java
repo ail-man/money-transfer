@@ -12,7 +12,7 @@ public abstract class AbstractManager {
 	protected static final Logger logger = LoggerFactory.getLogger(AccountManagerImpl.class);
 
 	protected <T> T perform(Operation<T> operation) throws Exception {
-		EntityManager em = HibernateContextHolder.createEntityManager();
+		EntityManager em = HibernateContextHolder.getInstance().createEntityManager();
 		EntityTransaction tx = null;
 		T result;
 		try {
