@@ -81,4 +81,10 @@ public class BankImplTest extends BaseTest {
 		assertThat(commission, equalTo(Money.zero(USD)));
 		assertThat(account.getBalance(), equalTo(Money.create("-12.2292993632", USD)));
 	}
+
+	@Test
+	public void testTransfer() throws Exception {
+		// TODO
+	}
+
 }
