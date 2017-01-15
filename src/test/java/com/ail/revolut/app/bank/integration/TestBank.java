@@ -28,4 +28,5 @@ public class TestBank extends BaseTest {
 
 	// TODO refactor with https://dzone.com/articles/osgi-gateway-micro-services
 	// TODO use Onion architecture with Spring Boot https://github.com/adamsiemion/springboot-with-spring_data-and-onion_architecture.git
+	// TODO use Aspects for pass-through functionality
 }
