@@ -49,7 +49,7 @@ class BaseRestServiceTest {
 	}
 
 	void assertDepositSuccess(Long accountId, BigDecimal depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().put(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), notNullValue());
@@ -57,7 +57,7 @@ class BaseRestServiceTest {
 	}
 
 	void assertDepositFails(Long accountId, BigDecimal depositAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().post(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/deposit").request().put(Entity.entity(new Money(depositAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());
@@ -65,7 +65,7 @@ class BaseRestServiceTest {
 	}
 
 	void assertWithdrawSuccess(Long accountId, BigDecimal withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().put(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), notNullValue());
@@ -73,7 +73,7 @@ class BaseRestServiceTest {
 	}
 
 	void assertWithdrawFails(Long accountId, BigDecimal withdrawAmount) {
-		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().post(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/" + accountId + "/withdraw").request().put(Entity.entity(new Money(withdrawAmount), MediaType.APPLICATION_JSON), ResponseData.class);
 		logResponseData(responseData);
 
 		assertThat(responseData.getValue(), nullValue());
@@ -81,7 +81,7 @@ class BaseRestServiceTest {
 	}
 
 	Long assertCreateAccount() {
-		ResponseData responseData = getTarget().path("/account/create").request().put(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
+		ResponseData responseData = getTarget().path("/account/create").request().post(Entity.entity(new Account(), MediaType.APPLICATION_JSON_TYPE), ResponseData.class);
 		logResponseData(responseData);
 
 		Long accountId = Long.parseLong(responseData.getValue());

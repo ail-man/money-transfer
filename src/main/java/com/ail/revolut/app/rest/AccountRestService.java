@@ -31,7 +31,7 @@ public class AccountRestService extends AbstractRestService {
 		remittanceManager = new RemittanceManagerImpl();
 	}
 
-	@PUT
+	@POST
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path("/create")
 	public ResponseData createAccount() {
@@ -55,7 +55,7 @@ public class AccountRestService extends AbstractRestService {
 		});
 	}
 
-	@POST
+	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path("/{id}/deposit")
@@ -71,7 +71,7 @@ public class AccountRestService extends AbstractRestService {
 		});
 	}
 
-	@POST
+	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path("/{id}/withdraw")
