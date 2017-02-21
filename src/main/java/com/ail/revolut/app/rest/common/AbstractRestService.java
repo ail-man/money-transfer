@@ -4,6 +4,7 @@ import com.ail.revolut.app.dto.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO use @ExceptionHandler instead it when use Spring
 public abstract class AbstractRestService {
 	protected static final Logger logger = LoggerFactory.getLogger(AbstractRestService.class);
 
