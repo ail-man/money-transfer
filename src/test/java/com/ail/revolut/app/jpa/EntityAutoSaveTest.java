@@ -13,8 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Slf4j
 public class EntityAutoSaveTest {
@@ -56,27 +56,31 @@ public class EntityAutoSaveTest {
             tx = em.getTransaction();
             tx.begin();
 
-            for (Pdo pdo : EntityDependenciesResolver.collectNotPersistedObjectsFromPdoGraph(remittance6)) {
+            Set<Pdo> pdoSet = EntityDependenciesResolver.collectNotPersistedObjectsFromPdoGraph(remittance1);
+            for (Pdo pdo : pdoSet) {
+                log.info(pdo.toString());
                 em.persist(pdo);
             }
 //
-//            em.persist(remittance6);
-//            em.persist(remittance5);
+//            em.persist(user1);
+//            em.persist(user2);
+//            em.persist(user3);
+//
+//            em.persist(user1account);
+//            em.persist(user2account);
+//            em.persist(user3account);
+//
+//            em.persist(remittance1);
+//            em.persist(remittance2);
 //            em.persist(remittance4);
 //            em.persist(remittance3);
-//            em.persist(remittance2);
-//            em.persist(remittance1);
-//
-//            em.persist(user3account);
-//            em.persist(user2account);
-//            em.persist(user1account);
+//            em.persist(remittance5);
+//            em.persist(remittance6);
+
 //
 //            // if comment one of user or account persistence the exception will be thrown:
 //            // org.hibernate.TransientPropertyValueException: object references an unsaved transient instance
 //
-//            em.persist(user3);
-//            em.persist(user2);
-//            em.persist(user1);
 
             tx.commit();
         } catch (Exception e) {
@@ -87,9 +91,9 @@ public class EntityAutoSaveTest {
             throw e;
         }
 
-        Account account = em.find(Account.class, 1L);
-        List<Remittance> remittances = account.getRemittances();
-        log.info(remittances.toString());
+//        Account account = em.find(Account.class, 1L);
+//        List<Remittance> remittances = account.getRemittances();
+//        log.info(remittances.toString());
 
         em.close();
     }
