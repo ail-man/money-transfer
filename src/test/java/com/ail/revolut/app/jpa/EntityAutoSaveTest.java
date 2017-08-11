@@ -1,5 +1,7 @@
 package com.ail.revolut.app.jpa;
 
+import com.ail.revolut.app.algorithm.EntityDependenciesResolver;
+import com.ail.revolut.app.algorithm.Pdo;
 import com.ail.revolut.app.db.HibernateContextHolder;
 import com.ail.revolut.app.model.Account;
 import com.ail.revolut.app.model.Remittance;
@@ -32,33 +34,49 @@ public class EntityAutoSaveTest {
 
         Remittance remittance1 = createRemmitance(user1account, user2account, BigDecimal.valueOf(1L));
         Remittance remittance2 = createRemmitance(user1account, user3account, BigDecimal.valueOf(2L));
+        user1account.getRemittances().add(remittance1);
+        user1account.getRemittances().add(remittance2);
+
         Remittance remittance3 = createRemmitance(user2account, user1account, BigDecimal.valueOf(3L));
         Remittance remittance4 = createRemmitance(user2account, user3account, BigDecimal.valueOf(4L));
+        user2account.getRemittances().add(remittance3);
+        user2account.getRemittances().add(remittance4);
+
         Remittance remittance5 = createRemmitance(user3account, user1account, BigDecimal.valueOf(5L));
         Remittance remittance6 = createRemmitance(user3account, user2account, BigDecimal.valueOf(6L));
+        user3account.getRemittances().add(remittance5);
+        user3account.getRemittances().add(remittance6);
+
+        user1.getAccounts().add(user1account);
+        user2.getAccounts().add(user2account);
+        user3.getAccounts().add(user3account);
 
         EntityTransaction tx = null;
         try {
             tx = em.getTransaction();
             tx.begin();
 
-            em.persist(remittance6);
-            em.persist(remittance5);
-            em.persist(remittance4);
-            em.persist(remittance3);
-            em.persist(remittance2);
-            em.persist(remittance1);
-
-            em.persist(user3account);
-            em.persist(user2account);
-            em.persist(user1account);
-
-            // if comment one of user or account persistence the exception will be thrown:
-            // org.hibernate.TransientPropertyValueException: object references an unsaved transient instance
-
-            em.persist(user3);
-            em.persist(user2);
-            em.persist(user1);
+            for (Pdo pdo : EntityDependenciesResolver.collectNotPersistedObjectsFromPdoGraph(remittance6)) {
+                em.persist(pdo);
+            }
+//
+//            em.persist(remittance6);
+//            em.persist(remittance5);
+//            em.persist(remittance4);
+//            em.persist(remittance3);
+//            em.persist(remittance2);
+//            em.persist(remittance1);
+//
+//            em.persist(user3account);
+//            em.persist(user2account);
+//            em.persist(user1account);
+//
+//            // if comment one of user or account persistence the exception will be thrown:
+//            // org.hibernate.TransientPropertyValueException: object references an unsaved transient instance
+//
+//            em.persist(user3);
+//            em.persist(user2);
+//            em.persist(user1);
 
             tx.commit();
         } catch (Exception e) {

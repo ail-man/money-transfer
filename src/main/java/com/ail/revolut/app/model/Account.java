@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "accounts")
@@ -33,7 +34,7 @@ public class Account extends Pdo implements Serializable {
     @Getter
     @Setter
     @OneToMany(mappedBy = "from", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Remittance> remittances;
+    private List<Remittance> remittances = new ArrayList<>();
 
     @Override
     public String toString() {

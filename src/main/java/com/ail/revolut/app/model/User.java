@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "users")
@@ -30,5 +31,5 @@ public class User extends Pdo implements Serializable {
     @Getter
     @Setter
     @OneToMany(mappedBy = "owner")
-    private List<Account> accounts;
+    private List<Account> accounts = new ArrayList<>();
 }
