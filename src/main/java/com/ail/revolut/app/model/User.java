@@ -1,6 +1,7 @@
 package com.ail.revolut.app.model;
 
 
+import com.ail.revolut.app.algorithm.Pdo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +13,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @ToString
-public class User implements Serializable {
+public class User extends Pdo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Getter
