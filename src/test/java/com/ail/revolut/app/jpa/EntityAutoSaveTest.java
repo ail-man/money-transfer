@@ -57,6 +57,7 @@ public class EntityAutoSaveTest {
             tx.begin();
 
             // TODO https://stackoverflow.com/questions/25621388/hibernate-object-references-an-unsaved-transient-instance-save-the-transient-i
+            // TODO https://stackoverflow.com/questions/42745285/create-object-in-many-to-one-relationship-in-spring-not-null-property-reference
 
             Set<Pdo> pdoSet = EntityDependenciesResolver.collectNotPersistedObjectsFromPdoGraph(remittance1);
             for (Pdo pdo : pdoSet) {

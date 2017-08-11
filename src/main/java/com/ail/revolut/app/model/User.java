@@ -30,6 +30,6 @@ public class User extends Pdo implements Serializable {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Account> accounts = new ArrayList<>();
 }
