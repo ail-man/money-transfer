@@ -39,7 +39,7 @@ public class Remittance implements Serializable, Cloneable {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_to_id")
     private Account to;
 
