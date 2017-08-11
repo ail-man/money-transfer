@@ -34,7 +34,7 @@ public class Remittance extends Pdo implements Serializable, Cloneable {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_from_id")
     private Account from;
 

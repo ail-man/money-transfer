@@ -56,6 +56,8 @@ public class EntityAutoSaveTest {
             tx = em.getTransaction();
             tx.begin();
 
+            // TODO https://stackoverflow.com/questions/25621388/hibernate-object-references-an-unsaved-transient-instance-save-the-transient-i
+
             Set<Pdo> pdoSet = EntityDependenciesResolver.collectNotPersistedObjectsFromPdoGraph(remittance1);
             for (Pdo pdo : pdoSet) {
                 log.info(pdo.toString());
