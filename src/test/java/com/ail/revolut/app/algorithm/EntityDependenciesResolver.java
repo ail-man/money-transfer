@@ -1,10 +1,9 @@
 package com.ail.revolut.app.algorithm;
 
+import com.ail.revolut.app.model.Pdo;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,84 +17,80 @@ public final class EntityDependenciesResolver {
         throw new AssertionError();
     }
 
-    public static Set<Pdo> collectNotPersistedObjectsFromPdoGraph(Pdo pdo) {
-        log.debug("Collect all not persisted PDO objects from PDO: {}", pdo);
-
-        Set<Pdo> result = new LinkedHashSet<>();
-
-        collectNotPersisteFieldsFromPdo(pdo, result);
-
-        return result;
+    public static Set<Pdo> collectAllGraphFromPdo(Pdo pdo) {
+        log.info("Collect all graph from PDO: {}", pdo.getClass());
+        return collectAllGraph(pdo, new LinkedHashSet<>());
     }
 
-    private static void collectNotPersisteFieldsFromPdo(Pdo pdo, Set<Pdo> result) {
-        Set<Pdo> notPersistedDependencies = new LinkedHashSet<>();
-        collectNotPersistedFields(pdo, notPersistedDependencies, DEPENDENCY);
-        notPersistedDependencies = revertOrder(notPersistedDependencies);
-
-        result.addAll(notPersistedDependencies);
-
-        Set<Pdo> notPersistedDependants = new LinkedHashSet<>();
-        collectNotPersistedFields(pdo, notPersistedDependants, DEPENDANT);
-        for (Pdo dependant : notPersistedDependants) {
-            if (!result.contains(dependant)) {
-                collectNotPersisteFieldsFromPdo(dependant, result);
-            }
+    private static Set<Pdo> collectAllGraph(Object object, Set<Pdo> result) {
+        if (object == null) {
+            return result;
         }
-    }
 
-    private static void collectNotPersistedFields(Object object, Set<Pdo> result, EDRUtil.RelationType relationType) {
         if (object instanceof Iterable<?>) {
-            Iterable<?> iterable = (Iterable) object;
-            for (Object obj : iterable) {
-                collectNotPersistedFields(obj, result, relationType);
+            for (Object item : (Iterable<?>) object) {
+                collectAllGraph(item, result);
             }
         }
 
         if (object instanceof Pdo) {
             Pdo pdo = (Pdo) object;
 
-            if (pdo.getId() != null) {
-                return;
-            }
+//            if (pdo.getId() != null) {
+//                return;
+//            }
 
             if (result.contains(pdo)) {
-                return;
+                return result;
             }
 
-            log.debug("Add pdo: {}", pdo);
-            result.add(pdo);
+            result.addAll(EDRUtil.inverseOrder(collectAllDependencies(pdo, new LinkedHashSet<>())));
 
-            Collection<Field> fieldCollection = EDRUtil.getFields(object.getClass(), relationType);
-            for (Field field : fieldCollection) {
-                Object fieldValue = getFieldValue(object, field);
-                collectNotPersistedFields(fieldValue, result, relationType);
+            for (Pdo item : new LinkedHashSet<>(result)) {
+                for (Field field : EDRUtil.getFields(item.getClass(), DEPENDANT)) {
+                    Object fieldValue = EDRUtil.getFieldValue(item, field);
+                    collectAllGraph(fieldValue, result);
+                }
             }
         }
+
+        return result;
     }
 
-    private static Object getFieldValue(Object obj, Field field) {
-        try {
-            field.setAccessible(true);
-            return field.get(obj);
+    private static Set<Pdo> collectAllDependencies(Object object, Set<Pdo> result) {
+        if (object == null) {
+            return result;
         }
-        catch (IllegalAccessException e) {
-            log.debug(e.getMessage());
-            return null;
+
+        if (object instanceof Iterable<?>) {
+            for (Object obj : (Iterable<?>) object) {
+                collectAllDependencies(obj, result);
+            }
         }
-    }
 
-    private static Set<Pdo> revertOrder(Set<Pdo> set) {
-        Set<Pdo> result = new LinkedHashSet<>();
+        if (object instanceof Pdo) {
+            Pdo pdo = (Pdo) object;
 
-        LinkedList<Pdo> linkedList = new LinkedList<>(set);
-        Iterator<Pdo> iterator = linkedList.descendingIterator();
-        while (iterator.hasNext()) {
-            Pdo pdo = iterator.next();
+//            if (pdo.getId() != null) {
+//                return;
+//            }
+
+            if (result.contains(pdo)) {
+                return result;
+            }
+
+            log.info("Collect pdo: {}", pdo);
             result.add(pdo);
+
+            Collection<Field> fields = EDRUtil.getFields(object.getClass(), DEPENDENCY);
+            for (Field field : fields) {
+                Object fieldValue = EDRUtil.getFieldValue(object, field);
+                collectAllDependencies(fieldValue, result);
+            }
         }
 
         return result;
     }
 
 }
+

@@ -3,6 +3,9 @@ package com.ail.revolut.app.algorithm;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,6 +20,38 @@ public class EDRUtil {
         throw new AssertionError();
     }
 
+    // TODO write description
+    public static <T> Set<T> inverseOrder(Set<T> set) {
+        Set<T> result = new LinkedHashSet<>();
+
+        LinkedList<T> linkedList = new LinkedList<>(set);
+        Iterator<T> iterator = linkedList.descendingIterator();
+        while (iterator.hasNext()) {
+            T obj = iterator.next();
+            result.add(obj);
+        }
+
+        return result;
+    }
+
+    // TODO write description
+    public static Object getFieldValue(Object obj, Field field) {
+        try {
+            return tryGetFieldValue(obj, field);
+        }
+        catch (IllegalAccessException e) {
+            log.debug(e.getMessage());
+            return null;
+        }
+    }
+
+    // TODO make public and write description
+    private static Object tryGetFieldValue(Object obj, Field field) throws IllegalAccessException {
+        field.setAccessible(true);
+        return field.get(obj);
+    }
+
+    // TODO write description
     public static Set<Field> getFields(Class<?> clazz, RelationType relationType) {
         switch (relationType) {
             case DEPENDENCY:
@@ -40,8 +75,8 @@ public class EDRUtil {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ManyToOne.class)
                     || (field.isAnnotationPresent(OneToOne.class) && field.isAnnotationPresent(JoinColumn.class))) {
+                log.debug("Found dependency field: {}", field);
                 result.add(field);
-                log.debug("Dependency Field: {}", field);
             }
         }
         Class<?> superClass = clazz.getSuperclass();
@@ -62,8 +97,8 @@ public class EDRUtil {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(OneToMany.class)
                     || (field.isAnnotationPresent(OneToOne.class) && !field.isAnnotationPresent(JoinColumn.class))) {
+                log.debug("Found dependant field: {}", field);
                 result.add(field);
-                log.debug("Dependant Field: {}", field);
             }
         }
         Class<?> superClass = clazz.getSuperclass();

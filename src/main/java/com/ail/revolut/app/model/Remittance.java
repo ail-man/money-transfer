@@ -1,18 +1,26 @@
 package com.ail.revolut.app.model;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
 @Table(name = "remittances")
 @Entity
 @ToString
-public class Remittance implements Serializable, Cloneable {
+public class Remittance extends Pdo implements Serializable, Cloneable {
+
     private static final long serialVersionUID = 1L;
 
     @Getter
@@ -64,7 +72,8 @@ public class Remittance implements Serializable, Cloneable {
         Remittance clone;
         try {
             clone = (Remittance) super.clone();
-        } catch (CloneNotSupportedException e) {
+        }
+        catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
         clone.performed = (Date) performed.clone();

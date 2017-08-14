@@ -1,4 +1,4 @@
-package com.ail.revolut.app.algorithm;
+package com.ail.revolut.app.model;
 
 public class Pdo {
 
