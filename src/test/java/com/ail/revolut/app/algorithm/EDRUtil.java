@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -74,8 +75,9 @@ public class EDRUtil {
     private static void scanDependencyFields(Class<?> clazz, Set<Field> result) {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ManyToOne.class)
-                    || (field.isAnnotationPresent(OneToOne.class) && field.isAnnotationPresent(JoinColumn.class))) {
-                log.debug("Found dependency field: {}", field);
+                    || (field.isAnnotationPresent(OneToOne.class) && field.isAnnotationPresent(JoinColumn.class))
+                    || field.isAnnotationPresent(Embedded.class)) {
+                log.trace("Found dependency field: {}", field);
                 result.add(field);
             }
         }
@@ -96,8 +98,9 @@ public class EDRUtil {
     private static void scanDependantFields(Class<?> clazz, Set<Field> result) {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(OneToMany.class)
-                    || (field.isAnnotationPresent(OneToOne.class) && !field.isAnnotationPresent(JoinColumn.class))) {
-                log.debug("Found dependant field: {}", field);
+                    || (field.isAnnotationPresent(OneToOne.class) && !field.isAnnotationPresent(JoinColumn.class))
+                    || field.isAnnotationPresent(Embedded.class)) {
+                log.trace("Found dependant field: {}", field);
                 result.add(field);
             }
         }

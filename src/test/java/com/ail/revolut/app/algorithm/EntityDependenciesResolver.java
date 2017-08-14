@@ -2,9 +2,9 @@ package com.ail.revolut.app.algorithm;
 
 import com.ail.revolut.app.model.Pdo;
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.persistence.Embedded;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDANT;
@@ -19,19 +19,32 @@ public final class EntityDependenciesResolver {
 
     public static Set<Pdo> collectAllGraphFromPdo(Pdo pdo) {
         log.info("Collect all graph from PDO: {}", pdo.getClass());
-        Set<Pdo> result = collectAllGraph(pdo, new LinkedHashSet<>());
+
+        Set<Pdo> result = collectAllGraph(pdo, new LinkedHashSet<>(), false);
+
+        // TODO remove all items with ID != null
+
         result.forEach(obj -> log.info("Collected pdo: {}", obj));
+
         return result;
     }
 
-    private static Set<Pdo> collectAllGraph(Object object, Set<Pdo> result) {
+    private static Set<Pdo> collectAllGraph(Object object, Set<Pdo> result, boolean embedded) {
         if (object == null) {
             return result;
         }
 
         if (object instanceof Iterable<?>) {
             for (Object item : (Iterable<?>) object) {
-                collectAllGraph(item, result);
+                collectAllGraph(item, result, false);
+            }
+        }
+
+        if (embedded) {
+            for (Field field : EDRUtil.getFields(object.getClass(), DEPENDANT)) {
+                collectAllGraph(EDRUtil.getFieldValue(object, field),
+                        result,
+                        field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -46,12 +59,13 @@ public final class EntityDependenciesResolver {
                 return result;
             }
 
-            result.addAll(EDRUtil.inverseOrder(collectAllDependencies(pdo, new LinkedHashSet<>())));
+            result.addAll(EDRUtil.inverseOrder(collectAllDependencies(pdo, new LinkedHashSet<>(), embedded)));
 
             for (Pdo item : new LinkedHashSet<>(result)) {
                 for (Field field : EDRUtil.getFields(item.getClass(), DEPENDANT)) {
-                    Object fieldValue = EDRUtil.getFieldValue(item, field);
-                    collectAllGraph(fieldValue, result);
+                    collectAllGraph(EDRUtil.getFieldValue(item, field),
+                            result,
+                            field.isAnnotationPresent(Embedded.class));
                 }
             }
         }
@@ -59,14 +73,22 @@ public final class EntityDependenciesResolver {
         return result;
     }
 
-    private static Set<Pdo> collectAllDependencies(Object object, Set<Pdo> result) {
+    private static Set<Pdo> collectAllDependencies(Object object, Set<Pdo> result, boolean embedded) {
         if (object == null) {
             return result;
         }
 
         if (object instanceof Iterable<?>) {
             for (Object obj : (Iterable<?>) object) {
-                collectAllDependencies(obj, result);
+                collectAllDependencies(obj, result, false);
+            }
+        }
+
+        if (embedded) {
+            for (Field field : EDRUtil.getFields(object.getClass(), DEPENDENCY)) {
+                collectAllDependencies(EDRUtil.getFieldValue(object, field),
+                        result,
+                        field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -83,10 +105,10 @@ public final class EntityDependenciesResolver {
 
             result.add(pdo);
 
-            Collection<Field> fields = EDRUtil.getFields(object.getClass(), DEPENDENCY);
-            for (Field field : fields) {
-                Object fieldValue = EDRUtil.getFieldValue(object, field);
-                collectAllDependencies(fieldValue, result);
+            for (Field field : EDRUtil.getFields(object.getClass(), DEPENDENCY)) {
+                collectAllDependencies(EDRUtil.getFieldValue(object, field),
+                        result,
+                        field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -94,4 +116,3 @@ public final class EntityDependenciesResolver {
     }
 
 }
-
