@@ -19,7 +19,9 @@ public final class EntityDependenciesResolver {
 
     public static Set<Pdo> collectAllGraphFromPdo(Pdo pdo) {
         log.info("Collect all graph from PDO: {}", pdo.getClass());
-        return collectAllGraph(pdo, new LinkedHashSet<>());
+        Set<Pdo> result = collectAllGraph(pdo, new LinkedHashSet<>());
+        result.forEach(obj -> log.info("Collected pdo: {}", obj));
+        return result;
     }
 
     private static Set<Pdo> collectAllGraph(Object object, Set<Pdo> result) {
@@ -79,7 +81,6 @@ public final class EntityDependenciesResolver {
                 return result;
             }
 
-            log.info("Collect pdo: {}", pdo);
             result.add(pdo);
 
             Collection<Field> fields = EDRUtil.getFields(object.getClass(), DEPENDENCY);
