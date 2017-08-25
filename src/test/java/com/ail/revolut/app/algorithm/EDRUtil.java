@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -98,6 +99,7 @@ public class EDRUtil {
     private static void scanDependantFields(Class<?> clazz, Set<Field> result) {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(OneToMany.class)
+                    || field.isAnnotationPresent(ManyToMany.class)
                     || (field.isAnnotationPresent(OneToOne.class) && !field.isAnnotationPresent(JoinColumn.class))
                     || field.isAnnotationPresent(Embedded.class)) {
                 log.trace("Found dependant field: {}", field);

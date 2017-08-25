@@ -42,9 +42,7 @@ public final class EntityDependenciesResolver {
 
         if (embedded) {
             for (Field field : EDRUtil.getFields(object.getClass(), DEPENDANT)) {
-                collectAllGraph(EDRUtil.getFieldValue(object, field),
-                        result,
-                        field.isAnnotationPresent(Embedded.class));
+                collectAllGraph(EDRUtil.getFieldValue(object, field), result, field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -63,9 +61,7 @@ public final class EntityDependenciesResolver {
 
             for (Pdo item : new LinkedHashSet<>(result)) {
                 for (Field field : EDRUtil.getFields(item.getClass(), DEPENDANT)) {
-                    collectAllGraph(EDRUtil.getFieldValue(item, field),
-                            result,
-                            field.isAnnotationPresent(Embedded.class));
+                    collectAllGraph(EDRUtil.getFieldValue(item, field), result, field.isAnnotationPresent(Embedded.class));
                 }
             }
         }
@@ -86,9 +82,7 @@ public final class EntityDependenciesResolver {
 
         if (embedded) {
             for (Field field : EDRUtil.getFields(object.getClass(), DEPENDENCY)) {
-                collectAllDependencies(EDRUtil.getFieldValue(object, field),
-                        result,
-                        field.isAnnotationPresent(Embedded.class));
+                collectAllDependencies(EDRUtil.getFieldValue(object, field), result, field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -106,9 +100,7 @@ public final class EntityDependenciesResolver {
             result.add(pdo);
 
             for (Field field : EDRUtil.getFields(object.getClass(), DEPENDENCY)) {
-                collectAllDependencies(EDRUtil.getFieldValue(object, field),
-                        result,
-                        field.isAnnotationPresent(Embedded.class));
+                collectAllDependencies(EDRUtil.getFieldValue(object, field), result, field.isAnnotationPresent(Embedded.class));
             }
         }
 
@@ -116,3 +108,4 @@ public final class EntityDependenciesResolver {
     }
 
 }
+
