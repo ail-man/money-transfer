@@ -1,11 +1,12 @@
 package com.ail.revolut.app.algorithm;
 
 import com.ail.revolut.app.model.Pdo;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.Embedded;
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.persistence.Embedded;
-import lombok.extern.slf4j.Slf4j;
 
 import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDANT;
 import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDENCY;
@@ -13,6 +14,15 @@ import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDENCY;
 @Slf4j
 public final class EntityDependenciesResolver {
 
+    /**
+     * The thing is current implementation collects incorrect order of PDOs in some cases.
+     * It need to be fixed with algorithm of Topological sorting for Directed Acyclic Graph:
+     * https://habrahabr.ru/post/100953/
+     * http://algs4.cs.princeton.edu/42digraph/
+     * http://algs4.cs.princeton.edu/42digraph/Topological.java.html
+     * http://www.geeksforgeeks.org/topological-sorting/
+     * http://www.geeksforgeeks.org/depth-first-traversal-for-a-graph/
+     */
     private EntityDependenciesResolver() {
         throw new AssertionError();
     }
