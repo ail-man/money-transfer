@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -46,41 +47,45 @@ public class EntityDependenciesResoloverTest {
         user3account.getRemittances().add(remittance5);
         user3account.getRemittances().add(remittance6);
 
-        Set<Pdo> pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user1);
-        assertEquals(pdoSet.size(), 12);
+        DfsEdr dfsEdr = new DfsEdr();
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user2);
-        assertEquals(pdoSet.size(), 12);
+        Stack<Pdo> pdoSet;
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user3);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user1);
+        assertEquals(pdoSet.size(), 1);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user1account);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user2);
+        assertEquals(pdoSet.size(), 1);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user2account);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user3);
+        assertEquals(pdoSet.size(), 1);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(user3account);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user1account);
+        assertEquals(pdoSet.size(), 2);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance1);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user2account);
+        assertEquals(pdoSet.size(), 2);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance2);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(user3account);
+        assertEquals(pdoSet.size(), 2);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance3);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance1);
+        assertEquals(pdoSet.size(), 5);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance4);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance2);
+        assertEquals(pdoSet.size(), 5);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance5);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance3);
+        assertEquals(pdoSet.size(), 5);
 
-        pdoSet = EntityDependenciesResolver.collectAllGraphFromPdo(remittance6);
-        assertEquals(pdoSet.size(), 12);
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance4);
+        assertEquals(pdoSet.size(), 5);
+
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance5);
+        assertEquals(pdoSet.size(), 5);
+
+        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance6);
+        assertEquals(pdoSet.size(), 5);
     }
 
     static Remittance createRemmitance(long id, Account fromAccount, Account toAccount, BigDecimal amount) {
