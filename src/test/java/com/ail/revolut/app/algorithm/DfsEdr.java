@@ -3,30 +3,65 @@ package com.ail.revolut.app.algorithm;
 import com.ail.revolut.app.model.Pdo;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Stack;
 import javax.persistence.Embedded;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDANT;
 import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDENCY;
 
 @Slf4j
 class DfsEdr {
 
     private Map<Object, State> visitMap;
-    private Stack<Pdo> result;
+    private LinkedHashSet<Pdo> dependencies;
+    private LinkedHashSet<Pdo> result = new LinkedHashSet<>();
 
-    Stack<Pdo> collectAllGraphFromPdo(Pdo pdo) {
-        log.info("Collect all graph from PDO: {}", pdo.getClass());
-
+    LinkedHashSet<Pdo> collectAllGraphFromPdo(Pdo pdo) {
         visitMap = new HashMap<>();
-        result = new Stack<>();
+        dependencies = new LinkedHashSet<>();
 
         dfs(pdo, false);
-        
-        result.forEach(obj -> log.info("Collected pdo: {}", obj));
 
+        result.addAll(dependencies);
+
+        collectDependantsGraphs();
+        
+        result.forEach(item -> log.info("Collected pdo: " + item));
         return result;
+    }
+
+    private void collectDependantsGraphs() {
+        LinkedHashSet<Pdo> copy = new LinkedHashSet<>(result); // java.util.ConcurrentModificationException
+
+        for (Pdo collected : copy) {
+            for (Field field : EDRUtil.getFields(collected.getClass(), DEPENDANT)) {
+                Object dependant = EDRUtil.getFieldValue(collected, field);
+
+                if (dependant == null) {
+                    continue;
+                }
+
+                if (dependant instanceof Iterable<?>) {
+                    for (Object item : (Iterable<?>) dependant) {
+                        runCollectAllGraphByCondition(item);
+                    }
+                }
+                else {
+                    runCollectAllGraphByCondition(dependant);
+                }
+            }
+        }
+    }
+
+    private void runCollectAllGraphByCondition(Object object) {
+        if (object instanceof Pdo) {
+            Pdo pdo = (Pdo) object;
+            if (!result.contains(pdo)) {
+                collectAllGraphFromPdo(pdo);
+            }
+        }
     }
 
     private void dfs(Object object, boolean embedded) {
@@ -49,7 +84,7 @@ class DfsEdr {
         if (object instanceof Pdo) {
             Pdo pdo = (Pdo) object;
 
-            if (result.contains(pdo)) {
+            if (dependencies.contains(pdo)) {
                 return;
             }
 
@@ -61,13 +96,14 @@ class DfsEdr {
                 for (Field field : EDRUtil.getFields(pdo.getClass(), DEPENDENCY)) {
                     dfs(EDRUtil.getFieldValue(pdo, field), field.isAnnotationPresent(Embedded.class));
                 }
-            } else {
+            }
+            else {
                 visitMap.put(pdo, State.PRESERVED);
-                result.push(pdo);
+                dependencies.add(pdo);
                 return;
             }
 
-            result.push(pdo);
+            dependencies.add(pdo);
         }
     }
 
@@ -75,22 +111,26 @@ class DfsEdr {
         for (Field field : EDRUtil.getFields(object.getClass(), DEPENDENCY)) {
             Object fieldValue = EDRUtil.getFieldValue(object, field);
 
-            if (fieldValue != null) {
-                if (fieldValue instanceof Iterable<?>) {
-                    for (Object item : (Iterable<?>) fieldValue) {
-                        if (visitMap.get(item) != State.PRESERVED) {
-                            return true;
-                        }
+            if (fieldValue == null) {
+                continue;
+            }
+
+            if (fieldValue instanceof Iterable<?>) {
+                for (Object item : (Iterable<?>) fieldValue) {
+                    if (visitMap.get(item) != State.PRESERVED) {
+                        return true;
                     }
-                } else if (field.isAnnotationPresent(Embedded.class)) {
-                    for (Field fieldValueField : EDRUtil.getFields(fieldValue.getClass(), DEPENDENCY)) {
-                        if (visitMap.get(EDRUtil.getFieldValue(fieldValue, fieldValueField)) != State.PRESERVED) {
-                            return true;
-                        }
-                    }
-                } else if (visitMap.get(fieldValue) != State.PRESERVED) {
-                    return true;
                 }
+            }
+            else if (field.isAnnotationPresent(Embedded.class)) {
+                for (Field fieldValueField : EDRUtil.getFields(fieldValue.getClass(), DEPENDENCY)) {
+                    if (visitMap.get(EDRUtil.getFieldValue(fieldValue, fieldValueField)) != State.PRESERVED) {
+                        return true;
+                    }
+                }
+            }
+            else if (visitMap.get(fieldValue) != State.PRESERVED) {
+                return true;
             }
         }
 
