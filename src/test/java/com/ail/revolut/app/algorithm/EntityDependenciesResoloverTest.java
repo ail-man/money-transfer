@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 import java.util.Set;
-import java.util.Stack;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -47,44 +46,44 @@ public class EntityDependenciesResoloverTest {
         user3account.getRemittances().add(remittance5);
         user3account.getRemittances().add(remittance6);
 
-        DfsEdr dfsEdr = new DfsEdr();
+        EDRDfs EDRDfs = new EDRDfs();
 
         Set<Pdo> pdoSet;
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user1);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user1);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user2);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user2);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user3);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user3);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user1account);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user1account);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user2account);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user2account);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(user3account);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(user3account);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance1);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance1);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance2);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance2);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance3);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance3);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance4);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance4);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance5);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance5);
         assertEquals(pdoSet.size(), 12);
 
-        pdoSet = dfsEdr.collectAllGraphFromPdo(remittance6);
+        pdoSet = EDRDfs.collectAllGraphFromPdo(remittance6);
         assertEquals(pdoSet.size(), 12);
     }
 

@@ -12,30 +12,34 @@ import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDANT;
 import static com.ail.revolut.app.algorithm.EDRUtil.RelationType.DEPENDENCY;
 
 @Slf4j
-class DfsEdr {
+public class EDRDfs {
 
-    private Map<Object, State> visitMap;
-    private LinkedHashSet<Pdo> dependencies;
+    private static final int ROUNDS_COUNT = 3;
+
+    private Map<Object, State> visitMap = new HashMap<>();
     private LinkedHashSet<Pdo> result = new LinkedHashSet<>();
+    private LinkedHashSet<Pdo> dependencies;
+    private int dependantsRound = 0;
 
-    LinkedHashSet<Pdo> collectAllGraphFromPdo(Pdo pdo) {
-        visitMap = new HashMap<>();
-        dependencies = new LinkedHashSet<>();
-
-        dfs(pdo, false);
-
+    public LinkedHashSet<Pdo> collectAllGraphFromPdo(Pdo pdo) {
+        log.info(">>> Collect graph for PDO: " + pdo);
+        collectDependencies(pdo);
         result.addAll(dependencies);
-
         collectDependantsGraphs();
-        
-        result.forEach(item -> log.info("Collected pdo: " + item));
+        result.forEach(item -> log.info("collected: " + item));
         return result;
     }
 
-    private void collectDependantsGraphs() {
-        LinkedHashSet<Pdo> copy = new LinkedHashSet<>(result); // java.util.ConcurrentModificationException
+    private void collectDependencies(Object object) {
+        dependencies = new LinkedHashSet<>();
+        dfs(object, false);
+        result.addAll(dependencies);
+    }
 
-        for (Pdo collected : copy) {
+    private void collectDependantsGraphs() {
+        LinkedHashSet<Pdo> resultCopy = new LinkedHashSet<>(result); // java.util.ConcurrentModificationException
+
+        for (Pdo collected : resultCopy) {
             for (Field field : EDRUtil.getFields(collected.getClass(), DEPENDANT)) {
                 Object dependant = EDRUtil.getFieldValue(collected, field);
 
@@ -45,22 +49,16 @@ class DfsEdr {
 
                 if (dependant instanceof Iterable<?>) {
                     for (Object item : (Iterable<?>) dependant) {
-                        runCollectAllGraphByCondition(item);
+                        collectDependencies(item);
                     }
-                }
-                else {
-                    runCollectAllGraphByCondition(dependant);
+                } else {
+                    collectDependencies(dependant);
                 }
             }
         }
-    }
 
-    private void runCollectAllGraphByCondition(Object object) {
-        if (object instanceof Pdo) {
-            Pdo pdo = (Pdo) object;
-            if (!result.contains(pdo)) {
-                collectAllGraphFromPdo(pdo);
-            }
+        if (++dependantsRound < ROUNDS_COUNT) {
+            collectDependantsGraphs();
         }
     }
 
@@ -84,20 +82,25 @@ class DfsEdr {
         if (object instanceof Pdo) {
             Pdo pdo = (Pdo) object;
 
+            if (result.contains(pdo)) {
+                return;
+            }
+
             if (dependencies.contains(pdo)) {
                 return;
             }
 
-            if (!visitMap.containsKey(pdo)) {
-                visitMap.put(pdo, State.VISITED);
+            if (visitMap.containsKey(pdo)) {
+                return;
             }
+
+            visitMap.put(pdo, State.VISITED);
 
             if (containsNotPreservedEdges(pdo)) {
                 for (Field field : EDRUtil.getFields(pdo.getClass(), DEPENDENCY)) {
                     dfs(EDRUtil.getFieldValue(pdo, field), field.isAnnotationPresent(Embedded.class));
                 }
-            }
-            else {
+            } else {
                 visitMap.put(pdo, State.PRESERVED);
                 dependencies.add(pdo);
                 return;
@@ -121,15 +124,13 @@ class DfsEdr {
                         return true;
                     }
                 }
-            }
-            else if (field.isAnnotationPresent(Embedded.class)) {
+            } else if (field.isAnnotationPresent(Embedded.class)) {
                 for (Field fieldValueField : EDRUtil.getFields(fieldValue.getClass(), DEPENDENCY)) {
                     if (visitMap.get(EDRUtil.getFieldValue(fieldValue, fieldValueField)) != State.PRESERVED) {
                         return true;
                     }
                 }
-            }
-            else if (visitMap.get(fieldValue) != State.PRESERVED) {
+            } else if (visitMap.get(fieldValue) != State.PRESERVED) {
                 return true;
             }
         }
